@@ -1,11 +1,11 @@
-package com.carlospinan.lolguide.data.models;
+package com.carlospinan.lolguide.data.models.champion;
 
 import java.util.List;
 
 /**
  * @author Carlos Piñan
  */
-public class ChampionLevelTip {
+public class ChampionSpellTip {
 
     private List<String> effect;
     private List<String> label;
@@ -25,4 +25,5 @@ public class ChampionLevelTip {
     public void setLabel(List<String> label) {
         this.label = label;
     }
+
 }

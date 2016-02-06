@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sugar_database_name" translatable="false">com_carlospinan_lolguide.db</string>
+    <string name="sugar_database_version" translatable="false">1.0</string>
+    <string name="sugar_query_log" translatable="false">true</string>
+    <string name="sugar_domain_name" translatable="false">com.carlospinan</string>
+    <string name="fabric_id">32f10c19f1afd39b505fa7a4f38ef47a7e2f04fc</string>
+</resources>

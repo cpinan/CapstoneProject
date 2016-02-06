@@ -34,6 +34,7 @@ android {
     }
     buildTypes.each {
         it.buildConfigField 'String', 'LOL_API_KEY', lolDevApiKey
+        it.buildConfigField 'String', 'LOL_STATIC_DATA_ENDPOINT', lolStaticDataEndpoint
     }
 }
 

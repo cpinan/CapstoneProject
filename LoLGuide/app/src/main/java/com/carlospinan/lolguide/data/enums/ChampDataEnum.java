@@ -9,7 +9,7 @@ public enum ChampDataEnum {
     altimages,
     blurb,
     enemytips,
-    images,
+    image,
     info,
     lore,
     partype,

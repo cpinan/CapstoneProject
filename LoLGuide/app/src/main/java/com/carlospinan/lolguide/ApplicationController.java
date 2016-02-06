@@ -1,14 +1,16 @@
 package com.carlospinan.lolguide;
 
-import android.app.Application;
 import android.content.Context;
+
 import com.crashlytics.android.Crashlytics;
+import com.orm.SugarApp;
+
 import io.fabric.sdk.android.Fabric;
 
 /**
  * @author Carlos Piñan
  */
-public class ApplicationController extends Application {
+public class ApplicationController extends SugarApp {
 
     private static Context context;
 
@@ -21,5 +23,9 @@ public class ApplicationController extends Application {
 
     public static Context getContext() {
         return context;
+    }
+
+    public static void setContext(Context mContext) {
+        context = mContext;
     }
 }

@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.carlospinan.lolguide">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:name=".ApplicationController"
         android:allowBackup="true"
@@ -9,6 +12,23 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="DATABASE"
+            android:value="@string/sugar_database_name" />
+        <meta-data
+            android:name="VERSION"
+            android:value="@string/sugar_database_version" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="@string/sugar_query_log" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="@string/sugar_domain_name" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="32f10c19f1afd39b505fa7a4f38ef47a7e2f04fc" />
+
         <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -16,10 +36,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="32f10c19f1afd39b505fa7a4f38ef47a7e2f04fc" />
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

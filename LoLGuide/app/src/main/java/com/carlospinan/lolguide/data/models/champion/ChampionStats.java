@@ -1,9 +1,12 @@
-package com.carlospinan.lolguide.data.models;
+package com.carlospinan.lolguide.data.models.champion;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * @author Carlos Piñan
  */
-public class ChampionStats {
+public class ChampionStats implements Parcelable {
 
     private double attackrange;
     private double mpperlevel;
@@ -25,6 +28,41 @@ public class ChampionStats {
     private double crit;
     private double hpregenperlevel;
     private double armorperlevel;
+
+    protected ChampionStats(Parcel in) {
+        attackrange = in.readDouble();
+        mpperlevel = in.readDouble();
+        mp = in.readDouble();
+        attackdamage = in.readDouble();
+        hp = in.readDouble();
+        hpperlevel = in.readDouble();
+        attackdamageperlevel = in.readDouble();
+        armor = in.readDouble();
+        mpregenperlevel = in.readDouble();
+        hpregen = in.readDouble();
+        critperlevel = in.readDouble();
+        spellblockperlevel = in.readDouble();
+        mpregen = in.readDouble();
+        attackspeedperlevel = in.readDouble();
+        spellblock = in.readDouble();
+        movespeed = in.readDouble();
+        attackspeedoffset = in.readDouble();
+        crit = in.readDouble();
+        hpregenperlevel = in.readDouble();
+        armorperlevel = in.readDouble();
+    }
+
+    public static final Creator<ChampionStats> CREATOR = new Creator<ChampionStats>() {
+        @Override
+        public ChampionStats createFromParcel(Parcel in) {
+            return new ChampionStats(in);
+        }
+
+        @Override
+        public ChampionStats[] newArray(int size) {
+            return new ChampionStats[size];
+        }
+    };
 
     public double getAttackrange() {
         return attackrange;
@@ -184,5 +222,34 @@ public class ChampionStats {
 
     public void setArmorperlevel(double armorperlevel) {
         this.armorperlevel = armorperlevel;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeDouble(attackrange);
+        dest.writeDouble(mpperlevel);
+        dest.writeDouble(mp);
+        dest.writeDouble(attackdamage);
+        dest.writeDouble(hp);
+        dest.writeDouble(hpperlevel);
+        dest.writeDouble(attackdamageperlevel);
+        dest.writeDouble(armor);
+        dest.writeDouble(mpregenperlevel);
+        dest.writeDouble(hpregen);
+        dest.writeDouble(critperlevel);
+        dest.writeDouble(spellblockperlevel);
+        dest.writeDouble(mpregen);
+        dest.writeDouble(attackspeedperlevel);
+        dest.writeDouble(spellblock);
+        dest.writeDouble(movespeed);
+        dest.writeDouble(attackspeedoffset);
+        dest.writeDouble(crit);
+        dest.writeDouble(hpregenperlevel);
+        dest.writeDouble(armorperlevel);
     }
 }

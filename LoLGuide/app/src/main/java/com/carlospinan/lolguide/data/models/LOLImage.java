@@ -1,9 +1,12 @@
 package com.carlospinan.lolguide.data.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * @author Carlos Piñan
  */
-public class LOLImage {
+public class LOLImage implements Parcelable {
 
     private String full;
     private String group;
@@ -12,6 +15,28 @@ public class LOLImage {
     private int w;
     private int x;
     private int y;
+
+    protected LOLImage(Parcel in) {
+        full = in.readString();
+        group = in.readString();
+        h = in.readInt();
+        sprite = in.readString();
+        w = in.readInt();
+        x = in.readInt();
+        y = in.readInt();
+    }
+
+    public static final Creator<LOLImage> CREATOR = new Creator<LOLImage>() {
+        @Override
+        public LOLImage createFromParcel(Parcel in) {
+            return new LOLImage(in);
+        }
+
+        @Override
+        public LOLImage[] newArray(int size) {
+            return new LOLImage[size];
+        }
+    };
 
     public String getFull() {
         return full;
@@ -67,5 +92,21 @@ public class LOLImage {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(full);
+        dest.writeString(group);
+        dest.writeInt(h);
+        dest.writeString(sprite);
+        dest.writeInt(w);
+        dest.writeInt(x);
+        dest.writeInt(y);
     }
 }

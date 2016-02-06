@@ -2,6 +2,8 @@ package com.carlospinan.lolguide.data;
 
 import android.util.Log;
 
+import com.carlospinan.lolguide.BuildConfig;
+
 /**
  * @author Carlos Piñan
  */
@@ -13,9 +15,10 @@ public class Globals {
     private static final String LOG_TEST_TAG = "TestTag";
 
     // LOL API
+    public static final String LOL_DEFAULT_CDN_URL = "http://ddragon.leagueoflegends.com/cdn";
+    public static final String LOL_DEFAULT_VERSION = "6.2.1";
     public static final String LOL_STATIC_DATA_API_VERSION = "v1.2";
-    // https://global.api.pvp.net/api/lol/static-data/las/v1.2/champion?api_key=6d995860-d254-4e79-889a-16ce3bd6abfe
-    public static final String LOL_STATIC_DATA_ENDPOINT = "https://global.api.pvp.net/api/lol/static-data/";
+    public static final String LOL_STATIC_DATA_ENDPOINT = BuildConfig.LOL_STATIC_DATA_ENDPOINT;
 
     // Constants
 

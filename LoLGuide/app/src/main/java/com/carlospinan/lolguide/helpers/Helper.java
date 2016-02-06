@@ -5,6 +5,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.carlospinan.lolguide.R;
+import com.carlospinan.lolguide.data.enums.ChampDataEnum;
 
 import java.util.Locale;
 
@@ -32,15 +33,15 @@ public class Helper {
         return false;
     }
 
-    public String arrayStringsToStringByComma(String... array) {
+    public String arrayStringsToStringByComma(ChampDataEnum... array) {
         String string = null;
         if (array != null && array.length > 0) {
             int length = array.length;
             if (length == 1) {
-                string = array[0];
+                string = String.valueOf(array[0]);
             } else {
                 for (int i = 0; i < length - 1; i++) {
-                    string += array[i] + ",";
+                    string += String.valueOf(array[i]) + ",";
                 }
                 string = string.substring(0, string.length() - 1);
             }
@@ -60,5 +61,13 @@ public class Helper {
     public String getCodeLanguage() {
         String codeLanguage = Locale.getDefault().toString();
         return codeLanguage == null ? "en_US" : codeLanguage;
+    }
+
+    public ChampDataEnum getChampDataFromString(String value) {
+        try {
+            return ChampDataEnum.valueOf(value);
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

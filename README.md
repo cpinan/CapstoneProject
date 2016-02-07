@@ -28,3 +28,7 @@ Android wear watch faces.
 Notifications for news champions.
 
 And more!!!
+
+Notes:
+
+- Sugar ORM has been removed. Now I'm using Realm.

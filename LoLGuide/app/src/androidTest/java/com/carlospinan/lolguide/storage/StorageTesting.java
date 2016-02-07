@@ -58,17 +58,6 @@ public class StorageTesting extends AndroidTestCase {
         RealmChampion realmChampion = realm.where(RealmChampion.class).equalTo("championId", CHAMPION_ID_TEST).findFirst();
         assertNotNull(realmChampion);
 
-
-//        Globals.testLog("save: " + save);
-//
-//        List<Champion> championList = SugarRecord.listAll(Champion.class);
-//        assertNotNull(championList);
-//        assertTrue(championList.size() > 0);
-//
-//        Champion c = SugarRecord.findById(Champion.class, save);
-//        assertNotNull(c);
-//        assertNotNull(c.getName());
-
         Globals.testLog("testChampionByIdAndLocalStorage end");
     }
 

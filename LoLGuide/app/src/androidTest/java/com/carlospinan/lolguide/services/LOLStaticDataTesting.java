@@ -7,9 +7,9 @@ import com.carlospinan.lolguide.ApplicationController;
 import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.enums.ChampDataEnum;
 import com.carlospinan.lolguide.data.enums.RegionEnum;
-import com.carlospinan.lolguide.data.models.LOLRealm;
-import com.carlospinan.lolguide.data.models.champion.Champion;
-import com.carlospinan.lolguide.data.models.champion.ChampionSpell;
+import com.carlospinan.lolguide.data.models.Champion;
+import com.carlospinan.lolguide.data.models.ChampionSpell;
+import com.carlospinan.lolguide.data.models.LOLData;
 import com.carlospinan.lolguide.data.responses.ChampionsResponse;
 import com.carlospinan.lolguide.helpers.APIHelper;
 import com.carlospinan.lolguide.helpers.StorageHelper;
@@ -34,13 +34,12 @@ public class LOLStaticDataTesting extends AndroidTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        defaultRegion = StorageHelper.get().getRegion();
         ApplicationController.setContext(getContext());
+        defaultRegion = StorageHelper.get().getRegion();
     }
 
     public void testGetChampionsImage() throws IOException {
         Globals.testLog("testGetChampionsImage init");
-
         ServiceLolStaticAPI service = APIHelper.get().lolStaticAPI();
         Call<ResponseBody> call = service.getChampions(ChampDataEnum.image);
         Response<ResponseBody> response = call.execute();
@@ -111,11 +110,11 @@ public class LOLStaticDataTesting extends AndroidTestCase {
         Globals.testLog("testGetRealm init");
 
         ServiceLolStaticAPI service = APIHelper.get().lolStaticAPI();
-        Call<LOLRealm> call = service.api().getRealm(defaultRegion);
-        Response<LOLRealm> response = call.execute();
+        Call<LOLData> call = service.api().getRealm(defaultRegion);
+        Response<LOLData> response = call.execute();
         assertNotNull(response);
         assertNotNull(response.body());
-        LOLRealm realm = response.body();
+        LOLData realm = response.body();
         assertNotNull(realm.getCurrentRealVersion());
         assertNotNull(realm.getLatestChangedLOLRealmVersion());
 

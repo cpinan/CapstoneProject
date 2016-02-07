@@ -1,23 +1,23 @@
-package com.carlospinan.lolguide.data.models.champion;
+package com.carlospinan.lolguide.data.models.realm;
 
-import java.util.List;
+import io.realm.RealmObject;
 
 /**
  * @author Carlos Piñan
  */
-public class ChampionSpellVar {
+public class RealmChampionSpellVar extends RealmObject {
 
-    private List<Double> coeff;
+    private String coeff; // Double array
     private String dyn;
     private String key;
     private String link;
     private String ranksWith;
 
-    public List<Double> getCoeff() {
+    public String getCoeff() {
         return coeff;
     }
 
-    public void setCoeff(List<Double> coeff) {
+    public void setCoeff(String coeff) {
         this.coeff = coeff;
     }
 
@@ -53,3 +53,4 @@ public class ChampionSpellVar {
         this.ranksWith = ranksWith;
     }
 }
+

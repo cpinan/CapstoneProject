@@ -1,4 +1,4 @@
-package com.carlospinan.lolguide.data.models.champion;
+package com.carlospinan.lolguide.data.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -50,6 +50,35 @@ public class ChampionStats implements Parcelable {
         crit = in.readDouble();
         hpregenperlevel = in.readDouble();
         armorperlevel = in.readDouble();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeDouble(attackrange);
+        dest.writeDouble(mpperlevel);
+        dest.writeDouble(mp);
+        dest.writeDouble(attackdamage);
+        dest.writeDouble(hp);
+        dest.writeDouble(hpperlevel);
+        dest.writeDouble(attackdamageperlevel);
+        dest.writeDouble(armor);
+        dest.writeDouble(mpregenperlevel);
+        dest.writeDouble(hpregen);
+        dest.writeDouble(critperlevel);
+        dest.writeDouble(spellblockperlevel);
+        dest.writeDouble(mpregen);
+        dest.writeDouble(attackspeedperlevel);
+        dest.writeDouble(spellblock);
+        dest.writeDouble(movespeed);
+        dest.writeDouble(attackspeedoffset);
+        dest.writeDouble(crit);
+        dest.writeDouble(hpregenperlevel);
+        dest.writeDouble(armorperlevel);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<ChampionStats> CREATOR = new Creator<ChampionStats>() {
@@ -224,32 +253,4 @@ public class ChampionStats implements Parcelable {
         this.armorperlevel = armorperlevel;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeDouble(attackrange);
-        dest.writeDouble(mpperlevel);
-        dest.writeDouble(mp);
-        dest.writeDouble(attackdamage);
-        dest.writeDouble(hp);
-        dest.writeDouble(hpperlevel);
-        dest.writeDouble(attackdamageperlevel);
-        dest.writeDouble(armor);
-        dest.writeDouble(mpregenperlevel);
-        dest.writeDouble(hpregen);
-        dest.writeDouble(critperlevel);
-        dest.writeDouble(spellblockperlevel);
-        dest.writeDouble(mpregen);
-        dest.writeDouble(attackspeedperlevel);
-        dest.writeDouble(spellblock);
-        dest.writeDouble(movespeed);
-        dest.writeDouble(attackspeedoffset);
-        dest.writeDouble(crit);
-        dest.writeDouble(hpregenperlevel);
-        dest.writeDouble(armorperlevel);
-    }
 }

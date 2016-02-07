@@ -1,11 +1,14 @@
 package com.carlospinan.lolguide.data.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
  * @author Carlos Piñan
  */
-public class LOLRealm {
+public class LOLData implements Parcelable {
 
     @SerializedName("v")
     private String currentRealVersion;
@@ -15,12 +18,50 @@ public class LOLRealm {
     @SerializedName("lg")
     private String legacyScriptModeForUE6OrOlder;
     @SerializedName("n")
-    private LOLRealmVersion latestChangedLOLRealmVersion;
+    private LOLDataVersion latestChangedLOLRealmVersion;
     private int profileiconmax;
     @SerializedName("l")
     private String defaultLanguageForThisRealm;
     @SerializedName("css")
     private String latestChangedVersionOfDragonMagicCSSFile;
+
+    protected LOLData(Parcel in) {
+        currentRealVersion = in.readString();
+        latestChangedVersionDragonMagic = in.readString();
+        cdn = in.readString();
+        legacyScriptModeForUE6OrOlder = in.readString();
+        profileiconmax = in.readInt();
+        defaultLanguageForThisRealm = in.readString();
+        latestChangedVersionOfDragonMagicCSSFile = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(currentRealVersion);
+        dest.writeString(latestChangedVersionDragonMagic);
+        dest.writeString(cdn);
+        dest.writeString(legacyScriptModeForUE6OrOlder);
+        dest.writeInt(profileiconmax);
+        dest.writeString(defaultLanguageForThisRealm);
+        dest.writeString(latestChangedVersionOfDragonMagicCSSFile);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<LOLData> CREATOR = new Creator<LOLData>() {
+        @Override
+        public LOLData createFromParcel(Parcel in) {
+            return new LOLData(in);
+        }
+
+        @Override
+        public LOLData[] newArray(int size) {
+            return new LOLData[size];
+        }
+    };
 
     public String getCurrentRealVersion() {
         return currentRealVersion;
@@ -46,11 +87,11 @@ public class LOLRealm {
         this.legacyScriptModeForUE6OrOlder = legacyScriptModeForUE6OrOlder;
     }
 
-    public LOLRealmVersion getLatestChangedLOLRealmVersion() {
+    public LOLDataVersion getLatestChangedLOLRealmVersion() {
         return latestChangedLOLRealmVersion;
     }
 
-    public void setLatestChangedLOLRealmVersion(LOLRealmVersion latestChangedLOLRealmVersion) {
+    public void setLatestChangedLOLRealmVersion(LOLDataVersion latestChangedLOLRealmVersion) {
         this.latestChangedLOLRealmVersion = latestChangedLOLRealmVersion;
     }
 

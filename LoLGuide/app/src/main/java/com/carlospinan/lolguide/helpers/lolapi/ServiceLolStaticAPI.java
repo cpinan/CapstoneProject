@@ -2,7 +2,7 @@ package com.carlospinan.lolguide.helpers.lolapi;
 
 import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.enums.ChampDataEnum;
-import com.carlospinan.lolguide.data.models.champion.Champion;
+import com.carlospinan.lolguide.data.models.Champion;
 import com.carlospinan.lolguide.data.responses.ChampionsResponse;
 import com.carlospinan.lolguide.helpers.Helper;
 import com.carlospinan.lolguide.helpers.OkHttpSingleton;

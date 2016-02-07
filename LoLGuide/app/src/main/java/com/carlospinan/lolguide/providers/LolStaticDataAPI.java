@@ -3,8 +3,8 @@ package com.carlospinan.lolguide.providers;
 import com.carlospinan.lolguide.BuildConfig;
 import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.enums.RegionEnum;
-import com.carlospinan.lolguide.data.models.LOLRealm;
-import com.carlospinan.lolguide.data.models.champion.Champion;
+import com.carlospinan.lolguide.data.models.LOLData;
+import com.carlospinan.lolguide.data.models.Champion;
 import com.squareup.okhttp.ResponseBody;
 
 import java.util.List;
@@ -52,7 +52,7 @@ public interface LolStaticDataAPI {
     );
 
     @GET("{region}/" + Globals.LOL_STATIC_DATA_API_VERSION + "/realm?api_key=" + BuildConfig.LOL_API_KEY)
-    Call<LOLRealm> getRealm(
+    Call<LOLData> getRealm(
             @Path("region") RegionEnum region
     );
 

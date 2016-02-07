@@ -36,6 +36,14 @@ android {
         it.buildConfigField 'String', 'LOL_API_KEY', lolDevApiKey
         it.buildConfigField 'String', 'LOL_STATIC_DATA_ENDPOINT', lolStaticDataEndpoint
     }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
 }
 
 ext {
@@ -58,7 +66,8 @@ dependencies {
     compile 'com.squareup.okhttp:logging-interceptor:2.6.0'
 
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.github.satyan:sugar:1.4'
+    compile 'io.realm:realm-android:0.87.4'
+
     compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
         transitive = true;
     }

@@ -1,11 +1,15 @@
 package com.carlospinan.lolguide.data.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
  * @author Carlos Piñan
  */
-public class LOLRealmVersion {
+public class LOLDataVersion implements Parcelable {
+
     private String champion;
     @SerializedName("profileicon")
     private String profileIcon;
@@ -15,6 +19,46 @@ public class LOLRealmVersion {
     private String language;
     private String summoner;
     private String rune;
+
+    protected LOLDataVersion(Parcel in) {
+        champion = in.readString();
+        profileIcon = in.readString();
+        item = in.readString();
+        map = in.readString();
+        mastery = in.readString();
+        language = in.readString();
+        summoner = in.readString();
+        rune = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(champion);
+        dest.writeString(profileIcon);
+        dest.writeString(item);
+        dest.writeString(map);
+        dest.writeString(mastery);
+        dest.writeString(language);
+        dest.writeString(summoner);
+        dest.writeString(rune);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<LOLDataVersion> CREATOR = new Creator<LOLDataVersion>() {
+        @Override
+        public LOLDataVersion createFromParcel(Parcel in) {
+            return new LOLDataVersion(in);
+        }
+
+        @Override
+        public LOLDataVersion[] newArray(int size) {
+            return new LOLDataVersion[size];
+        }
+    };
 
     public String getChampion() {
         return champion;

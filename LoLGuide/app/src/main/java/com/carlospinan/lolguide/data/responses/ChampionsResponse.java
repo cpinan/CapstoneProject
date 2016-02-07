@@ -1,6 +1,6 @@
 package com.carlospinan.lolguide.data.responses;
 
-import com.carlospinan.lolguide.data.models.champion.Champion;
+import com.carlospinan.lolguide.data.models.Champion;
 
 import java.util.List;
 

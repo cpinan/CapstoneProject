@@ -1,9 +1,7 @@
-package com.carlospinan.lolguide.data.models.champion;
+package com.carlospinan.lolguide.data.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.carlospinan.lolguide.data.models.LOLImage;
 
 import java.util.List;
 
@@ -37,7 +35,6 @@ public class ChampionSpell implements Parcelable {
         resource = in.readString();
         maxrank = in.readInt();
         effectBurn = in.createStringArrayList();
-        image = in.readParcelable(LOLImage.class.getClassLoader());
         sanitizedDescription = in.readString();
         rangeBurn = in.readString();
         costType = in.readString();
@@ -232,7 +229,6 @@ public class ChampionSpell implements Parcelable {
         dest.writeString(resource);
         dest.writeInt(maxrank);
         dest.writeStringList(effectBurn);
-        dest.writeParcelable(image, flags);
         dest.writeString(sanitizedDescription);
         dest.writeString(rangeBurn);
         dest.writeString(costType);

@@ -1,9 +1,7 @@
-package com.carlospinan.lolguide.data.models.champion;
+package com.carlospinan.lolguide.data.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.carlospinan.lolguide.data.models.LOLImage;
 
 /**
  * @author Carlos Piñan
@@ -17,9 +15,20 @@ public class ChampionPassive implements Parcelable {
 
     protected ChampionPassive(Parcel in) {
         description = in.readString();
-        image = in.readParcelable(LOLImage.class.getClassLoader());
         name = in.readString();
         sanitizedDescription = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(description);
+        dest.writeString(name);
+        dest.writeString(sanitizedDescription);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<ChampionPassive> CREATOR = new Creator<ChampionPassive>() {
@@ -66,16 +75,4 @@ public class ChampionPassive implements Parcelable {
         this.sanitizedDescription = sanitizedDescription;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(description);
-        dest.writeParcelable(image, flags);
-        dest.writeString(name);
-        dest.writeString(sanitizedDescription);
-    }
 }

@@ -1,7 +1,9 @@
-package com.carlospinan.lolguide.data.models.champion;
+package com.carlospinan.lolguide.data.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.carlospinan.lolguide.data.models.realm.RealmChampionSkin;
 
 /**
  * @author Carlos Piñan
@@ -64,5 +66,13 @@ public class ChampionSkin implements Parcelable {
         dest.writeInt(id);
         dest.writeInt(num);
         dest.writeString(name);
+    }
+
+    public RealmChampionSkin getRealmSkin() {
+        RealmChampionSkin s = new RealmChampionSkin();
+        s.setId(getId());
+        s.setNum(getNum());
+        s.setName(getName());
+        return s;
     }
 }

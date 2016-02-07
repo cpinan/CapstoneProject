@@ -5,13 +5,16 @@ import android.test.AndroidTestCase;
 import com.carlospinan.lolguide.ApplicationController;
 import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.enums.ChampDataEnum;
-import com.carlospinan.lolguide.data.models.champion.Champion;
+import com.carlospinan.lolguide.data.models.Champion;
+import com.carlospinan.lolguide.data.models.realm.RealmChampion;
 import com.carlospinan.lolguide.helpers.APIHelper;
+import com.carlospinan.lolguide.helpers.RealmHelper;
 import com.carlospinan.lolguide.helpers.lolapi.ServiceLolStaticAPI;
 
 import java.io.IOException;
-import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 import retrofit.Call;
 import retrofit.Response;
 
@@ -22,34 +25,52 @@ public class StorageTesting extends AndroidTestCase {
 
     private static int CHAMPION_ID_TEST = 80; // Pantheon
 
+    private Realm realm;
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         ApplicationController.setContext(getContext());
+        realm = Realm.getInstance(getContext());
     }
 
-    public void testChampionByIdAndLocalStorage() throws IOException {
+    public void testChampionByIdAndLocalStorage() {
         Globals.testLog("testChampionByIdAndLocalStorage init");
         ServiceLolStaticAPI service = APIHelper.get().lolStaticAPI();
         Call<Champion> call = service.getChampion(CHAMPION_ID_TEST, ChampDataEnum.all);
-        Response<Champion> response = call.execute();
+        Response<Champion> response = null;
+        try {
+            response = call.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         assertNotNull(response);
         assertNotNull(response.body());
         Champion champion = response.body();
-        champion.save();
+        assertNotNull(champion.getChampionId());
+        Globals.testLog("getChampionId: " + String.valueOf(champion.getChampionId()));
 
-//        List<Champion> championList = Champion.find(
-//                Champion.class,
-//                "id = ?",
-//                String.valueOf(champion.getId()));
-//        Champion champion1 = Champion.findById(Champion.class, champion.getId());
-//        assertNotNull(champion1);
-//        Globals.testLog(champion1.getName());
-        List<Champion> championList = Champion.listAll(Champion.class);
-        assertNotNull(championList);
-        assertTrue(championList.size() > 0);
+        RealmHelper.get().saveChampion(champion.getRealmChampion());
 
-        Globals.testLog("testChampionByIdAndLocalStorage init");
+        RealmResults<RealmChampion> champions = realm.where(RealmChampion.class).findAll();
+        assertTrue(champions.size() > 0);
+
+        RealmChampion realmChampion = realm.where(RealmChampion.class).equalTo("championId", CHAMPION_ID_TEST).findFirst();
+        assertNotNull(realmChampion);
+
+
+//        Globals.testLog("save: " + save);
+//
+//        List<Champion> championList = SugarRecord.listAll(Champion.class);
+//        assertNotNull(championList);
+//        assertTrue(championList.size() > 0);
+//
+//        Champion c = SugarRecord.findById(Champion.class, save);
+//        assertNotNull(c);
+//        assertNotNull(c.getName());
+
+        Globals.testLog("testChampionByIdAndLocalStorage end");
     }
+
 
 }

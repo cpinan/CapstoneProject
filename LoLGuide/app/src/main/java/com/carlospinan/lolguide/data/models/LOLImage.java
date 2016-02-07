@@ -3,6 +3,8 @@ package com.carlospinan.lolguide.data.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.carlospinan.lolguide.data.models.realm.RealmLOLImage;
+
 /**
  * @author Carlos Piñan
  */
@@ -24,6 +26,22 @@ public class LOLImage implements Parcelable {
         w = in.readInt();
         x = in.readInt();
         y = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(full);
+        dest.writeString(group);
+        dest.writeInt(h);
+        dest.writeString(sprite);
+        dest.writeInt(w);
+        dest.writeInt(x);
+        dest.writeInt(y);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<LOLImage> CREATOR = new Creator<LOLImage>() {
@@ -94,19 +112,17 @@ public class LOLImage implements Parcelable {
         this.y = y;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public RealmLOLImage getRealmImage() {
+        RealmLOLImage i = new RealmLOLImage();
+        i.setFull(getFull());
+        i.setGroup(getGroup());
+        i.setH(getH());
+        i.setSprite(getSprite());
+        i.setW(getW());
+        i.setX(getX());
+        i.setY(getY());
+        return i;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(full);
-        dest.writeString(group);
-        dest.writeInt(h);
-        dest.writeString(sprite);
-        dest.writeInt(w);
-        dest.writeInt(x);
-        dest.writeInt(y);
-    }
+
 }

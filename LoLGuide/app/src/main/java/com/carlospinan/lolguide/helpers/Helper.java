@@ -73,7 +73,7 @@ public class Helper {
             return null;
         }
     }
-    
+
     // String array utility
     public static String getStringFromList(List<String> list) {
         String response = "";

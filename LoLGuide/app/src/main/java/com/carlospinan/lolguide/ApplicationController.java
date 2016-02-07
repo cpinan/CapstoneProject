@@ -26,6 +26,7 @@ public class ApplicationController extends Application {
         return context;
     }
 
+    // For testing purposes.
     public static void setContext(Context mContext) {
         context = mContext;
     }

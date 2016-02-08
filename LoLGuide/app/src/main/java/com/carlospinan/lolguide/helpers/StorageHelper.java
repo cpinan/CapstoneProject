@@ -83,7 +83,7 @@ public class StorageHelper {
     // http://ddragon.leagueoflegends.com/cdn/6.2.1/img/champion/Aatrox.png
     public String getChampionPortraitUrl(String championName) {
         String cdn = getCDNUrl();
-        return cdn + "/" + getVersion() + "/champion/" + championName + ".png";
+        return cdn + "/" + getVersion() + "/img/champion/" + championName;
     }
 
     // http://ddragon.leagueoflegends.com/cdn/6.2.1/img/passive/Cryophoenix_Rebirth.png
@@ -102,6 +102,11 @@ public class StorageHelper {
     public String getProfileIconUrl(int iconId) {
         String cdn = getCDNUrl();
         return cdn + "/" + getVersion() + "/img/profileicon/" + iconId + ".png";
+    }
+
+    // http://cdn.leagueoflegends.com/champion-abilities/videos/mp4/0113_05.mp4
+    public String getVideoAbilityUrl(int championId, int ability) {
+        return null;
     }
 
 }

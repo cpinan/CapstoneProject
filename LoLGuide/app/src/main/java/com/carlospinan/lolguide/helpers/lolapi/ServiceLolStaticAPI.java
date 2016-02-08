@@ -1,5 +1,7 @@
 package com.carlospinan.lolguide.helpers.lolapi;
 
+import android.os.AsyncTask;
+
 import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.enums.ChampDataEnum;
 import com.carlospinan.lolguide.data.models.Champion;
@@ -94,12 +96,26 @@ public class ServiceLolStaticAPI {
         );
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Response<ResponseBody> response) {
-                try {
-                    callback.onSuccess(getChampionsFromString(response.body().string()));
-                } catch (IOException e) {
-                    callback.onFail(e);
-                }
+            public void onResponse(final Response<ResponseBody> response) {
+                new AsyncTask<Void, Void, ChampionsResponse>() {
+                    @Override
+                    protected ChampionsResponse doInBackground(Void... params) {
+                        try {
+                            return getChampionsFromString(response.body().string());
+                        } catch (IOException e) {
+                            return null;
+                        }
+                    }
+
+                    @Override
+                    protected void onPostExecute(ChampionsResponse championsResponse) {
+                        if (championsResponse != null) {
+                            callback.onSuccess(championsResponse);
+                        } else {
+                            callback.onFail(null);
+                        }
+                    }
+                }.execute();
             }
 
             @Override

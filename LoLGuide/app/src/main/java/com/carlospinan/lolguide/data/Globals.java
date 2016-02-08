@@ -21,6 +21,8 @@ public class Globals {
     public static final String LOL_STATIC_DATA_ENDPOINT = BuildConfig.LOL_STATIC_DATA_ENDPOINT;
 
     // Constants
+    public static final String PARCEABLE_CHAMPION_SEARCH_QUERY_KEY = "parceableChampionSearchQuery";
+    public static final String PARCEABLE_CHAMPION_KEY = "parceableChampion";
 
     // Log Utils
     public static void l(String message) {

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">LoL Guide</string>
+    <string name="enter_champion_name">Enter a champion name:</string>
 </resources>

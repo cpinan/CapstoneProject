@@ -11,6 +11,7 @@ import com.carlospinan.lolguide.data.models.realm.RealmChampionStats;
 import com.carlospinan.lolguide.helpers.Helper;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Comparator;
 import java.util.List;
 
 import io.realm.RealmList;
@@ -18,7 +19,7 @@ import io.realm.RealmList;
 /**
  * @author Carlos Piñan
  */
-public class Champion implements Parcelable {
+public class Champion implements Parcelable, Comparator<Champion> {
 
     // TODO Add recommended build
     @SerializedName("id")
@@ -41,6 +42,10 @@ public class Champion implements Parcelable {
     private ChampionPassive passive;
     private List<ChampionSkin> skins;
     private List<ChampionSpell> spells;
+
+    public Champion() {
+
+    }
 
     protected Champion(Parcel in) {
         championId = in.readInt();
@@ -317,4 +322,8 @@ public class Champion implements Parcelable {
 
     }
 
+    @Override
+    public int compare(Champion lhs, Champion rhs) {
+        return lhs.getName().compareTo(rhs.getName());
+    }
 }

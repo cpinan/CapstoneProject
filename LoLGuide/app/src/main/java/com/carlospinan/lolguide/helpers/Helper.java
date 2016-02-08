@@ -4,7 +4,11 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.carlospinan.lolguide.R;
+import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.enums.ChampDataEnum;
 
 import java.util.ArrayList;
@@ -52,13 +56,25 @@ public class Helper {
         return string;
     }
 
-    public void loadImage(ImageView imageView, String path) {
+    public void loadImage(ImageView imageView, final String path) {
         final Context context = imageView.getContext();
         Glide.with(context).
                 load(path).
                 placeholder(R.color.colorPrimaryDark).
-//                    error(R.drawable.not_available).
-        into(imageView);
+                error(android.R.color.holo_red_dark).
+                listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        Globals.l(path);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        return false;
+                    }
+                }).
+                into(imageView);
     }
 
     public String getCodeLanguage() {

@@ -1,6 +1,7 @@
 package com.carlospinan.lolguide.adapters;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
     private List<Champion> champions;
     private List<Champion> filteredChampions;
     private ChampionFilter filter;
+
     private ChampionsAdapterListener listener;
 
     public ChampionsAdapter(Context context, List<Champion> champions, ChampionsAdapterListener listener) {
@@ -50,7 +52,7 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Champion champion = filteredChampions.get(position);
-        if (champion != null) {
+        if (champion != null && holder.championImage != null) {
             ImageView championImage = holder.championImage;
             final TextView championNameTextView = holder.championNameTextView;
             Context context = championImage.getContext();
@@ -67,6 +69,10 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
                                     .crossfade(true)).
                     into(championImage);
             championNameTextView.setText(champion.getName());
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                championImage.setTransitionName("championPortrait" + position);
+            }
         }
     }
 
@@ -112,7 +118,6 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
     }
 
     private class ChampionFilter extends Filter {
-
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             String filterString = constraint.toString().toLowerCase();

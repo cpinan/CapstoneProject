@@ -5,4 +5,6 @@
     <dimen name="portrait_size">120dp</dimen>
     <dimen name="champion_name_size">48dp</dimen>
     <dimen name="champion_name_padding">8dp</dimen>
+    <dimen name="champion_image_size">256dp</dimen>
+    <dimen name="nav_header_height">222dp</dimen>
 </resources>

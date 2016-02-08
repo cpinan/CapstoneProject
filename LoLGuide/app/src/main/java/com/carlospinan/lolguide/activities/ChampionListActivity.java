@@ -2,11 +2,16 @@ package com.carlospinan.lolguide.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.carlospinan.lolguide.R;
 import com.carlospinan.lolguide.listeners.OnFragmentListener;
@@ -23,6 +28,12 @@ public class ChampionListActivity extends AppCompatActivity implements OnFragmen
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
+    @Bind(R.id.drawer)
+    DrawerLayout drawer;
+
+    @Bind(R.id.navView)
+    NavigationView navView;
+
     private boolean isTwoPane;
 
     @Override
@@ -32,6 +43,23 @@ public class ChampionListActivity extends AppCompatActivity implements OnFragmen
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+        navView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem item) {
+                        item.setChecked(true);
+                        // TODO: handle navigation
+                        // Closing drawer on item click
+                        drawer.closeDrawers();
+                        return true;
+                    }
+                }
+        );
 
         isTwoPane = true;
         if (savedInstanceState == null) {
@@ -52,4 +80,14 @@ public class ChampionListActivity extends AppCompatActivity implements OnFragmen
     public void onNotification(String message) {
         Snackbar.make(rootLayout, message, Snackbar.LENGTH_LONG).show();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            drawer.openDrawer(GravityCompat.START);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

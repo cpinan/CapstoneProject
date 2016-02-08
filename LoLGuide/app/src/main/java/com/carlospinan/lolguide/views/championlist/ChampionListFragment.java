@@ -108,7 +108,6 @@ public class ChampionListFragment extends Fragment implements ChampionsAdapterLi
         championRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), columns));
         championRecyclerView.setAdapter(championsAdapter);
 
-        swipeRefreshView.setColorSchemeColors(R.color.orange, R.color.green, R.color.blue);
         swipeRefreshView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

@@ -42,10 +42,12 @@ public class Champion implements Parcelable, Comparator<Champion> {
     private ChampionPassive passive;
     private List<ChampionSkin> skins;
     private List<ChampionSpell> spells;
+    private transient String portraitUri;
+    private transient String skinsUris;
+    private transient String passiveUri;
+    private transient String abilitiesUris;
 
-    public Champion() {
-
-    }
+    public Champion() { /* UNUSED */ }
 
     protected Champion(Parcel in) {
         championId = in.readInt();
@@ -53,11 +55,50 @@ public class Champion implements Parcelable, Comparator<Champion> {
         name = in.readString();
         key = in.readString();
         championTags = in.createStringArrayList();
+        stats = in.readParcelable(ChampionStats.class.getClassLoader());
         enemyTips = in.createStringArrayList();
         allyTips = in.createStringArrayList();
+        image = in.readParcelable(LOLImage.class.getClassLoader());
         blurb = in.readString();
         lore = in.readString();
+        info = in.readParcelable(ChampionInformation.class.getClassLoader());
         partype = in.readString();
+        passive = in.readParcelable(ChampionPassive.class.getClassLoader());
+        skins = in.createTypedArrayList(ChampionSkin.CREATOR);
+        spells = in.createTypedArrayList(ChampionSpell.CREATOR);
+        portraitUri = in.readString();
+        skinsUris = in.readString();
+        passiveUri = in.readString();
+        abilitiesUris = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(championId);
+        dest.writeString(title);
+        dest.writeString(name);
+        dest.writeString(key);
+        dest.writeStringList(championTags);
+        dest.writeParcelable(stats, flags);
+        dest.writeStringList(enemyTips);
+        dest.writeStringList(allyTips);
+        dest.writeParcelable(image, flags);
+        dest.writeString(blurb);
+        dest.writeString(lore);
+        dest.writeParcelable(info, flags);
+        dest.writeString(partype);
+        dest.writeParcelable(passive, flags);
+        dest.writeTypedList(skins);
+        dest.writeTypedList(spells);
+        dest.writeString(portraitUri);
+        dest.writeString(skinsUris);
+        dest.writeString(passiveUri);
+        dest.writeString(abilitiesUris);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<Champion> CREATOR = new Creator<Champion>() {
@@ -200,23 +241,41 @@ public class Champion implements Parcelable, Comparator<Champion> {
         this.spells = spells;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getPortraitUri() {
+        return portraitUri;
+    }
+
+    public void setPortraitUri(String portraitUri) {
+        this.portraitUri = portraitUri;
+    }
+
+    public String getSkinsUris() {
+        return skinsUris;
+    }
+
+    public void setSkinsUris(String skinsUris) {
+        this.skinsUris = skinsUris;
+    }
+
+    public String getPassiveUri() {
+        return passiveUri;
+    }
+
+    public void setPassiveUri(String passiveUri) {
+        this.passiveUri = passiveUri;
+    }
+
+    public String getAbilitiesUris() {
+        return abilitiesUris;
+    }
+
+    public void setAbilitiesUris(String abilitiesUris) {
+        this.abilitiesUris = abilitiesUris;
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(championId);
-        dest.writeString(title);
-        dest.writeString(name);
-        dest.writeString(key);
-        dest.writeStringList(championTags);
-        dest.writeStringList(enemyTips);
-        dest.writeStringList(allyTips);
-        dest.writeString(blurb);
-        dest.writeString(lore);
-        dest.writeString(partype);
+    public int compare(Champion lhs, Champion rhs) {
+        return lhs.getName().compareTo(rhs.getName());
     }
 
     // Utilities
@@ -254,7 +313,6 @@ public class Champion implements Parcelable, Comparator<Champion> {
         r.setDifficulty(c.getDifficulty());
         r.setMagic(c.getMagic());
         return r;
-
     }
 
     private RealmList<RealmChampionSkin> getRealmSkins() {
@@ -298,32 +356,6 @@ public class Champion implements Parcelable, Comparator<Champion> {
         o.setSkinsUris(null);
         o.setAbilitiesUris(null);
         return o;
-
-        /*
-    private String championTags; // String array
-    private RealmChampionStats stats;
-    private String enemyTips; // String array
-    private String allyTips; // String array
-    private RealmLOLImage image;
-    private String blurb;
-    private String lore;
-    private RealmChampionInformation info;
-    private String partype;
-    private RealmChampionPassive passive;
-    private RealmList<RealmChampionSkin> skins;
-    private RealmList<RealmChampionSpell> spells;
-
-    private String portraitUri;
-    private String skinsUris;
-    private String passiveUri;
-    private String abilitiesUris;
-
-         */
-
     }
 
-    @Override
-    public int compare(Champion lhs, Champion rhs) {
-        return lhs.getName().compareTo(rhs.getName());
-    }
 }

@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
@@ -20,7 +19,7 @@ import com.carlospinan.lolguide.views.championlist.ChampionListFragment;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ChampionListActivity extends AppCompatActivity implements OnFragmentListener {
+public class ChampionListActivity extends BaseActivity implements OnFragmentListener {
 
     @Bind(R.id.rootLayout)
     CoordinatorLayout rootLayout;
@@ -33,8 +32,6 @@ public class ChampionListActivity extends AppCompatActivity implements OnFragmen
 
     @Bind(R.id.navView)
     NavigationView navView;
-
-    private boolean isTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +58,6 @@ public class ChampionListActivity extends AppCompatActivity implements OnFragmen
                 }
         );
 
-        isTwoPane = true;
         if (savedInstanceState == null) {
             FragmentManager supportFragmentManager = getSupportFragmentManager();
             FragmentTransaction transaction = supportFragmentManager.beginTransaction();

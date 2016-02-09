@@ -1,6 +1,7 @@
 package com.carlospinan.lolguide.views.championlist;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.carlospinan.lolguide.R;
+import com.carlospinan.lolguide.activities.ChampionDetailActivity;
 import com.carlospinan.lolguide.adapters.ChampionsAdapter;
 import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.enums.ChampDataEnum;
@@ -38,7 +40,8 @@ import retrofit.Call;
 /**
  * @author Carlos Piñan
  */
-public class ChampionListFragment extends Fragment implements ChampionsAdapterListener {
+public class ChampionListFragment extends Fragment
+        implements ChampionsAdapterListener, ChampionListContract.View {
 
     private static final int COLS_PORTRAIT = 3;
     private static final int COLS_LANDSCAPE = 5;
@@ -52,6 +55,7 @@ public class ChampionListFragment extends Fragment implements ChampionsAdapterLi
     @Bind(R.id.searchView)
     SearchView searchView;
 
+    private ChampionListPresenter presenter;
     private OnFragmentListener onFragmentListener;
     private ChampionsAdapter championsAdapter;
     private Call<ResponseBody> championsResponseCall;
@@ -131,6 +135,12 @@ public class ChampionListFragment extends Fragment implements ChampionsAdapterLi
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        presenter = new ChampionListPresenter(this);
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         if (championsResponseCall != null) {
@@ -180,6 +190,13 @@ public class ChampionListFragment extends Fragment implements ChampionsAdapterLi
 
     @Override
     public void onClick(Champion champion) {
-        onFragmentListener.onNotification(champion.getName());
+//        onFragmentListener.onNotification(champion.getName());
+        Intent intent = new Intent(getActivity(), ChampionDetailActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void setProgressIndicator(boolean active) {
+
     }
 }

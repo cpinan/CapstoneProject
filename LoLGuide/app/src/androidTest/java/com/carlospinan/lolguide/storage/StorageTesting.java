@@ -8,7 +8,9 @@ import com.carlospinan.lolguide.data.enums.ChampDataEnum;
 import com.carlospinan.lolguide.data.models.Champion;
 import com.carlospinan.lolguide.data.models.realm.RealmChampion;
 import com.carlospinan.lolguide.helpers.APIHelper;
+import com.carlospinan.lolguide.helpers.Helper;
 import com.carlospinan.lolguide.helpers.RealmHelper;
+import com.carlospinan.lolguide.helpers.StorageHelper;
 import com.carlospinan.lolguide.helpers.lolapi.ServiceLolStaticAPI;
 
 import java.io.IOException;
@@ -37,7 +39,14 @@ public class StorageTesting extends AndroidTestCase {
     public void testChampionByIdAndLocalStorage() {
         Globals.testLog("testChampionByIdAndLocalStorage init");
         ServiceLolStaticAPI service = APIHelper.get().lolStaticAPI();
-        Call<Champion> call = service.getChampion(CHAMPION_ID_TEST, ChampDataEnum.all);
+        Call<Champion> call = service.api().getChampion(
+                StorageHelper.get().getRegion(),
+                CHAMPION_ID_TEST,
+                Helper.get().getCodeLanguage(),
+                null,
+                null,
+                ChampDataEnum.all.toString()
+        );
         Response<Champion> response = null;
         try {
             response = call.execute();

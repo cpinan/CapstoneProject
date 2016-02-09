@@ -1,5 +1,7 @@
 package com.carlospinan.lolguide.listeners;
 
+import android.view.View;
+
 import com.carlospinan.lolguide.data.models.Champion;
 
 /**
@@ -7,5 +9,5 @@ import com.carlospinan.lolguide.data.models.Champion;
  */
 public interface ChampionsAdapterListener {
 
-    void onClick(Champion champion);
+    void onClickChampion(View view, Champion champion);
 }

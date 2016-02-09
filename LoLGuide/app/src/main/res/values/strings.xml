@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">LoL Guide</string>
     <string name="enter_champion_name">Enter a champion name:</string>
+    <string name="problem_refreshing_champs">There was a problem.\nTry to refresh tapping here.</string>
+    <string name="champions">Champions</string>
+    <string name="fav_champions">Fav. Champions</string>
+    <string name="about">About</string>
+    <string name="rate_this_app">Rate this App</string>
+    <string name="attack">Attack</string>
+    <string name="health">Health</string>
+    <string name="magic">Magic</string>
+    <string name="difficulty">Difficulty</string>
+    <string name="abilities">Abilities</string>
+    <string name="Passive">Passive</string>
+    <string name="tips">Tips</string>
 </resources>

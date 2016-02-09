@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class ChampionSpell implements Parcelable {
 
-    private List<Object> range;
+    private Object range;
     private ChampionSpellTip leveltip;
     private String resource;
     private int maxrank;
@@ -32,9 +32,12 @@ public class ChampionSpell implements Parcelable {
     private String tooltip;
 
     protected ChampionSpell(Parcel in) {
+        leveltip = in.readParcelable(ChampionSpellTip.class.getClassLoader());
         resource = in.readString();
         maxrank = in.readInt();
         effectBurn = in.createStringArrayList();
+        image = in.readParcelable(LOLImage.class.getClassLoader());
+        vars = in.createTypedArrayList(ChampionSpellVar.CREATOR);
         sanitizedDescription = in.readString();
         rangeBurn = in.readString();
         costType = in.readString();
@@ -45,6 +48,31 @@ public class ChampionSpell implements Parcelable {
         key = in.readString();
         costBurn = in.readString();
         tooltip = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(leveltip, flags);
+        dest.writeString(resource);
+        dest.writeInt(maxrank);
+        dest.writeStringList(effectBurn);
+        dest.writeParcelable(image, flags);
+        dest.writeTypedList(vars);
+        dest.writeString(sanitizedDescription);
+        dest.writeString(rangeBurn);
+        dest.writeString(costType);
+        dest.writeString(cooldownBurn);
+        dest.writeString(description);
+        dest.writeString(name);
+        dest.writeString(sanitizedTooltip);
+        dest.writeString(key);
+        dest.writeString(costBurn);
+        dest.writeString(tooltip);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<ChampionSpell> CREATOR = new Creator<ChampionSpell>() {
@@ -59,11 +87,11 @@ public class ChampionSpell implements Parcelable {
         }
     };
 
-    public List<Object> getRange() {
+    public Object getRange() {
         return range;
     }
 
-    public void setRange(List<Object> range) {
+    public void setRange(Object range) {
         this.range = range;
     }
 
@@ -219,25 +247,4 @@ public class ChampionSpell implements Parcelable {
         this.tooltip = tooltip;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(resource);
-        dest.writeInt(maxrank);
-        dest.writeStringList(effectBurn);
-        dest.writeString(sanitizedDescription);
-        dest.writeString(rangeBurn);
-        dest.writeString(costType);
-        dest.writeString(cooldownBurn);
-        dest.writeString(description);
-        dest.writeString(name);
-        dest.writeString(sanitizedTooltip);
-        dest.writeString(key);
-        dest.writeString(costBurn);
-        dest.writeString(tooltip);
-    }
 }

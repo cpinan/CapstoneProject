@@ -5,6 +5,7 @@ import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.enums.RegionEnum;
 import com.carlospinan.lolguide.data.models.LOLData;
 import com.carlospinan.lolguide.data.models.Champion;
+import com.carlospinan.lolguide.data.responses.ChampionsResponse;
 import com.squareup.okhttp.ResponseBody;
 
 import java.util.List;
@@ -20,7 +21,7 @@ import retrofit.http.Query;
 public interface LolStaticDataAPI {
 
     @GET("{region}/" + Globals.LOL_STATIC_DATA_API_VERSION + "/champion?api_key=" + BuildConfig.LOL_API_KEY)
-    Call<ResponseBody> getChampions(
+    Call<ChampionsResponse> getChampions(
             @Path("region") RegionEnum region,
             @Query("locale") String locale,
             @Query("version") String version,

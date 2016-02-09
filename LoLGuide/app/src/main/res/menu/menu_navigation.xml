@@ -2,8 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:icon="@mipmap/ic_launcher"
+            android:id="@+id/championsAction"
             android:tint="@color/button_grey"
-            android:title="One" />
+            android:title="@string/champions" />
+
+        <item
+            android:id="@+id/favoriteChampionsAction"
+            android:tint="@color/button_grey"
+            android:title="@string/fav_champions" />
+
+        <item
+            android:id="@+id/aboutAction"
+            android:tint="@color/button_grey"
+            android:title="@string/about" />
+
+        <item
+            android:id="@+id/rateThisAppAction"
+            android:tint="@color/button_grey"
+            android:title="@string/rate_this_app" />
     </group>
 </menu>

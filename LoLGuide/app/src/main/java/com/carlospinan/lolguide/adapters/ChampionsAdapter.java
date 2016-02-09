@@ -21,6 +21,10 @@ import com.github.florent37.glidepalette.GlidePalette;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * @author Carlos Piñan
@@ -52,7 +56,7 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Champion champion = filteredChampions.get(position);
-        if (champion != null && holder.championImage != null) {
+        if (champion != null && holder != null && holder.championImage != null) {
             ImageView championImage = holder.championImage;
             final TextView championNameTextView = holder.championNameTextView;
             Context context = championImage.getContext();
@@ -68,7 +72,9 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
                                     .intoTextColor(championNameTextView)
                                     .crossfade(true)).
                     into(championImage);
+
             championNameTextView.setText(champion.getName());
+            championImage.setContentDescription(champion.getName());
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 championImage.setTransitionName("championPortrait" + position);
@@ -81,11 +87,13 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
         return filteredChampions.size();
     }
 
-    public void updateChampions(List<Champion> champions) {
-        this.champions = champions;
+    public void updateChampions(Map<String, Champion> hash) {
+        this.champions = new ArrayList<>();
+        for (Map.Entry<String, Champion> entry : hash.entrySet()) {
+            this.champions.add(entry.getValue());
+        }
         Collections.sort(this.champions, new Champion());
         this.filteredChampions = this.champions;
-        notifyDataSetChanged();
     }
 
     public List<Champion> getChampions() {
@@ -98,19 +106,20 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.championImage)
+        ImageView championImage;
 
-        public ImageView championImage;
-        public TextView championNameTextView;
+        @Bind(R.id.championNameTextView)
+        TextView championNameTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            championImage = (ImageView) itemView.findViewById(R.id.championImage);
-            championNameTextView = (TextView) itemView.findViewById(R.id.championNameTextView);
+            ButterKnife.bind(this, itemView);
             if (listener != null) {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        listener.onClick(filteredChampions.get(getAdapterPosition()));
+                        listener.onClickChampion(championImage, filteredChampions.get(getAdapterPosition()));
                     }
                 });
             }

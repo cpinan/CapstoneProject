@@ -41,14 +41,14 @@ public class Helper {
     }
 
     public String arrayStringsToStringByComma(ChampDataEnum... array) {
-        String string = null;
+        String string = "";
         if (array != null && array.length > 0) {
             int length = array.length;
             if (length == 1) {
                 string = String.valueOf(array[0]);
             } else {
-                for (int i = 0; i < length - 1; i++) {
-                    string += String.valueOf(array[i]) + ",";
+                for (ChampDataEnum champData : array) {
+                    string += String.valueOf(champData) + ",";
                 }
                 string = string.substring(0, string.length() - 1);
             }

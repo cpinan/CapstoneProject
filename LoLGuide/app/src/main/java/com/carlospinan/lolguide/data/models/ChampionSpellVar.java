@@ -23,6 +23,19 @@ public class ChampionSpellVar implements Parcelable {
         ranksWith = in.readString();
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(dyn);
+        dest.writeString(key);
+        dest.writeString(link);
+        dest.writeString(ranksWith);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
     public static final Creator<ChampionSpellVar> CREATOR = new Creator<ChampionSpellVar>() {
         @Override
         public ChampionSpellVar createFromParcel(Parcel in) {
@@ -75,16 +88,4 @@ public class ChampionSpellVar implements Parcelable {
         this.ranksWith = ranksWith;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(dyn);
-        dest.writeString(key);
-        dest.writeString(link);
-        dest.writeString(ranksWith);
-    }
 }

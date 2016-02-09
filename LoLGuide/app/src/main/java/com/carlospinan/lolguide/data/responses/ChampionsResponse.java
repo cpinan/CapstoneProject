@@ -2,7 +2,7 @@ package com.carlospinan.lolguide.data.responses;
 
 import com.carlospinan.lolguide.data.models.Champion;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * @author Carlos Piñan
@@ -11,7 +11,7 @@ public class ChampionsResponse {
 
     private String type;
     private String version;
-    private List<Champion> champions;
+    private Map<String, Champion> data;
 
     public String getType() {
         return type;
@@ -29,11 +29,11 @@ public class ChampionsResponse {
         this.version = version;
     }
 
-    public List<Champion> getChampions() {
-        return champions;
+    public Map<String, Champion> getData() {
+        return data;
     }
 
-    public void setChampions(List<Champion> champions) {
-        this.champions = champions;
+    public void setData(Map<String, Champion> data) {
+        this.data = data;
     }
 }

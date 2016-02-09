@@ -21,7 +21,7 @@
 
         <activity
             android:name=".activities.ChampionListActivity"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

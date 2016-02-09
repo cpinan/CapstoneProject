@@ -15,6 +15,7 @@ public class ChampionPassive implements Parcelable {
 
     protected ChampionPassive(Parcel in) {
         description = in.readString();
+        image = in.readParcelable(LOLImage.class.getClassLoader());
         name = in.readString();
         sanitizedDescription = in.readString();
     }
@@ -22,6 +23,7 @@ public class ChampionPassive implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(description);
+        dest.writeParcelable(image, flags);
         dest.writeString(name);
         dest.writeString(sanitizedDescription);
     }

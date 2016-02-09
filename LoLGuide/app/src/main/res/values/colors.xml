@@ -4,6 +4,10 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="attack_color">#FF3333</color>
+    <color name="defense_color">#336600</color>
+    <color name="magic_color">#0066CC</color>
+    <color name="difficult_color">#660066</color>
     <color name="orange">#FF9900</color>
     <color name="green">#009900</color>
     <color name="blue">#000099</color>

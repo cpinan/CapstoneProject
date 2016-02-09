@@ -23,6 +23,7 @@ public class Globals {
     // Constants
     public static final String PARCEABLE_CHAMPION_SEARCH_QUERY_KEY = "parceableChampionSearchQuery";
     public static final String PARCEABLE_CHAMPION_KEY = "parceableChampion";
+    public static final String TRANSITION_IMAGE_KEY = "transitionImageKey";
 
     // Log Utils
     public static void l(String message) {

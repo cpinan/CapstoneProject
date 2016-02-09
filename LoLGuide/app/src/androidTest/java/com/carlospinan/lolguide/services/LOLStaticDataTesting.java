@@ -12,9 +12,9 @@ import com.carlospinan.lolguide.data.models.ChampionSpell;
 import com.carlospinan.lolguide.data.models.LOLData;
 import com.carlospinan.lolguide.data.responses.ChampionsResponse;
 import com.carlospinan.lolguide.helpers.APIHelper;
+import com.carlospinan.lolguide.helpers.Helper;
 import com.carlospinan.lolguide.helpers.StorageHelper;
 import com.carlospinan.lolguide.helpers.lolapi.ServiceLolStaticAPI;
-import com.squareup.okhttp.ResponseBody;
 
 import java.io.IOException;
 import java.util.List;
@@ -41,19 +41,27 @@ public class LOLStaticDataTesting extends AndroidTestCase {
     public void testGetChampionsImage() throws IOException {
         Globals.testLog("testGetChampionsImage init");
         ServiceLolStaticAPI service = APIHelper.get().lolStaticAPI();
-        Call<ResponseBody> call = service.getChampions(ChampDataEnum.image);
-        Response<ResponseBody> response = call.execute();
+        Call<ChampionsResponse> call = service.api().getChampions(
+                StorageHelper.get().getRegion(),
+                Helper.get().getCodeLanguage(),
+                null,
+                null,
+                Helper.get().arrayStringsToStringByComma(
+                        ChampDataEnum.image,
+                        ChampDataEnum.skins,
+                        ChampDataEnum.info,
+                        ChampDataEnum.passive,
+                        ChampDataEnum.spells
+                )
+        );
+        Response<ChampionsResponse> response = call.execute();
         assertNotNull(response);
         assertNotNull(response.body());
-        String responseString = response.body().string();
-        assertNotNull(responseString);
-        assertTrue(responseString.length() > 0);
-        ChampionsResponse championsResponse = APIHelper.get().lolStaticAPI().getChampionsFromString(responseString);
-        assertNotNull(championsResponse);
+        ChampionsResponse championsResponse = response.body();
         assertNotNull(championsResponse.getType());
         assertNotNull(championsResponse.getVersion());
-        assertNotNull(championsResponse.getChampions());
-        assertFalse(championsResponse.getChampions().isEmpty());
+        assertNotNull(championsResponse.getData());
+        assertFalse(championsResponse.getData().isEmpty());
 
         Globals.testLog("testGetChampionsImage end");
     }
@@ -61,7 +69,15 @@ public class LOLStaticDataTesting extends AndroidTestCase {
     public void testGetChampionById() throws IOException {
         Globals.testLog("testGetChampionById init");
         ServiceLolStaticAPI service = APIHelper.get().lolStaticAPI();
-        Call<Champion> call = service.getChampion(CHAMPION_ID_TEST, ChampDataEnum.all);
+        Call<Champion> call = service.api().getChampion(
+                StorageHelper.get().getRegion(),
+                CHAMPION_ID_TEST,
+                Helper.get().getCodeLanguage(),
+                null,
+                null,
+                Helper.get().arrayStringsToStringByComma(ChampDataEnum.all, ChampDataEnum.spells)
+
+        );
         Response<Champion> response = call.execute();
         assertNotNull(response);
         assertNotNull(response.body());

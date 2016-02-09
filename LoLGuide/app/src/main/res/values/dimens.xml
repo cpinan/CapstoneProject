@@ -1,10 +1,22 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_horizontal_margin">@dimen/champion_bar_height</dimen>
+    <dimen name="activity_vertical_margin">@dimen/champion_bar_height</dimen>
     <dimen name="portrait_size">120dp</dimen>
     <dimen name="champion_name_size">48dp</dimen>
-    <dimen name="champion_name_padding">8dp</dimen>
+    <dimen name="champion_bar_height">16dp</dimen>
+    <dimen name="champion_name_padding">@dimen/dimen8</dimen>
     <dimen name="champion_image_size">256dp</dimen>
     <dimen name="nav_header_height">222dp</dimen>
+
+    <dimen name="title_margin_start">16dp</dimen>
+    <dimen name="title_margin_end">72dp</dimen>
+    <dimen name="dimen1">1dp</dimen>
+    <dimen name="dimen3">3dp</dimen>
+    <dimen name="textSize12">12sp</dimen>
+    <dimen name="textSize11">11dp</dimen>
+    <dimen name="dimen8">8dp</dimen>
+    <dimen name="textSize13">13sp</dimen>
+    <dimen name="textSize16">16sp</dimen>
+    <dimen name="ability_size">80dp</dimen>
 </resources>

@@ -3,9 +3,12 @@ package com.carlospinan.lolguide.views.championlist;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,7 +18,7 @@ import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.TextView;
 
 import com.carlospinan.lolguide.R;
 import com.carlospinan.lolguide.activities.ChampionDetailActivity;
@@ -28,7 +31,6 @@ import com.carlospinan.lolguide.helpers.APIHelper;
 import com.carlospinan.lolguide.listeners.APICallback;
 import com.carlospinan.lolguide.listeners.ChampionsAdapterListener;
 import com.carlospinan.lolguide.listeners.OnFragmentListener;
-import com.squareup.okhttp.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,10 +57,13 @@ public class ChampionListFragment extends Fragment
     @Bind(R.id.searchView)
     SearchView searchView;
 
+    @Bind(R.id.errorTextView)
+    TextView errorTextView;
+
     private ChampionListPresenter presenter;
     private OnFragmentListener onFragmentListener;
     private ChampionsAdapter championsAdapter;
-    private Call<ResponseBody> championsResponseCall;
+    private Call<ChampionsResponse> championsResponseCall;
 
     public static ChampionListFragment newInstance() {
         ChampionListFragment mChampionListFragment = new ChampionListFragment();
@@ -77,11 +82,6 @@ public class ChampionListFragment extends Fragment
         searchView.setIconifiedByDefault(false);
         searchView.setIconified(false);
         searchView.setQueryHint(getString(R.string.enter_champion_name));
-
-        final EditText searchEditText = (EditText) searchView.findViewById(R.id.search_src_text);
-        if (searchEditText != null) {
-            searchEditText.setHint(getString(R.string.enter_champion_name));
-        }
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -119,14 +119,18 @@ public class ChampionListFragment extends Fragment
                 refreshChampions();
             }
         });
-        if (savedInstanceState == null) {
-            swipeRefreshView.post(new Runnable() {
-                @Override
-                public void run() {
-                    swipeRefreshView.setRefreshing(true);
+
+        errorTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!swipeRefreshView.isRefreshing()) {
+                    refreshChampionsAndShowLoading();
                 }
-            });
-            refreshChampions();
+            }
+        });
+
+        if (savedInstanceState == null) {
+            refreshChampionsAndShowLoading();
         }
         if (championQuery != null && championQuery.trim().length() > 0) {
             searchView.setQuery(championQuery, true);
@@ -169,34 +173,67 @@ public class ChampionListFragment extends Fragment
         }
     }
 
+    private void refreshChampionsAndShowLoading() {
+        swipeRefreshView.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshView.setRefreshing(true);
+            }
+        });
+        refreshChampions();
+    }
+
     private void refreshChampions() {
+        errorTextView.setVisibility(View.GONE);
         championsResponseCall = APIHelper.get().lolStaticAPI().getChampions(
                 new APICallback<ChampionsResponse>() {
                     @Override
                     public void onSuccess(ChampionsResponse response) {
                         searchView.setQuery("", false);
-                        championsAdapter.updateChampions(response.getChampions());
-                        swipeRefreshView.setRefreshing(false);
+                        championsAdapter.updateChampions(response.getData());
+                        stopLoading();
                     }
 
                     @Override
                     public void onFail(Throwable throwable) {
-                        swipeRefreshView.setRefreshing(false);
+                        errorTextView.setVisibility(View.VISIBLE);
+                        stopLoading();
                     }
                 },
-                ChampDataEnum.image
+                ChampDataEnum.image,
+                ChampDataEnum.skins,
+                ChampDataEnum.info,
+                ChampDataEnum.passive,
+                ChampDataEnum.spells
         );
-    }
-
-    @Override
-    public void onClick(Champion champion) {
-//        onFragmentListener.onNotification(champion.getName());
-        Intent intent = new Intent(getActivity(), ChampionDetailActivity.class);
-        startActivity(intent);
     }
 
     @Override
     public void setProgressIndicator(boolean active) {
 
+    }
+
+    //
+    private void stopLoading() {
+        swipeRefreshView.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshView.setRefreshing(false);
+            }
+        });
+    }
+
+    @Override
+    public void onClickChampion(View view, Champion champion) {
+        String transitionName = "";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            transitionName = view.getTransitionName();
+        }
+        Intent intent = new Intent(getActivity(), ChampionDetailActivity.class);
+        intent.putExtra(Globals.PARCEABLE_CHAMPION_KEY, champion);
+        intent.putExtra(Globals.TRANSITION_IMAGE_KEY, transitionName);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                getActivity(), view, transitionName);
+        ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
     }
 }

@@ -23,9 +23,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 /**
  * @author Carlos Piñan
  */
@@ -106,15 +103,14 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.championImage)
-        ImageView championImage;
 
-        @Bind(R.id.championNameTextView)
-        TextView championNameTextView;
+        public ImageView championImage;
+        public TextView championNameTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            championImage = (ImageView) itemView.findViewById(R.id.championImage);
+            championNameTextView = (TextView) itemView.findViewById(R.id.championNameTextView);
             if (listener != null) {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

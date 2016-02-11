@@ -78,6 +78,7 @@ public class ChampionDetailActivity extends BaseActivity implements OnFragmentLi
                     }
                 }).
                 into(parallaxImageView);
+        parallaxImageView.setContentDescription(getSupportActionBar().getTitle());
 
         if (savedInstanceState == null) {
             FragmentManager supportFragmentManager = getSupportFragmentManager();

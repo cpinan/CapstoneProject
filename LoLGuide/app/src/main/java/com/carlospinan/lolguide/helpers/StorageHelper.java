@@ -7,6 +7,8 @@ import com.carlospinan.lolguide.ApplicationController;
 import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.enums.RegionEnum;
 
+import java.util.List;
+
 /**
  * @author Carlos Piñan
  */
@@ -19,6 +21,7 @@ public class StorageHelper {
     public static final String LOL_CDN_URL_KEY = "com.carlospinan.lolguide.lolcdnurlkey";
     public static final String LOL_API_VERSION_KEY = "com.carlospinan.lolguide.lolapiversionkey";
     public static final String LOL_REGION_KEY = "com.carlospinan.lolguide.lolregionkey";
+    public static final String LOL_LANGUAGES_KEY = "com.carlospinan.lolguide.lollanguageskey";
 
     private static StorageHelper instance;
 
@@ -47,6 +50,15 @@ public class StorageHelper {
         return getStorage().getString(key, defaultValue);
     }
 
+    // Set language
+    public void saveLanguages(List<String> languages) {
+        saveString(LOL_LANGUAGES_KEY, Helper.getStringFromList(languages));
+    }
+
+    public void saveVersion(String version) {
+        saveString(LOL_API_VERSION_KEY, version);
+    }
+
     // Standard keys
     public String getCDNUrl() {
         String cdn = Globals.LOL_DEFAULT_CDN_URL;
@@ -67,6 +79,15 @@ public class StorageHelper {
     public RegionEnum getRegion() {
         String region = getStorage().getString(LOL_REGION_KEY, RegionEnum.lan.toString());
         return RegionEnum.valueOf(region);
+    }
+
+    public List<String> getLanguages() {
+        String languages = getStorage().getString(LOL_LANGUAGES_KEY, null);
+        if (languages != null) {
+            return Helper.getListStringFromString(languages);
+        } else {
+            return null;
+        }
     }
 
     // http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Aatrox_0.jpg
@@ -106,7 +127,8 @@ public class StorageHelper {
 
     // http://cdn.leagueoflegends.com/champion-abilities/videos/mp4/0113_05.mp4
     public String getVideoAbilityUrl(int championId, int ability) {
-        return null;
+        String url = "http://cdn.leagueoflegends.com/champion-abilities/videos/mp4/%04d_%02d.mp4";
+        return String.format(url, championId, ability);
     }
 
 }

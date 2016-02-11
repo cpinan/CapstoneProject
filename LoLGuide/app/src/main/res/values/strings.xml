@@ -14,4 +14,8 @@
     <string name="Passive">Passive</string>
     <string name="tips">Tips</string>
     <string name="attributes">Attributes</string>
+    <string name="allytips">Ally Tips</string>
+    <string name="enemytips">Enemy Tips</string>
+    <string name="invalid_data">Invalid data</string>
+    <string name="more">more</string>
 </resources>

@@ -37,6 +37,11 @@
 
         <activity android:name=".activities.ChampionAbilitiesActivity" />
 
+        <activity
+            android:name=".activities.VideoActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppFullScreenTheme" />
+
     </application>
 
 </manifest>

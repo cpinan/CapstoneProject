@@ -10,6 +10,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.carlospinan.lolguide.R;
@@ -49,6 +50,17 @@ public class ChampionListActivity extends BaseActivity implements OnFragmentList
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem item) {
+                        int id = item.getItemId();
+                        switch (id) {
+                            case R.id.championsAction:
+                                break;
+                            case R.id.favoriteChampionsAction:
+                                break;
+                            case R.id.aboutAction:
+                                break;
+                            case R.id.rateThisAppAction:
+                                break;
+                        }
                         item.setChecked(true);
                         // TODO: handle navigation
                         // Closing drawer on item click
@@ -75,6 +87,12 @@ public class ChampionListActivity extends BaseActivity implements OnFragmentList
     @Override
     public void onNotification(String message) {
         Snackbar.make(rootLayout, message, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_list_champion, menu);
+        return true;
     }
 
     @Override

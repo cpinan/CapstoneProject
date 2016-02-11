@@ -1,6 +1,8 @@
 package com.carlospinan.lolguide.helpers;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.provider.Settings;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -12,6 +14,7 @@ import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.enums.ChampDataEnum;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -32,12 +35,18 @@ public class Helper {
         return instance;
     }
 
-    public boolean isNetworkAvailable() {
-        return true;
+    public boolean hasInternetConnection(Context context) {
+        return !isInAirplaneMode(context) && isNetworkAvailable(context);
     }
 
-    public boolean isInAirplaneMode() {
-        return false;
+    public boolean isNetworkAvailable(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
+    }
+
+    public boolean isInAirplaneMode(Context context) {
+        return Settings.System.getInt(context.getContentResolver(),
+                Settings.Global.AIRPLANE_MODE_ON, 0) != 0;
     }
 
     public String arrayStringsToStringByComma(ChampDataEnum... array) {
@@ -79,6 +88,12 @@ public class Helper {
 
     public String getCodeLanguage() {
         String codeLanguage = Locale.getDefault().toString();
+        List<String> languages = StorageHelper.get().getLanguages();
+        if (languages != null) {
+            if (!languages.contains(codeLanguage)) {
+                codeLanguage = "en_US";
+            }
+        }
         return codeLanguage == null ? "en_US" : codeLanguage;
     }
 
@@ -120,5 +135,11 @@ public class Helper {
             newList.add(String.valueOf(i));
         }
         return getStringFromList(newList);
+    }
+
+    // from String to List
+    public static List<String> getListStringFromString(String string) {
+        String[] split = string.split(DELIMITER);
+        return Arrays.asList(split);
     }
 }

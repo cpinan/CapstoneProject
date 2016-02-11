@@ -8,7 +8,6 @@
         android:id="@+id/abilityTitleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:gravity="left"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -20,17 +19,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/abilityTitleTextView"
-        android:orientation="horizontal">
+        android:background="@android:drawable/list_selector_background"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/activity_vertical_margin">
 
-        <ImageView
-            android:id="@+id/abilityImageView"
+        <FrameLayout
+            android:id="@+id/abilityImageContainer"
             android:layout_width="@dimen/ability_size"
             android:layout_height="@dimen/ability_size"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            tools:src="@mipmap/ic_launcher" />
+            android:layout_marginRight="@dimen/activity_horizontal_margin">
+
+            <ImageView
+                android:id="@+id/abilityImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:foreground="#77000000"
+                android:scaleType="centerCrop"
+                tools:src="@mipmap/ic_launcher" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@android:drawable/ic_media_play" />
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/descriptionTextView"

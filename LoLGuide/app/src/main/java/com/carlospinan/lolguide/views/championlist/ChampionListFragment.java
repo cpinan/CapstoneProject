@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.os.NetworkOnMainThreadException;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -29,6 +27,7 @@ import com.carlospinan.lolguide.data.enums.ChampDataEnum;
 import com.carlospinan.lolguide.data.models.Champion;
 import com.carlospinan.lolguide.data.responses.ChampionsResponse;
 import com.carlospinan.lolguide.helpers.APIHelper;
+import com.carlospinan.lolguide.helpers.StorageHelper;
 import com.carlospinan.lolguide.listeners.APICallback;
 import com.carlospinan.lolguide.listeners.ChampionsAdapterListener;
 import com.carlospinan.lolguide.listeners.OnFragmentListener;
@@ -39,6 +38,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
 
 /**
  * @author Carlos Piñan
@@ -49,8 +50,7 @@ public class ChampionListFragment extends Fragment
     private static final int COLS_PORTRAIT = 3;
     private static final int COLS_LANDSCAPE = 5;
 
-    @Bind(R.id.swipeRefreshView)
-    SwipeRefreshLayout swipeRefreshView;
+    private SwipeRefreshLayout swipeRefreshView;
 
     @Bind(R.id.championRecyclerView)
     RecyclerView championRecyclerView;
@@ -64,6 +64,8 @@ public class ChampionListFragment extends Fragment
     private ChampionListPresenter presenter;
     private OnFragmentListener onFragmentListener;
     private ChampionsAdapter championsAdapter;
+
+    private Call<List<String>> languagesCall;
     private Call<ChampionsResponse> championsResponseCall;
 
     public static ChampionListFragment newInstance() {
@@ -76,6 +78,8 @@ public class ChampionListFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_champion, container, false);
         ButterKnife.bind(this, view);
+
+        swipeRefreshView = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshView);
 
         int orientation = getResources().getConfiguration().orientation;
         int columns = orientation == Configuration.ORIENTATION_LANDSCAPE ? COLS_LANDSCAPE : COLS_PORTRAIT;
@@ -117,7 +121,7 @@ public class ChampionListFragment extends Fragment
             @Override
             public void onRefresh() {
                 swipeRefreshView.setRefreshing(true);
-                refreshChampions();
+                loadLanguages();
             }
         });
 
@@ -185,7 +189,27 @@ public class ChampionListFragment extends Fragment
                 swipeRefreshView.setRefreshing(true);
             }
         });
-        refreshChampions();
+        loadLanguages();
+    }
+
+    private void loadLanguages() {
+        if (StorageHelper.get().getLanguages() == null) {
+            languagesCall = APIHelper.get().lolStaticAPI().api().getLanguages(StorageHelper.get().getRegion());
+            languagesCall.enqueue(new Callback<List<String>>() {
+                @Override
+                public void onResponse(Response<List<String>> response) {
+                    StorageHelper.get().saveLanguages(response.body());
+                    refreshChampions();
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    refreshChampions();
+                }
+            });
+        } else {
+            refreshChampions();
+        }
     }
 
     private void refreshChampions() {
@@ -201,7 +225,9 @@ public class ChampionListFragment extends Fragment
 
                     @Override
                     public void onFail(Throwable throwable) {
-                        errorTextView.setVisibility(View.VISIBLE);
+                        if (championsAdapter == null || championsAdapter.getChampions().isEmpty()) {
+                            errorTextView.setVisibility(View.VISIBLE);
+                        }
                         stopLoading();
                     }
                 },
@@ -238,8 +264,9 @@ public class ChampionListFragment extends Fragment
         Intent intent = new Intent(getActivity(), ChampionDetailActivity.class);
         intent.putExtra(Globals.PARCEABLE_CHAMPION_KEY, champion);
         intent.putExtra(Globals.TRANSITION_IMAGE_KEY, transitionName);
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                getActivity(), view, transitionName);
-        ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
+        startActivity(intent);
+//        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+//                getActivity(), view, transitionName);
+//        ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
     }
 }

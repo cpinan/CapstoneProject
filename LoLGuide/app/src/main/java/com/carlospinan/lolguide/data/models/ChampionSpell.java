@@ -3,6 +3,8 @@ package com.carlospinan.lolguide.data.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.carlospinan.lolguide.helpers.Helper;
+
 import java.util.List;
 
 /**
@@ -48,6 +50,14 @@ public class ChampionSpell implements Parcelable {
         key = in.readString();
         costBurn = in.readString();
         tooltip = in.readString();
+
+        String rangeString = in.readString();
+        List<String> rangeStringList = Helper.getListStringFromString(rangeString);
+        if (rangeStringList.size() == 1) {
+            range = rangeStringList.get(0);
+        } else {
+            range = rangeStringList;
+        }
     }
 
     @Override
@@ -68,6 +78,12 @@ public class ChampionSpell implements Parcelable {
         dest.writeString(key);
         dest.writeString(costBurn);
         dest.writeString(tooltip);
+        if (range instanceof String) {
+            dest.writeString(String.valueOf(range));
+        } else if (range instanceof List) {
+            List<String> rangeList = (List<String>) range;
+            dest.writeString(Helper.getStringFromList(rangeList));
+        }
     }
 
     @Override

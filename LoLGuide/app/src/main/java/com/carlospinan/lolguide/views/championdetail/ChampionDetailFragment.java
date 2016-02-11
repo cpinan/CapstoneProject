@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.models.Champion;
 import com.carlospinan.lolguide.data.models.ChampionPassive;
 import com.carlospinan.lolguide.data.models.ChampionSpell;
+import com.carlospinan.lolguide.helpers.APIHelper;
 import com.carlospinan.lolguide.helpers.StorageHelper;
 
 import java.util.List;
@@ -31,7 +33,6 @@ public class ChampionDetailFragment extends Fragment {
 
     private static final float MAX_BAR_VALUE = 10.0f;
     private static final long BAR_ANIMATION_TIME = 1500L;
-    private static final String[] ABILITIES_KEYS = {"Q", "W", "E", "R"};
 
     @Bind(R.id.attackBarView)
     View attackBarView;
@@ -90,20 +91,29 @@ public class ChampionDetailFragment extends Fragment {
         ChampionPassive passive = champion.getPassive();
         imagePath = StorageHelper.get().getPassiveAbilityUrl(passive.getImage().getFull());
         title = getString(R.string.Passive) + " - " + passive.getName();
-        description = passive.getSanitizedDescription();
+        description = passive.getDescription();
         loadAbility(title, description, imagePath, null);
 
         int i = 0;
         List<ChampionSpell> spells = champion.getSpells();
         for (ChampionSpell spell : spells) {
-            title = ABILITIES_KEYS[i] + " - " + spell.getName();
+            title = Globals.ABILITIES_KEYS[i % Globals.ABILITIES_KEYS.length] + " - " + spell.getName();
             description = spell.getDescription();
             imagePath = StorageHelper.get().getChampionAbilityUrl(spell.getImage().getFull());
-            String cost = null;
-            if (spell.getResource() != null && spell.getCostBurn() != null) {
-                cost = spell.getResource().replace("{{ cost }}", spell.getCostBurn());
+            String abilityDetail = null;
+            String costBurn = spell.getCostBurn();
+            if (spell.getResource() != null && costBurn != null) {
+                String spellResource = spell.getResource();
+                if (costBurn == null || costBurn.equalsIgnoreCase("0")) {
+                    List<String> effectBurn = spell.getEffectBurn();
+                    costBurn = effectBurn.get(
+                            APIHelper.get().getIndexFromEffectBurn(spellResource)
+                    );
+                }
+                abilityDetail = spellResource.replaceAll(Globals.PATTERN_COST_TYPE_1, costBurn);
+                abilityDetail = abilityDetail.replaceAll(Globals.PATTERN_COST_TYPE_2, costBurn);
             }
-            loadAbility(title, description, imagePath, cost);
+            loadAbility(title, description, imagePath, abilityDetail);
             i++;
         }
     }
@@ -122,7 +132,7 @@ public class ChampionDetailFragment extends Fragment {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View view = inflater.inflate(R.layout.row_champion_ability, null);
         ((TextView) view.findViewById(R.id.abilityTitleTextView)).setText(title);
-        ((TextView) view.findViewById(R.id.descriptionTextView)).setText(description);
+        ((TextView) view.findViewById(R.id.descriptionTextView)).setText(Html.fromHtml(description));
         if (cost != null) {
             TextView costTextView = (TextView) view.findViewById(R.id.costTextView);
             costTextView.setText(cost);

@@ -18,16 +18,28 @@
         android:textStyle="bold"
         tools:text="Attack" />
 
-    <ImageView
-        android:id="@+id/championBar"
+    <FrameLayout
         android:layout_width="0dp"
         android:layout_height="@dimen/champion_bar_height"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_weight="5"
-        android:background="@drawable/drawable_bar_attack"
-        android:scaleType="matrix"
-        android:scaleX="0.0"
-        android:transformPivotX="0dp" />
+        android:layout_weight="5">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/champion_bar_height"
+            android:background="@drawable/drawable_bar_bg"
+            android:scaleType="matrix" />
+
+        <ImageView
+            android:id="@+id/championBar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/champion_bar_height"
+            android:background="@drawable/drawable_bar_attack"
+            android:scaleType="matrix"
+            android:scaleX="0.0"
+            android:transformPivotX="0dp" />
+
+    </FrameLayout>
 
 </LinearLayout>

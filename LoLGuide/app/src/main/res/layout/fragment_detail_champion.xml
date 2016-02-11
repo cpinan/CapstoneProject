@@ -15,11 +15,24 @@
             android:orientation="vertical"
             android:paddingBottom="@dimen/title_margin_end">
 
+            <TextView
+                android:id="@+id/attributesTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen8"
+                android:paddingEnd="@dimen/activity_vertical_margin"
+                android:paddingStart="@dimen/activity_vertical_margin"
+                android:text="@string/attributes"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold" />
+
             <include
                 android:id="@+id/attackBarView"
                 layout="@layout/row_champion_bar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/champion_bar_height"
+                android:layout_below="@id/attributesTextView"
                 android:layout_marginBottom="@dimen/champion_name_padding" />
 
             <include

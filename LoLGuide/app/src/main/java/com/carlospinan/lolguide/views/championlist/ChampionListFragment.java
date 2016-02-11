@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.NetworkOnMainThreadException;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -148,7 +149,11 @@ public class ChampionListFragment extends Fragment
     public void onPause() {
         super.onPause();
         if (championsResponseCall != null) {
-            championsResponseCall.cancel();
+            try {
+                championsResponseCall.cancel();
+            } catch (NetworkOnMainThreadException e) {
+
+            }
         }
     }
 
@@ -200,11 +205,12 @@ public class ChampionListFragment extends Fragment
                         stopLoading();
                     }
                 },
-                ChampDataEnum.image,
-                ChampDataEnum.skins,
-                ChampDataEnum.info,
-                ChampDataEnum.passive,
-                ChampDataEnum.spells
+                ChampDataEnum.image, ChampDataEnum.spells,
+                ChampDataEnum.allytips, ChampDataEnum.enemytips,
+                ChampDataEnum.info, ChampDataEnum.lore,
+                ChampDataEnum.passive, ChampDataEnum.skins,
+                ChampDataEnum.stats, ChampDataEnum.tags,
+                ChampDataEnum.blurb
         );
     }
 

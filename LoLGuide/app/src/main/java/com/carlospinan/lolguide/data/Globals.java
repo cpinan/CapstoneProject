@@ -9,6 +9,10 @@ import com.carlospinan.lolguide.BuildConfig;
  */
 public class Globals {
 
+    // PATTERNS
+    public static final String PATTERN_COST_TYPE_1 = "[{]{2}[\\s].*[\\s][}]{2}";
+    public static final String PATTERN_COST_TYPE_2 = "[@]{1}.*[@]{1}";
+
     // LOG TAG
     public static final boolean SHOW_DEV_LOG = true;
     private static final String LOG_TAG = "DevelopmentTag";
@@ -24,6 +28,8 @@ public class Globals {
     public static final String PARCEABLE_CHAMPION_SEARCH_QUERY_KEY = "parceableChampionSearchQuery";
     public static final String PARCEABLE_CHAMPION_KEY = "parceableChampion";
     public static final String TRANSITION_IMAGE_KEY = "transitionImageKey";
+
+    public static final String[] ABILITIES_KEYS = {"Q", "W", "E", "R"};
 
     // Log Utils
     public static void l(String message) {

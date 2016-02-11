@@ -27,7 +27,7 @@ import retrofit.Response;
  */
 public class LOLStaticDataTesting extends AndroidTestCase {
 
-    private static int CHAMPION_ID_TEST = 80; // Pantheon
+    private static int CHAMPION_ID_TEST = 126; // Pantheon
 
     private RegionEnum defaultRegion;
 
@@ -75,7 +75,14 @@ public class LOLStaticDataTesting extends AndroidTestCase {
                 Helper.get().getCodeLanguage(),
                 null,
                 null,
-                Helper.get().arrayStringsToStringByComma(ChampDataEnum.all, ChampDataEnum.spells)
+                Helper.get().arrayStringsToStringByComma(
+                        ChampDataEnum.image, ChampDataEnum.spells,
+                        ChampDataEnum.allytips, ChampDataEnum.enemytips,
+                        ChampDataEnum.info, ChampDataEnum.lore,
+                        ChampDataEnum.passive, ChampDataEnum.skins,
+                        ChampDataEnum.stats, ChampDataEnum.tags,
+                        ChampDataEnum.blurb
+                )
 
         );
         Response<Champion> response = call.execute();

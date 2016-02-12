@@ -23,7 +23,7 @@ import java.util.Locale;
  */
 public class Helper {
 
-    private static final String DELIMITER = ";;;";
+    public static final String DELIMITER = ";;;";
     private static Helper instance;
 
     private Helper() { /* UNUSED */ }
@@ -141,5 +141,14 @@ public class Helper {
     public static List<String> getListStringFromString(String string) {
         String[] split = string.split(DELIMITER);
         return Arrays.asList(split);
+    }
+
+    public static List<Double> getListDoubleFromString(String string) {
+        String[] split = string.split(DELIMITER);
+        List<Double> list = new ArrayList<>();
+        for (String s : split) {
+            list.add(Double.valueOf(s));
+        }
+        return list;
     }
 }

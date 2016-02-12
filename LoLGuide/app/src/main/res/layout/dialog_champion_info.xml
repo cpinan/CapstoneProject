@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/colorPrimaryDark"
+            android:textStyle="bold"
+            tools:text="the Nine-Tailed Fox" />
+
+        <include
+            android:id="@+id/hpStats"
+            layout="@layout/row_champion_stats" />
+
+        <include
+            android:id="@+id/hpRegenStats"
+            layout="@layout/row_champion_stats" />
+
+        <include
+            android:id="@+id/mpStats"
+            layout="@layout/row_champion_stats" />
+
+        <include
+            android:id="@+id/mpRegenStats"
+            layout="@layout/row_champion_stats" />
+
+        <include
+            android:id="@+id/armorStats"
+            layout="@layout/row_champion_stats" />
+
+        <include
+            android:id="@+id/attackDamageStats"
+            layout="@layout/row_champion_stats" />
+
+        <include
+            android:id="@+id/attackSpeedStats"
+            layout="@layout/row_champion_stats" />
+
+        <include
+            android:id="@+id/criticalStats"
+            layout="@layout/row_champion_stats" />
+
+        <include
+            android:id="@+id/attackRangeStats"
+            layout="@layout/row_champion_stats" />
+
+        <include
+            android:id="@+id/moveSpeedStats"
+            layout="@layout/row_champion_stats" />
+
+        <TextView
+            android:id="@+id/loreTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:textStyle="normal"
+            tools:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum." />
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

@@ -1,90 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/abilityTitleTextView"
+    <RelativeLayout
+        android:id="@+id/abilityDetailContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:gravity="left"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/colorPrimaryDark"
-        tools:text="Cursed Touch" />
-
-    <LinearLayout
-        android:id="@+id/abilityDataContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/abilityTitleTextView"
-        android:background="@android:drawable/list_selector_background"
-        android:orientation="horizontal"
-        android:paddingTop="@dimen/activity_vertical_margin">
-
-        <FrameLayout
-            android:id="@+id/abilityImageContainer"
-            android:layout_width="@dimen/ability_size"
-            android:layout_height="@dimen/ability_size"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin">
-
-            <ImageView
-                android:id="@+id/abilityImageView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:foreground="#77000000"
-                android:scaleType="centerCrop"
-                tools:src="@mipmap/ic_launcher" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:src="@android:drawable/ic_media_play" />
-
-        </FrameLayout>
+        android:background="@android:drawable/list_selector_background">
 
         <TextView
-            android:id="@+id/descriptionTextView"
+            android:id="@+id/abilityTitleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/abilityImageView"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:gravity="left"
+            android:paddingTop="@dimen/dimen16"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/colorPrimaryDark"
+            tools:text="Cursed Touch" />
+
+        <LinearLayout
+            android:id="@+id/abilityDataContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/abilityTitleTextView"
+            android:layout_marginBottom="@dimen/dimen8"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/activity_vertical_margin">
+
+            <FrameLayout
+                android:id="@+id/abilityImageContainer"
+                android:layout_width="@dimen/ability_size"
+                android:layout_height="@dimen/ability_size"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin">
+
+                <ImageView
+                    android:id="@+id/abilityImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:foreground="#77000000"
+                    android:scaleType="centerCrop"
+                    tools:src="@mipmap/ic_launcher" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@android:drawable/ic_media_play" />
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/descriptionTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/abilityImageView"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_toRightOf="@id/abilityImageView"
+                android:paddingEnd="@dimen/dimen3"
+                android:paddingStart="@dimen/dimen3"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/textSize13"
+                tools:text="Amumu's attacks reduce the target's Magic Resistance for a short duration." />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/cooldownTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/abilityDataContainer"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_toRightOf="@id/abilityImageView"
-            android:paddingEnd="@dimen/dimen3"
-            android:paddingStart="@dimen/dimen3"
+            android:gravity="left"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/textSize13"
-            tools:text="Amumu's attacks reduce the target's Magic Resistance for a short duration." />
+            android:visibility="gone"
+            tools:text="Cooldown 10" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/costTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/abilityDataContainer"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:gravity="right"
+            android:paddingBottom="@dimen/dimen16"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/textSize13"
+            android:visibility="gone"
+            tools:text="80/90/100/110/120 Mana" />
 
-    <TextView
-        android:id="@+id/costTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/abilityDataContainer"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:gravity="right"
-        android:textColor="@color/colorPrimaryDark"
-        android:visibility="gone"
-        tools:text="80/90/100/110/120 Mana" />
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen1"
+            android:layout_below="@id/costTextView"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:background="@color/colorPrimary" />
 
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen1"
-        android:layout_below="@id/costTextView"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:background="@color/colorPrimary" />
+    </RelativeLayout>
 
-</RelativeLayout>
+</FrameLayout>

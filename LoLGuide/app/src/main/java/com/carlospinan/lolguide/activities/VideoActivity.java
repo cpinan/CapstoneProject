@@ -31,6 +31,8 @@ public class VideoActivity extends AppCompatActivity {
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
 
+    private MediaController mediaController;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +48,7 @@ public class VideoActivity extends AppCompatActivity {
                 String url = StorageHelper.get().getVideoAbilityUrl(championId, championAbilityId);
                 Uri videoUri = Uri.parse(url);
                 progressBar.setVisibility(View.VISIBLE);
-                final MediaController mediaController = new MediaController(this);
+                mediaController = new MediaController(this);
                 mediaController.setAnchorView(videoView);
                 mediaController.setMediaPlayer(videoView);
                 videoView.setMediaController(mediaController);
@@ -74,5 +76,18 @@ public class VideoActivity extends AppCompatActivity {
     private void showErrorAndTerminate() {
         Toast.makeText(this, R.string.invalid_data, Toast.LENGTH_LONG).show();
         VideoActivity.this.finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (videoView != null) {
+            if (mediaController != null) {
+                mediaController.hide();
+            }
+            videoView.setVideoURI(null);
+            videoView.suspend();
+            videoView.stopPlayback();
+        }
+        super.onBackPressed();
     }
 }

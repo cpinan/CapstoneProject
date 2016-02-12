@@ -4,7 +4,7 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.text.Html;
@@ -25,6 +25,8 @@ import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.models.Champion;
 import com.carlospinan.lolguide.data.models.ChampionPassive;
 import com.carlospinan.lolguide.data.models.ChampionSpell;
+import com.carlospinan.lolguide.dialogs.ChampionInfoDialog;
+import com.carlospinan.lolguide.dialogs.ChampionSpellDialog;
 import com.carlospinan.lolguide.helpers.APIHelper;
 import com.carlospinan.lolguide.helpers.StorageHelper;
 
@@ -40,6 +42,7 @@ public class ChampionDetailFragment extends Fragment {
 
     private static final float MAX_BAR_VALUE = 10.0f;
     private static final long BAR_ANIMATION_TIME = 1500L;
+    private static final long BAR_DELAY_START_TIME = 150L;
 
     @Bind(R.id.attackBarView)
     View attackBarView;
@@ -106,7 +109,7 @@ public class ChampionDetailFragment extends Fragment {
         }
     }
 
-    public void prepareUi(Champion champion) {
+    public void prepareUi(final Champion champion) {
         abilitiesContainer.removeAllViews();
         allytipsContainer.removeAllViews();
         enemytipsContainer.removeAllViews();
@@ -114,7 +117,9 @@ public class ChampionDetailFragment extends Fragment {
         infoContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Open dialog with champion stats and lore
+                ChampionInfoDialog dialog = ChampionInfoDialog.newInstance(champion);
+                dialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.AppDialogTheme);
+                dialog.show(getActivity().getSupportFragmentManager(), "CHAMPION_DIALOG_INFO");
             }
         });
 
@@ -140,7 +145,7 @@ public class ChampionDetailFragment extends Fragment {
         imagePath = StorageHelper.get().getPassiveAbilityUrl(passive.getImage().getFull());
         title = getString(R.string.Passive) + " - " + passive.getName();
         description = passive.getDescription();
-        loadAbility(championId, 1, title, description, imagePath, null);
+        loadAbility(championId, 1, title, description, imagePath, null, null, null);
 
         int i = 0;
         List<ChampionSpell> spells = champion.getSpells();
@@ -162,7 +167,7 @@ public class ChampionDetailFragment extends Fragment {
                 abilityDetail = abilityDetail.replaceAll(Globals.PATTERN_COST_TYPE_2, costBurn);
             }
             int j = (i + 2) - ((i / Globals.ABILITIES_KEYS.length) * Globals.ABILITIES_KEYS.length);
-            loadAbility(championId, j, title, description, imagePath, abilityDetail);
+            loadAbility(championId, j, title, description, imagePath, abilityDetail, spell.getCooldownBurn(), spell);
             i++;
         }
 
@@ -179,7 +184,10 @@ public class ChampionDetailFragment extends Fragment {
         }
         descriptionTextView.setText(title);
         championBar.setContentDescription(title + ": " + data + "/" + MAX_BAR_VALUE);
-        ObjectAnimator.ofFloat(championBar, "scaleX", (float) (data / MAX_BAR_VALUE)).setDuration(BAR_ANIMATION_TIME).start();
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(championBar, "scaleX", (float) (data / MAX_BAR_VALUE));
+        objectAnimator.setDuration(BAR_ANIMATION_TIME);
+        objectAnimator.setStartDelay(BAR_DELAY_START_TIME);
+        objectAnimator.start();
     }
 
     private void loadAbility(
@@ -188,13 +196,24 @@ public class ChampionDetailFragment extends Fragment {
             final String title,
             final String description,
             final String imagePath,
-            final String cost
+            final String cost,
+            final String cooldown,
+            final ChampionSpell spell
     ) {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View view = inflater.inflate(R.layout.row_champion_ability, null);
+        TextView cooldownTextView = (TextView) view.findViewById(R.id.cooldownTextView);
+        if (cooldown != null) {
+            cooldownTextView.setText(cooldown + "s " + getString(R.string.cool_down));
+            cooldownTextView.setVisibility(View.VISIBLE);
+        }
         ((TextView) view.findViewById(R.id.abilityTitleTextView)).setText(title);
+
+        String htmlDescription = description + ((abilityId == 1) ? "" : "<br><br><b>" + getString(R.string.more).toUpperCase() + "</b>");
+        htmlDescription = String.format(Globals.PATTERN_HTML, htmlDescription);
+
         ((TextView) view.findViewById(R.id.descriptionTextView)).setText(
-                Html.fromHtml(description + "<p align=\"right\"><b>" + getString(R.string.more).toUpperCase() + "</b></p>")
+                Html.fromHtml(htmlDescription)
         );
         if (cost != null) {
             TextView costTextView = (TextView) view.findViewById(R.id.costTextView);
@@ -219,13 +238,18 @@ public class ChampionDetailFragment extends Fragment {
             }
         });
 
-        view.findViewById(R.id.abilityDataContainer).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(v, description, Snackbar.LENGTH_LONG).show();
-            }
-        });
 
+        if (abilityId > 1 && spell != null) {
+            // Not passive.
+            view.findViewById(R.id.abilityDetailContainer).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ChampionSpellDialog dialog = ChampionSpellDialog.newInstance(spell);
+                    dialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.AppDialogTheme);
+                    dialog.show(getActivity().getSupportFragmentManager(), "CHAMPION_DIALOG_SPELL");
+                }
+            });
+        }
         abilitiesContainer.addView(view);
     }
 

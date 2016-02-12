@@ -18,4 +18,16 @@
     <string name="enemytips">Enemy Tips</string>
     <string name="invalid_data">Invalid data</string>
     <string name="more">more</string>
+    <string name="health_regen_per_5">HP regen per 5</string>
+    <string name="mana">Mana</string>
+    <string name="mana_regen_per_5">Mana regen per 5</string>
+    <string name="move_speed">Move Speed</string>
+    <string name="armor">Armor</string>
+    <string name="attack_damage">Attack Damage</string>
+    <string name="attack_range">Attack Range</string>
+    <string name="attack_speed">Attack Speed</string>
+    <string name="critical">Critical</string>
+    <string name="per_level">Per Level</string>
+    <string name="cool_down">CD</string>
+    <string name="range">Range</string>
 </resources>

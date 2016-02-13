@@ -52,7 +52,7 @@ public class StorageHelper {
 
     // Set language
     public void saveLanguages(List<String> languages) {
-        saveString(LOL_LANGUAGES_KEY, Helper.getStringFromList(languages));
+        saveString(LOL_LANGUAGES_KEY, ChampionHelper.getStringFromList(languages));
     }
 
     public void saveVersion(String version) {
@@ -84,7 +84,7 @@ public class StorageHelper {
     public List<String> getLanguages() {
         String languages = getStorage().getString(LOL_LANGUAGES_KEY, null);
         if (languages != null) {
-            return Helper.getListStringFromString(languages);
+            return ChampionHelper.getListStringFromString(languages);
         } else {
             return null;
         }

@@ -45,59 +45,52 @@ public class APIHelper {
         return 1;
     }
 
-    public String replaceLolVariables(String text, String costBurn, List<String> effectBurn) {
+    public String replaceLolVariables(
+            String text,
+            String costBurn,
+            List<String> effectBurn,
+            List<List<Double>> effects
+    ) {
         if (text.contains(Globals.PATTERN_COST)) {
             text = text.replace(Globals.PATTERN_COST, costBurn);
         }
-        // E1 Replacement
-        if (text.contains(Globals.PATTERN_E1)) {
-            text = text.replace(Globals.PATTERN_E1, effectBurn.get(1));
+        if (text.contains(Globals.PATTERN_MAX_AMMO)) {
+            text = text.replace(Globals.PATTERN_MAX_AMMO, "2");
         }
-        if (text.contains(Globals.PATTERN_E2)) {
-            text = text.replace(Globals.PATTERN_E2, effectBurn.get(2));
+        final int MAX = 10;
+        int i;
+        String ePatternFormat = "{{ e%d }}";
+        String fPatternFormat = "{{ f%d }}";
+        for (i = 1; i <= MAX; i++) {
+            String eKey = String.format(ePatternFormat, i);
+            String fKey = String.format(fPatternFormat, i);
+            text = replace(i, text, eKey, effectBurn, effects);
+            text = replace(i, text, fKey, effectBurn, effects);
         }
-        if (text.contains(Globals.PATTERN_E3)) {
-            text = text.replace(Globals.PATTERN_E3, effectBurn.get(3));
-        }
-        if (text.contains(Globals.PATTERN_E4)) {
-            text = text.replace(Globals.PATTERN_E4, effectBurn.get(4));
-        }
-        if (text.contains(Globals.PATTERN_E5)) {
-            text = text.replace(Globals.PATTERN_E5, effectBurn.get(5));
-        }
-        // F1 Replacement
-        if (text.contains(Globals.PATTERN_F1)) {
-            text = text.replace(Globals.PATTERN_F1, effectBurn.get(1));
-        }
-        if (text.contains(Globals.PATTERN_F2)) {
-            text = text.replace(Globals.PATTERN_F2, effectBurn.get(2));
-        }
-        if (text.contains(Globals.PATTERN_F3)) {
-            text = text.replace(Globals.PATTERN_F3, effectBurn.get(3));
-        }
-        if (text.contains(Globals.PATTERN_F4)) {
-            text = text.replace(Globals.PATTERN_F4, effectBurn.get(4));
-        }
-        if (text.contains(Globals.PATTERN_F5)) {
-            text = text.replace(Globals.PATTERN_F5, effectBurn.get(5));
-        }
-        // A1 Replacement
-        if (text.contains(Globals.PATTERN_A1)) {
-            text = text.replace(Globals.PATTERN_A1, effectBurn.get(1));
-        }
-        if (text.contains(Globals.PATTERN_A2)) {
-            text = text.replace(Globals.PATTERN_A2, effectBurn.get(2));
-        }
-        if (text.contains(Globals.PATTERN_A3)) {
-            text = text.replace(Globals.PATTERN_A3, effectBurn.get(3));
-        }
-        if (text.contains(Globals.PATTERN_A4)) {
-            text = text.replace(Globals.PATTERN_A4, effectBurn.get(4));
-        }
-        if (text.contains(Globals.PATTERN_A5)) {
-            text = text.replace(Globals.PATTERN_A5, effectBurn.get(5));
-        }
+        return text;
+    }
 
+    private String replace(
+            int index,
+            String text,
+            String key,
+            List<String> effectBurn,
+            List<List<Double>> effects
+    ) {
+        if (text.contains(key)) {
+            if (effectBurn == null || index > effectBurn.size() - 1) {
+                if (effects == null || index > effects.size() - 1) {
+                    text = text.replace(key, effectBurn.get(0));
+                } else {
+                    List<Double> list = effects.get(index);
+                    String string = ChampionHelper.getStringFromDoubleList(list);
+                    string = string.replace(ChampionHelper.DELIMITER, "/");
+                    text = text.replace(key, string);
+                }
+            } else {
+                text = text.replace(key, effectBurn.get(index));
+            }
+        }
         return text;
     }
 

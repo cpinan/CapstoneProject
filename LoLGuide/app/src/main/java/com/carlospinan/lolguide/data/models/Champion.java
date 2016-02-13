@@ -8,7 +8,7 @@ import com.carlospinan.lolguide.data.models.realm.RealmChampionInformation;
 import com.carlospinan.lolguide.data.models.realm.RealmChampionPassive;
 import com.carlospinan.lolguide.data.models.realm.RealmChampionSkin;
 import com.carlospinan.lolguide.data.models.realm.RealmChampionStats;
-import com.carlospinan.lolguide.helpers.Helper;
+import com.carlospinan.lolguide.helpers.ChampionHelper;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Comparator;
@@ -340,10 +340,10 @@ public class Champion implements Parcelable, Comparator<Champion> {
         o.setTitle(getTitle());
         o.setName(getName());
         o.setKey(getKey());
-        o.setChampionTags(Helper.getStringFromList(getChampionTags()));
+        o.setChampionTags(ChampionHelper.getStringFromList(getChampionTags()));
         o.setStats(getRealmStats());
-        o.setEnemyTips(Helper.getStringFromList(getEnemyTips()));
-        o.setAllyTips(Helper.getStringFromList(getAllyTips()));
+        o.setEnemyTips(ChampionHelper.getStringFromList(getEnemyTips()));
+        o.setAllyTips(ChampionHelper.getStringFromList(getAllyTips()));
         o.setImage(getImage().getRealmImage());
         o.setBlurb(getBlurb());
         o.setLore(getLore());

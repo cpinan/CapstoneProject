@@ -3,7 +3,7 @@ package com.carlospinan.lolguide.data.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.carlospinan.lolguide.helpers.Helper;
+import com.carlospinan.lolguide.helpers.ChampionHelper;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class ChampionSpellVar implements Parcelable {
         link = in.readString();
         ranksWith = in.readString();
         String coeffString = in.readString();
-        coeff = Helper.getListDoubleFromString(coeffString);
+        coeff = ChampionHelper.getListDoubleFromString(coeffString);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ChampionSpellVar implements Parcelable {
         dest.writeString(key);
         dest.writeString(link);
         dest.writeString(ranksWith);
-        dest.writeString(Helper.getStringFromDoubleList(coeff));
+        dest.writeString(ChampionHelper.getStringFromDoubleList(coeff));
     }
 
     @Override

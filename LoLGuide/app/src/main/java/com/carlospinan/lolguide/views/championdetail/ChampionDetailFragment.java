@@ -210,7 +210,6 @@ public class ChampionDetailFragment extends Fragment {
         ((TextView) view.findViewById(R.id.abilityTitleTextView)).setText(title);
 
         String htmlDescription = description + ((abilityId == 1) ? "" : "<br><br><b>" + getString(R.string.more).toUpperCase() + "</b>");
-        htmlDescription = String.format(Globals.PATTERN_HTML, htmlDescription);
 
         ((TextView) view.findViewById(R.id.descriptionTextView)).setText(
                 Html.fromHtml(htmlDescription)

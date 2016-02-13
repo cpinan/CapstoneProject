@@ -16,7 +16,7 @@ import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.models.ChampionSpell;
 import com.carlospinan.lolguide.data.models.ChampionSpellVar;
 import com.carlospinan.lolguide.helpers.APIHelper;
-import com.carlospinan.lolguide.helpers.Helper;
+import com.carlospinan.lolguide.helpers.ChampionHelper;
 import com.carlospinan.lolguide.helpers.StorageHelper;
 
 import java.util.List;
@@ -54,6 +54,12 @@ public class ChampionSpellDialog extends DialogFragment {
         } else {
             rangeString = String.valueOf(range);
         }
+        try {
+            Double d = Double.valueOf(rangeString);
+            rangeString = String.valueOf(d.intValue());
+        } catch (NumberFormatException e) {
+
+        }
         spellRange.setText(String.format("%s: %s", getString(R.string.range), rangeString));
 
         String imagePath = StorageHelper.get().getChampionAbilityUrl(spell.getImage().getFull());
@@ -71,15 +77,15 @@ public class ChampionSpellDialog extends DialogFragment {
             for (ChampionSpellVar var : vars) {
                 String key = var.getKey();
                 String keyReplace = String.format("{{ %s }}", key);
-                String coeff = Helper.getStringFromDoubleList(var.getCoeff());
-                coeff = coeff.replace(Helper.DELIMITER, "/");
+                String coeff = ChampionHelper.getStringFromDoubleList(var.getCoeff());
+                coeff = coeff.replace(ChampionHelper.DELIMITER, "/");
                 tooltip = tooltip.replace(keyReplace, coeff);
             }
         }
         List<String> effectBurn = spell.getEffectBurn();
+        List<List<Double>> effect = spell.getEffect();
         String costBurn = spell.getCostBurn();
-        tooltip = APIHelper.get().replaceLolVariables(tooltip, costBurn, effectBurn);
-        tooltip = String.format(Globals.PATTERN_HTML, tooltip);
+        tooltip = APIHelper.get().replaceLolVariables(tooltip, costBurn, effectBurn, effect);
         spellTooltip.setText(Html.fromHtml(tooltip));
         getDialog().setTitle(spell.getName());
         return view;

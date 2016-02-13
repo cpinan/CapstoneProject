@@ -12,23 +12,8 @@ public class Globals {
     // PATTERNS
     public static final String PATTERN_COST_TYPE_1 = "[{]{2}[\\s].*[\\s][}]{2}";
     public static final String PATTERN_COST_TYPE_2 = "[@]{1}.*[@]{1}";
-    public static final String PATTERN_E1 = "{{ e1 }}";
-    public static final String PATTERN_E2 = "{{ e2 }}";
-    public static final String PATTERN_E3 = "{{ e3 }}";
-    public static final String PATTERN_E4 = "{{ e4 }}";
-    public static final String PATTERN_E5 = "{{ e5 }}";
-    public static final String PATTERN_F1 = "{{ f1 }}";
-    public static final String PATTERN_F2 = "{{ f2 }}";
-    public static final String PATTERN_F3 = "{{ f3 }}";
-    public static final String PATTERN_F4 = "{{ f4 }}";
-    public static final String PATTERN_F5 = "{{ f5 }}";
-    public static final String PATTERN_A1 = "{{ a1 }}";
-    public static final String PATTERN_A2 = "{{ a2 }}";
-    public static final String PATTERN_A3 = "{{ a3 }}";
-    public static final String PATTERN_A4 = "{{ a4 }}";
-    public static final String PATTERN_A5 = "{{ a5 }}";
     public static final String PATTERN_COST = "{{ cost }}";
-    public static final String PATTERN_HTML = "<!DOCTYPE html><html><body>%s</body></html>";
+    public static final String PATTERN_MAX_AMMO = "{{ maxammo }}";
 
     // LOG TAG
     public static final boolean SHOW_DEV_LOG = true;

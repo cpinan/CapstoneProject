@@ -91,6 +91,7 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
         }
         Collections.sort(this.champions, new Champion());
         this.filteredChampions = this.champions;
+        notifyDataSetChanged();
     }
 
     public List<Champion> getChampions() {

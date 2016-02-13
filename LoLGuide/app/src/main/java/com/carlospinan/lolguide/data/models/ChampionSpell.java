@@ -3,7 +3,7 @@ package com.carlospinan.lolguide.data.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.carlospinan.lolguide.helpers.Helper;
+import com.carlospinan.lolguide.helpers.ChampionHelper;
 
 import java.util.List;
 
@@ -52,12 +52,15 @@ public class ChampionSpell implements Parcelable {
         tooltip = in.readString();
 
         String rangeString = in.readString();
-        List<String> rangeStringList = Helper.getListStringFromString(rangeString);
+        List<String> rangeStringList = ChampionHelper.getListStringFromString(rangeString);
         if (rangeStringList.size() == 1) {
             range = rangeStringList.get(0);
         } else {
             range = rangeStringList;
         }
+
+        String effectString = in.readString();
+        effect = ChampionHelper.toDoubleListFromString(effectString);
     }
 
     @Override
@@ -82,8 +85,9 @@ public class ChampionSpell implements Parcelable {
             dest.writeString(String.valueOf(range));
         } else if (range instanceof List) {
             List<String> rangeList = (List<String>) range;
-            dest.writeString(Helper.getStringFromList(rangeList));
+            dest.writeString(ChampionHelper.getStringFromList(rangeList));
         }
+        dest.writeString(ChampionHelper.stringFromDoubleList(effect));
     }
 
     @Override

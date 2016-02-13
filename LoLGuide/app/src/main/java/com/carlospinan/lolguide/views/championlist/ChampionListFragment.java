@@ -15,6 +15,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -55,12 +58,11 @@ public class ChampionListFragment extends Fragment
     @Bind(R.id.championRecyclerView)
     RecyclerView championRecyclerView;
 
-    @Bind(R.id.searchView)
-    SearchView searchView;
-
     @Bind(R.id.errorTextView)
     TextView errorTextView;
 
+    private String championQuery;
+    private SearchView searchView;
     private ChampionListPresenter presenter;
     private OnFragmentListener onFragmentListener;
     private ChampionsAdapter championsAdapter;
@@ -71,6 +73,12 @@ public class ChampionListFragment extends Fragment
     public static ChampionListFragment newInstance() {
         ChampionListFragment mChampionListFragment = new ChampionListFragment();
         return mChampionListFragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -84,28 +92,8 @@ public class ChampionListFragment extends Fragment
         int orientation = getResources().getConfiguration().orientation;
         int columns = orientation == Configuration.ORIENTATION_LANDSCAPE ? COLS_LANDSCAPE : COLS_PORTRAIT;
 
-        searchView.setIconifiedByDefault(false);
-        searchView.setIconified(false);
-        searchView.setQueryHint(getString(R.string.enter_champion_name));
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (!swipeRefreshView.isRefreshing() && championsAdapter != null && newText != null) {
-                    championsAdapter.getFilter().filter(newText);
-                    return true;
-                }
-                return false;
-            }
-        });
-
         List<Champion> champions = new ArrayList<>();
-        String championQuery = "";
+        championQuery = "";
         if (savedInstanceState != null) {
             champions = savedInstanceState.getParcelableArrayList(Globals.PARCEABLE_CHAMPION_KEY);
             championQuery = savedInstanceState.getString(Globals.PARCEABLE_CHAMPION_SEARCH_QUERY_KEY);
@@ -136,9 +124,6 @@ public class ChampionListFragment extends Fragment
 
         if (savedInstanceState == null) {
             refreshChampionsAndShowLoading();
-        }
-        if (championQuery != null && championQuery.trim().length() > 0) {
-            searchView.setQuery(championQuery, true);
         }
         return view;
     }
@@ -265,8 +250,39 @@ public class ChampionListFragment extends Fragment
         intent.putExtra(Globals.PARCEABLE_CHAMPION_KEY, champion);
         intent.putExtra(Globals.TRANSITION_IMAGE_KEY, transitionName);
         startActivity(intent);
-//        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-//                getActivity(), view, transitionName);
-//        ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_fragment_list_champion, menu);
+        MenuItem searchItem = menu.findItem(R.id.searchAction);
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+            searchView.setIconifiedByDefault(false);
+            searchView.setIconified(false);
+            searchView.setQueryHint(getString(R.string.enter_champion_name));
+
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    if (!swipeRefreshView.isRefreshing() && championsAdapter != null && newText != null) {
+                        championsAdapter.getFilter().filter(newText);
+                        return true;
+                    }
+                    return false;
+                }
+            });
+
+            if (championQuery != null && championQuery.trim().length() > 0) {
+                searchView.setQuery(championQuery, true);
+            }
+
+        }
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }

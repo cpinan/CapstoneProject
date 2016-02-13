@@ -91,6 +91,7 @@ public class ChampionListActivity extends BaseActivity implements OnFragmentList
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        menu.clear();
         getMenuInflater().inflate(R.menu.menu_list_champion, menu);
         return true;
     }

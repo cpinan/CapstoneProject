@@ -3,6 +3,7 @@ package com.carlospinan.lolguide.data.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.carlospinan.lolguide.data.models.realm.RealmChampionSpellVar;
 import com.carlospinan.lolguide.helpers.ChampionHelper;
 
 import java.util.List;
@@ -17,6 +18,20 @@ public class ChampionSpellVar implements Parcelable {
     private String key;
     private String link;
     private String ranksWith;
+
+    public RealmChampionSpellVar getRealmSpellVar() {
+        RealmChampionSpellVar r = new RealmChampionSpellVar();
+        r.setCoeff(ChampionHelper.getStringFromDoubleList(getCoeff()));
+        r.setDyn(getDyn());
+        r.setKey(getKey());
+        r.setLink(getLink());
+        r.setRanksWith(getRanksWith());
+        return r;
+    }
+
+    public ChampionSpellVar() {
+
+    }
 
     protected ChampionSpellVar(Parcel in) {
         dyn = in.readString();

@@ -18,9 +18,11 @@
     <dimen name="dimen8">8dp</dimen>
     <dimen name="textSize13">13sp</dimen>
     <dimen name="textSize16">16sp</dimen>
+    <dimen name="textSize24">24sp</dimen>
     <dimen name="ability_size">80dp</dimen>
     <dimen name="dimen16">16dp</dimen>
 
     <dimen name="viewpagerPadding">50dp</dimen>
     <dimen name="viewpagerMargin">25dp</dimen>
+    <dimen name="dialogPadding">48dp</dimen>
 </resources>

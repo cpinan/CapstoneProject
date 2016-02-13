@@ -1,8 +1,14 @@
 package com.carlospinan.lolguide.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -20,6 +26,9 @@ import butterknife.ButterKnife;
  */
 public class SkinsActivity extends BaseActivity {
 
+    public static final String BROADCAST_ID = "com.carlospinan.notificationBroadcast";
+    public static final String MESSAGE_KEY = "messageKey";
+
     @Bind(R.id.skinViewPager)
     ViewPager skinViewPager;
 
@@ -28,6 +37,18 @@ public class SkinsActivity extends BaseActivity {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra(MESSAGE_KEY);
+            Snackbar.make(
+                    rootLayout,
+                    message,
+                    Snackbar.LENGTH_LONG
+            ).show();
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,5 +82,28 @@ public class SkinsActivity extends BaseActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                receiver,
+                new IntentFilter(BROADCAST_ID)
+        );
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(
+                receiver
+        );
+        super.onPause();
+    }
+
+    public static void launchReceiver(Context context, String message) {
+        Intent intent = new Intent(BROADCAST_ID);
+        intent.putExtra(MESSAGE_KEY, message);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
     }
 }

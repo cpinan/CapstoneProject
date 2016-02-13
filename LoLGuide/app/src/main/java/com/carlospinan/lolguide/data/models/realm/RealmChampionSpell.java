@@ -9,7 +9,7 @@ import io.realm.RealmObject;
 public class RealmChampionSpell extends RealmObject {
 
     private String range; // String array
-    private RealmChampionSpell leveltip;
+    private RealmChampionSpellTip leveltip;
     private String resource;
     private int maxrank;
     private String effectBurn; // String array
@@ -37,11 +37,11 @@ public class RealmChampionSpell extends RealmObject {
         this.range = range;
     }
 
-    public RealmChampionSpell getLeveltip() {
+    public RealmChampionSpellTip getLeveltip() {
         return leveltip;
     }
 
-    public void setLeveltip(RealmChampionSpell leveltip) {
+    public void setLeveltip(RealmChampionSpellTip leveltip) {
         this.leveltip = leveltip;
     }
 

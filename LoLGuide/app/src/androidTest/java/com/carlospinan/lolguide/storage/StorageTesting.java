@@ -8,6 +8,7 @@ import com.carlospinan.lolguide.data.enums.ChampDataEnum;
 import com.carlospinan.lolguide.data.models.Champion;
 import com.carlospinan.lolguide.data.models.realm.RealmChampion;
 import com.carlospinan.lolguide.helpers.APIHelper;
+import com.carlospinan.lolguide.helpers.ChampionHelper;
 import com.carlospinan.lolguide.helpers.Helper;
 import com.carlospinan.lolguide.helpers.RealmHelper;
 import com.carlospinan.lolguide.helpers.StorageHelper;
@@ -59,13 +60,16 @@ public class StorageTesting extends AndroidTestCase {
         assertNotNull(champion.getChampionId());
         Globals.testLog("getChampionId: " + String.valueOf(champion.getChampionId()));
 
-        RealmHelper.get().saveChampion(champion.getRealmChampion());
+        RealmHelper.get().saveChampion(ChampionHelper.fromChampionToRealm(champion));
 
         RealmResults<RealmChampion> champions = realm.where(RealmChampion.class).findAll();
         assertTrue(champions.size() > 0);
 
         RealmChampion realmChampion = realm.where(RealmChampion.class).equalTo("championId", CHAMPION_ID_TEST).findFirst();
         assertNotNull(realmChampion);
+
+        Champion localChampion = ChampionHelper.fromRealmToChampion(realmChampion);
+        assertNotNull(localChampion);
 
         Globals.testLog("testChampionByIdAndLocalStorage end");
     }

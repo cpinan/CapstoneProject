@@ -43,6 +43,12 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppFullScreenTheme" />
 
+        <service android:name=".services.WallpaperService" />
+
+        <service android:name=".services.ChampionSavingService" />
+
+        <service android:name=".services.SaveChampionsService" />
+
     </application>
 
 </manifest>

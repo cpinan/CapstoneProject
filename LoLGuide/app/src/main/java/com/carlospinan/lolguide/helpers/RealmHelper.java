@@ -37,6 +37,7 @@ public class RealmHelper {
                     realm.copyToRealm(c.getPassive().getImage());
                     realm.copyToRealm(c.getPassive());
                     realm.copyToRealm(c.getSkins());
+                    realm.copyToRealm(c.getSpells());
                     realm.copyToRealm(c);
                     realm.commitTransaction();
                 }

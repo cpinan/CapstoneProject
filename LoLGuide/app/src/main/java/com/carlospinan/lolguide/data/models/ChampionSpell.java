@@ -3,9 +3,13 @@ package com.carlospinan.lolguide.data.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.carlospinan.lolguide.data.models.realm.RealmChampionSpell;
+import com.carlospinan.lolguide.data.models.realm.RealmChampionSpellVar;
 import com.carlospinan.lolguide.helpers.ChampionHelper;
 
 import java.util.List;
+
+import io.realm.RealmList;
 
 /**
  * @author Carlos Piñan
@@ -32,6 +36,10 @@ public class ChampionSpell implements Parcelable {
     private String key;
     private String costBurn;
     private String tooltip;
+
+    public ChampionSpell() {
+
+    }
 
     protected ChampionSpell(Parcel in) {
         leveltip = in.readParcelable(ChampionSpellTip.class.getClassLoader());
@@ -267,4 +275,40 @@ public class ChampionSpell implements Parcelable {
         this.tooltip = tooltip;
     }
 
+    public RealmChampionSpell getRealmSpell() {
+        RealmChampionSpell s = new RealmChampionSpell();
+        String rangeString = String.valueOf(getRange());
+        if (getRange() instanceof List) {
+            List<String> listRange = (List<String>) getRange();
+            rangeString = ChampionHelper.getStringFromList(listRange);
+        }
+        s.setRange(rangeString);
+        s.setLeveltip(getLeveltip().getRealmSpellTip());
+        s.setResource(getResource());
+        s.setMaxrank(getMaxrank());
+        s.setEffectBurn(ChampionHelper.getStringFromList(getEffectBurn()));
+        s.setImage(getImage().getRealmImage());
+        s.setCooldown(ChampionHelper.getStringFromDoubleList(getCooldown()));
+        s.setCost(ChampionHelper.getStringFromIntegerList(getCost()));
+
+        RealmList<RealmChampionSpellVar> l1 = new RealmList<>();
+        for (ChampionSpellVar var : getVars()) {
+            l1.add(var.getRealmSpellVar());
+        }
+        s.setVars(l1);
+
+        s.setSanitizedDescription(getSanitizedDescription());
+        s.setRangeBurn(getRangeBurn());
+        s.setCostType(getCostType());
+        s.setEffect(ChampionHelper.stringFromDoubleList(getEffect()));
+        s.setCooldownBurn(getCooldownBurn());
+        s.setDescription(getDescription());
+        s.setName(getName());
+        s.setSanitizedTooltip(getSanitizedTooltip());
+        s.setKey(getKey());
+        s.setCostBurn(getCostBurn());
+        s.setTooltip(getTooltip());
+
+        return s;
+    }
 }

@@ -3,18 +3,10 @@ package com.carlospinan.lolguide.data.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.carlospinan.lolguide.data.models.realm.RealmChampion;
-import com.carlospinan.lolguide.data.models.realm.RealmChampionInformation;
-import com.carlospinan.lolguide.data.models.realm.RealmChampionPassive;
-import com.carlospinan.lolguide.data.models.realm.RealmChampionSkin;
-import com.carlospinan.lolguide.data.models.realm.RealmChampionStats;
-import com.carlospinan.lolguide.helpers.ChampionHelper;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Comparator;
 import java.util.List;
-
-import io.realm.RealmList;
 
 /**
  * @author Carlos Piñan
@@ -276,86 +268,6 @@ public class Champion implements Parcelable, Comparator<Champion> {
     @Override
     public int compare(Champion lhs, Champion rhs) {
         return lhs.getName().compareTo(rhs.getName());
-    }
-
-    // Utilities
-    private RealmChampionStats getRealmStats() {
-        ChampionStats s = getStats();
-        RealmChampionStats o = new RealmChampionStats();
-        o.setAttackrange(s.getAttackrange());
-        o.setMpperlevel(s.getMpperlevel());
-        o.setMp(s.getMp());
-        o.setAttackdamage(s.getAttackdamage());
-        o.setHp(s.getHp());
-        o.setHpperlevel(s.getHpperlevel());
-        o.setAttackdamageperlevel(s.getAttackdamageperlevel());
-        o.setArmor(s.getArmor());
-        o.setMpregenperlevel(s.getMpregenperlevel());
-        o.setHpregen(s.getHpregen());
-        o.setCritperlevel(s.getCritperlevel());
-        o.setSpellblockperlevel(s.getSpellblockperlevel());
-        o.setMpregen(s.getMpregen());
-        o.setAttackspeedperlevel(s.getAttackspeedperlevel());
-        o.setSpellblock(s.getSpellblock());
-        o.setMovespeed(s.getMovespeed());
-        o.setAttackspeedoffset(s.getAttackspeedoffset());
-        o.setCrit(s.getCrit());
-        o.setHpregenperlevel(s.getHpregenperlevel());
-        o.setArmorperlevel(s.getArmorperlevel());
-        return o;
-    }
-
-    private RealmChampionInformation getRealmInfo() {
-        ChampionInformation c = getInfo();
-        RealmChampionInformation r = new RealmChampionInformation();
-        r.setAttack(c.getAttack());
-        r.setDefense(c.getDefense());
-        r.setDifficulty(c.getDifficulty());
-        r.setMagic(c.getMagic());
-        return r;
-    }
-
-    private RealmList<RealmChampionSkin> getRealmSkins() {
-        List<ChampionSkin> skins = getSkins();
-        RealmList<RealmChampionSkin> l = new RealmList<>();
-        for (ChampionSkin s : skins) {
-            l.add(s.getRealmSkin());
-        }
-        return l;
-    }
-
-    private RealmChampionPassive getRealmPassive() {
-        ChampionPassive p = getPassive();
-        RealmChampionPassive r = new RealmChampionPassive();
-        r.setDescription(p.getDescription());
-        r.setImage(p.getImage().getRealmImage());
-        r.setName(p.getName());
-        r.setSanitizedDescription(p.getSanitizedDescription());
-        return r;
-    }
-
-    public RealmChampion getRealmChampion() {
-        RealmChampion o = new RealmChampion();
-        o.setChampionId(getChampionId());
-        o.setTitle(getTitle());
-        o.setName(getName());
-        o.setKey(getKey());
-        o.setChampionTags(ChampionHelper.getStringFromList(getChampionTags()));
-        o.setStats(getRealmStats());
-        o.setEnemyTips(ChampionHelper.getStringFromList(getEnemyTips()));
-        o.setAllyTips(ChampionHelper.getStringFromList(getAllyTips()));
-        o.setImage(getImage().getRealmImage());
-        o.setBlurb(getBlurb());
-        o.setLore(getLore());
-        o.setInfo(getRealmInfo());
-        o.setPartype(getPartype());
-        o.setSkins(getRealmSkins());
-        o.setPassive(getRealmPassive());
-        o.setSpells(null);
-        o.setPortraitUri(null);
-        o.setSkinsUris(null);
-        o.setAbilitiesUris(null);
-        return o;
     }
 
 }

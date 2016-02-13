@@ -13,6 +13,9 @@ public class ChampionPassive implements Parcelable {
     private String name;
     private String sanitizedDescription;
 
+    public ChampionPassive() {
+    }
+
     protected ChampionPassive(Parcel in) {
         description = in.readString();
         image = in.readParcelable(LOLImage.class.getClassLoader());

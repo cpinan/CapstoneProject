@@ -1,7 +1,6 @@
 package com.carlospinan.lolguide.dialogs;
 
-import android.app.WallpaperManager;
-import android.graphics.Bitmap;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -10,21 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.carlospinan.lolguide.R;
 import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.models.Champion;
 import com.carlospinan.lolguide.data.models.ChampionSkin;
 import com.carlospinan.lolguide.helpers.StorageHelper;
-
-import java.io.IOException;
+import com.carlospinan.lolguide.services.WallpaperService;
 
 /**
  * @author Carlos Piñan
  */
 public class ChampionSkinDialog extends DialogFragment {
+
+    private Button wallpaperButton;
 
     public static ChampionSkinDialog newInstance(Champion champion, int index) {
         ChampionSkinDialog mChampionInfoDialog = new ChampionSkinDialog();
@@ -48,17 +45,15 @@ public class ChampionSkinDialog extends DialogFragment {
                 skin.getNum()
         );
 
-        final Button wallpaperButton = (Button) view.findViewById(R.id.wallpaperButton);
+        wallpaperButton = (Button) view.findViewById(R.id.wallpaperButton);
         wallpaperButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Glide.with(getActivity()).
-                                load(imageUrl).
-                                asBitmap().
-                                into(
-                                        target
-                                );
+                        Intent intent = new Intent(getActivity(), WallpaperService.class);
+                        intent.putExtra(WallpaperService.IMAGE_PATH_KEY, imageUrl);
+                        getActivity().startService(intent);
+                        dismiss();
                     }
                 }
         );
@@ -75,19 +70,5 @@ public class ChampionSkinDialog extends DialogFragment {
         getDialog().setTitle(champion.getName() + " " + skin.getName());
         return view;
     }
-
-    private SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>() {
-        @Override
-        public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
-            WallpaperManager myWallpaperManager
-                    = WallpaperManager.getInstance(getActivity());
-            try {
-                myWallpaperManager.setBitmap(bitmap);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    };
 
 }

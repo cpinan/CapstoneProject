@@ -28,4 +28,9 @@ public class ChampionSkinsAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return champion.getSkins().size();
     }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return champion.getName() + " - " + champion.getSkins().get(position).getName();
+    }
 }

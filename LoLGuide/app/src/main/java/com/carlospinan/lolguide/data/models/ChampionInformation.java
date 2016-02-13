@@ -13,6 +13,8 @@ public class ChampionInformation implements Parcelable {
     private int difficulty;
     private int magic;
 
+    public ChampionInformation() { /* UNUSED */}
+
     protected ChampionInformation(Parcel in) {
         attack = in.readInt();
         defense = in.readInt();

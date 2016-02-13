@@ -131,4 +131,9 @@ public class StorageHelper {
         return String.format(url, championId, ability);
     }
 
+    // http://www.lolking.net/models?champion=103&skin=0
+    public String getWebWith3DModel(int championId, int numSkin) {
+        return String.format("http://www.lolking.net/models?champion=%d&skin=%d", championId, numSkin);
+    }
+
 }

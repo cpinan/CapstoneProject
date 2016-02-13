@@ -29,6 +29,8 @@ public class ChampionStats implements Parcelable {
     private double hpregenperlevel;
     private double armorperlevel;
 
+    public ChampionStats() { /* UNUSED */}
+
     protected ChampionStats(Parcel in) {
         attackrange = in.readDouble();
         mpperlevel = in.readDouble();

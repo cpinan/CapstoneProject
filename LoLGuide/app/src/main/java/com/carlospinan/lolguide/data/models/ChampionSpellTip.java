@@ -3,6 +3,9 @@ package com.carlospinan.lolguide.data.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.carlospinan.lolguide.data.models.realm.RealmChampionSpellTip;
+import com.carlospinan.lolguide.helpers.ChampionHelper;
+
 import java.util.List;
 
 /**
@@ -12,6 +15,17 @@ public class ChampionSpellTip implements Parcelable {
 
     private List<String> effect;
     private List<String> label;
+
+    public ChampionSpellTip() {
+
+    }
+
+    public RealmChampionSpellTip getRealmSpellTip() {
+        RealmChampionSpellTip r = new RealmChampionSpellTip();
+        r.setEffect(ChampionHelper.getStringFromList(effect));
+        r.setLabel(ChampionHelper.getStringFromList(label));
+        return r;
+    }
 
     protected ChampionSpellTip(Parcel in) {
         effect = in.createStringArrayList();

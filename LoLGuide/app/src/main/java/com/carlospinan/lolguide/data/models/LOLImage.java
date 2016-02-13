@@ -18,6 +18,8 @@ public class LOLImage implements Parcelable {
     private int x;
     private int y;
 
+    public LOLImage() { /* UNUSED */ }
+
     protected LOLImage(Parcel in) {
         full = in.readString();
         group = in.readString();

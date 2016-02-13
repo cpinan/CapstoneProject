@@ -33,4 +33,8 @@
     <string name="no_internet">No internet connection</string>
     <string name="set_as_wallpaper">Set as wallpaper</string>
     <string name="close">Close</string>
+    <string name="setting_wallpaper">Setting wallpaper</string>
+    <string name="wallpaper_ready">Wallpaper ready</string>
+    <string name="error_wallpaper">Error setting wallpaper</string>
+    <string name="wallpaper_title">Wallpaper</string>
 </resources>

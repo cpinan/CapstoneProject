@@ -14,6 +14,9 @@ public class ChampionSkin implements Parcelable {
     private int num;
     private String name;
 
+    public ChampionSkin() {
+    }
+
     protected ChampionSkin(Parcel in) {
         id = in.readInt();
         num = in.readInt();

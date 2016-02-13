@@ -2,8 +2,6 @@ package com.carlospinan.lolguide.dialogs;
 
 import android.app.WallpaperManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -13,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.carlospinan.lolguide.R;
@@ -58,6 +55,7 @@ public class ChampionSkinDialog extends DialogFragment {
                     public void onClick(View v) {
                         Glide.with(getActivity()).
                                 load(imageUrl).
+                                asBitmap().
                                 into(
                                         target
                                 );
@@ -78,14 +76,12 @@ public class ChampionSkinDialog extends DialogFragment {
         return view;
     }
 
-    private SimpleTarget<GlideDrawable> target = new SimpleTarget<GlideDrawable>() {
+    private SimpleTarget<Bitmap> target = new SimpleTarget<Bitmap>() {
         @Override
-        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+        public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
             WallpaperManager myWallpaperManager
                     = WallpaperManager.getInstance(getActivity());
             try {
-                Drawable d = resource.getCurrent();
-                Bitmap bitmap = ((BitmapDrawable) d).getBitmap();
                 myWallpaperManager.setBitmap(bitmap);
             } catch (IOException e) {
                 // TODO Auto-generated catch block

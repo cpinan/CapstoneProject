@@ -30,4 +30,7 @@
     <string name="per_level">Per Level</string>
     <string name="cool_down">CD</string>
     <string name="range">Range</string>
+    <string name="no_internet">No internet connection</string>
+    <string name="set_as_wallpaper">Set as wallpaper</string>
+    <string name="close">Close</string>
 </resources>

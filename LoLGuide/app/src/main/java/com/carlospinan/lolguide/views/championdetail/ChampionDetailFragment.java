@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.carlospinan.lolguide.R;
+import com.carlospinan.lolguide.activities.SkinsActivity;
 import com.carlospinan.lolguide.activities.VideoActivity;
 import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.models.Champion;
@@ -28,6 +29,7 @@ import com.carlospinan.lolguide.data.models.ChampionSpell;
 import com.carlospinan.lolguide.dialogs.ChampionInfoDialog;
 import com.carlospinan.lolguide.dialogs.ChampionSpellDialog;
 import com.carlospinan.lolguide.helpers.APIHelper;
+import com.carlospinan.lolguide.helpers.Helper;
 import com.carlospinan.lolguide.helpers.StorageHelper;
 
 import java.util.List;
@@ -74,6 +76,9 @@ public class ChampionDetailFragment extends Fragment {
     @Bind(R.id.infoContainer)
     View infoContainer;
 
+    @Bind(R.id.rootLayout)
+    View rootLayout;
+
     private Champion champion;
 
     public static ChampionDetailFragment newInstance(Champion champion) {
@@ -110,6 +115,9 @@ public class ChampionDetailFragment extends Fragment {
     }
 
     public void prepareUi(final Champion champion) {
+        if (this.champion == null) {
+            this.champion = champion;
+        }
         abilitiesContainer.removeAllViews();
         allytipsContainer.removeAllViews();
         enemytipsContainer.removeAllViews();
@@ -273,7 +281,18 @@ public class ChampionDetailFragment extends Fragment {
         int id = item.getItemId();
         switch (id) {
             case R.id.skinsAction:
-
+                if (champion != null) {
+                    Intent intent = new Intent(
+                            getActivity(),
+                            SkinsActivity.class
+                    );
+                    intent.putExtra(Globals.PARCEABLE_CHAMPION_KEY, champion);
+                    Helper.get().intentWithConnection(
+                            rootLayout,
+                            getActivity(),
+                            intent
+                    );
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);

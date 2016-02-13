@@ -32,6 +32,7 @@ public class Globals {
     public static final String PARCEABLE_CHAMPION_SPELL = "parceableChampionSpell";
     public static final String TRANSITION_IMAGE_KEY = "transitionImageKey";
     public static final String[] ABILITIES_KEYS = {"Q", "W", "E", "R"};
+    public static final String INDEX_KEY = "index";
 
     // LOL Values
 

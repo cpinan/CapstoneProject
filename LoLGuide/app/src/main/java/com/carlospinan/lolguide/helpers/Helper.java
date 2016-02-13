@@ -1,8 +1,11 @@
 package com.carlospinan.lolguide.helpers;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.provider.Settings;
+import android.support.design.widget.Snackbar;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -92,6 +95,22 @@ public class Helper {
             }
         }
         return codeLanguage == null ? "en_US" : codeLanguage;
+    }
+
+    public void intentWithConnection(
+            View view,
+            Context context,
+            Intent intent
+    ) {
+        if (hasInternetConnection(context)) {
+            context.startActivity(intent);
+        } else {
+            Snackbar.make(
+                    view,
+                    context.getString(R.string.no_internet),
+                    Snackbar.LENGTH_LONG
+            ).show();
+        }
     }
 
 }

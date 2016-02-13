@@ -79,7 +79,7 @@ public class ChampionHelper {
                 List<Double> singleList = new ArrayList<>();
                 List<String> stringList1 = getListStringFromString(s);
                 for (String s1 : stringList1) {
-                    if (s1.isEmpty()) {
+                    if (s1 == null || s1.isEmpty() || s1.equalsIgnoreCase("null")) {
                         singleList.add(null);
                     } else {
                         singleList.add(Double.parseDouble(s1));

@@ -213,6 +213,10 @@ public class ChampionHelper {
         o.setSkins(getRealmSkins(c.getSkins()));
         o.setPassive(getRealmPassive(c.getPassive()));
         o.setSpells(getRealmSpell(c.getSpells()));
+        o.setPassiveUri(c.getPassiveUri());
+        o.setPortraitUri(c.getPortraitUri());
+        o.setAbilitiesUris(c.getAbilitiesUris());
+        o.setSkinsUris(c.getSkinsUris()); // Just default
         return o;
     }
 

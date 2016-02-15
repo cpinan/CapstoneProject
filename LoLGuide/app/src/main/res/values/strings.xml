@@ -37,4 +37,6 @@
     <string name="wallpaper_ready">Wallpaper ready</string>
     <string name="error_wallpaper">Error setting wallpaper</string>
     <string name="wallpaper_title">Wallpaper</string>
+    <string name="saving_champion">Saving champion</string>
+    <string name="error_saving_champion">Error saving champion</string>
 </resources>

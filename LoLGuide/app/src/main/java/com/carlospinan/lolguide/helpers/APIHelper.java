@@ -41,6 +41,10 @@ public class APIHelper {
             return 4;
         } else if (description.contains("e5")) {
             return 5;
+        } else if (description.contains("e6")) {
+            return 6;
+        } else if (description.contains("e7")) {
+            return 7;
         }
         return 1;
     }

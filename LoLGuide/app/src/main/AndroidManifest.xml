@@ -49,6 +49,8 @@
 
         <service android:name=".services.SaveChampionsService" />
 
+        <service android:name=".services.ChampionRemovingService" />
+
     </application>
 
 </manifest>

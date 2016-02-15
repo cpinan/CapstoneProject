@@ -66,7 +66,7 @@ public class ChampionSpellDialog extends DialogFragment {
         Glide.with(spellImageView.getContext()).
                 load(imagePath).
                 placeholder(R.color.colorPrimaryDark).
-                error(android.R.color.holo_red_dark).
+                error(R.drawable.not_available).
                 into(spellImageView);
 
         spellNameTextView.setText(spell.getName());

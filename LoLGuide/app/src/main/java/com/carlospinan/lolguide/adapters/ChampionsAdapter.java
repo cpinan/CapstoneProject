@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -18,10 +19,10 @@ import com.carlospinan.lolguide.helpers.StorageHelper;
 import com.carlospinan.lolguide.listeners.ChampionsAdapterListener;
 import com.github.florent37.glidepalette.GlidePalette;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Carlos Piñan
@@ -56,20 +57,13 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
         if (champion != null && holder != null && holder.championImage != null) {
             ImageView championImage = holder.championImage;
             final TextView championNameTextView = holder.championNameTextView;
-            Context context = championImage.getContext();
             final String path = StorageHelper.get().getChampionPortraitUrl(champion.getImage().getFull());
-
-            Glide.with(context).
-                    load(path).
-                    placeholder(R.color.colorPrimaryDark).
-                    error(R.color.orange).
-                    listener(
-                            GlidePalette.with(path).use(GlidePalette.Profile.VIBRANT)
-                                    .intoBackground(championNameTextView)
-                                    .intoTextColor(championNameTextView)
-                                    .crossfade(true)).
-                    into(championImage);
-
+            loadPortrait(
+                    championImage,
+                    championNameTextView,
+                    path,
+                    champion.getPortraitUri()
+            );
             championNameTextView.setText(champion.getName());
             championImage.setContentDescription(champion.getName());
 
@@ -84,11 +78,8 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
         return filteredChampions.size();
     }
 
-    public void updateChampions(Map<String, Champion> hash) {
-        this.champions = new ArrayList<>();
-        for (Map.Entry<String, Champion> entry : hash.entrySet()) {
-            this.champions.add(entry.getValue());
-        }
+    public void updateChampions(List<Champion> champions) {
+        this.champions = champions;
         Collections.sort(this.champions, new Champion());
         this.filteredChampions = this.champions;
         notifyDataSetChanged();
@@ -103,15 +94,40 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
         return filter;
     }
 
+    private void loadPortrait(
+            ImageView championImage,
+            TextView championNameTextView,
+            String championImageUrl,
+            String portraitUri
+    ) {
+        String loadImage = championImageUrl;
+        if (portraitUri != null && new File(portraitUri).exists()) {
+            loadImage = portraitUri;
+        }
+        Glide.with(championImage.getContext()).
+                load(loadImage).
+                placeholder(R.color.colorPrimaryDark).
+                error(R.drawable.not_available).
+                listener(
+                        GlidePalette.with(loadImage).use(GlidePalette.Profile.VIBRANT)
+                                .intoBackground(championNameTextView)
+                                .intoTextColor(championNameTextView)
+                                .crossfade(true)
+                ).
+                into(championImage);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView championImage;
         public TextView championNameTextView;
+        public ProgressBar progressBar;
 
         public ViewHolder(View itemView) {
             super(itemView);
             championImage = (ImageView) itemView.findViewById(R.id.championImage);
             championNameTextView = (TextView) itemView.findViewById(R.id.championNameTextView);
+            progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
             if (listener != null) {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

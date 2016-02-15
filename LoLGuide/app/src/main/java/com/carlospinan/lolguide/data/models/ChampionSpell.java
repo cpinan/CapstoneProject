@@ -292,8 +292,10 @@ public class ChampionSpell implements Parcelable {
         s.setCost(ChampionHelper.getStringFromIntegerList(getCost()));
 
         RealmList<RealmChampionSpellVar> l1 = new RealmList<>();
-        for (ChampionSpellVar var : getVars()) {
-            l1.add(var.getRealmSpellVar());
+        if (getVars() != null && !getVars().isEmpty()) {
+            for (ChampionSpellVar var : getVars()) {
+                l1.add(var.getRealmSpellVar());
+            }
         }
         s.setVars(l1);
 

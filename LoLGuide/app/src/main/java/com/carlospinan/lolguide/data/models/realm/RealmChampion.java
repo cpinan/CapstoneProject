@@ -31,7 +31,7 @@ public class RealmChampion extends RealmObject {
     private String skinsUris;
     private String passiveUri;
     private String abilitiesUris;
-    private Boolean favorite;
+    private boolean favorite;
 
     public int getChampionId() {
         return championId;
@@ -193,11 +193,11 @@ public class RealmChampion extends RealmObject {
         this.abilitiesUris = abilitiesUris;
     }
 
-    public Boolean getFavorite() {
+    public boolean getFavorite() {
         return favorite;
     }
 
-    public void setFavorite(Boolean favorite) {
+    public void setFavorite(boolean favorite) {
         this.favorite = favorite;
     }
 }

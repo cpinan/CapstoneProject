@@ -38,6 +38,7 @@ public class Champion implements Parcelable, Comparator<Champion> {
     private transient String skinsUris;
     private transient String passiveUri;
     private transient String abilitiesUris;
+    private transient boolean favorite;
 
     public Champion() { /* UNUSED */ }
 
@@ -270,4 +271,11 @@ public class Champion implements Parcelable, Comparator<Champion> {
         return lhs.getName().compareTo(rhs.getName());
     }
 
+    public Boolean getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(Boolean favorite) {
+        this.favorite = favorite;
+    }
 }

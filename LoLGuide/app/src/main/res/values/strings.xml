@@ -39,4 +39,8 @@
     <string name="wallpaper_title">Wallpaper</string>
     <string name="saving_champion">Saving champion</string>
     <string name="error_saving_champion">Error saving champion</string>
+    <string name="champion_saved">Champion Saved</string>
+    <string name="removing_champion">Removing champion</string>
+    <string name="error_removing_champion">Error removing champion</string>
+    <string name="champion_removed">Champion removed</string>
 </resources>

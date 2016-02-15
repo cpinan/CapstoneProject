@@ -3,6 +3,9 @@ package com.carlospinan.lolguide.helpers;
 import com.carlospinan.lolguide.ApplicationController;
 import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.models.realm.RealmChampion;
+import com.carlospinan.lolguide.data.models.realm.RealmChampionSkin;
+import com.carlospinan.lolguide.data.models.realm.RealmChampionSpell;
+import com.carlospinan.lolguide.data.models.realm.RealmChampionSpellVar;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -41,6 +44,34 @@ public class RealmHelper {
                     realm.copyToRealm(c);
                     realm.commitTransaction();
                 }
+            } catch (Exception e) {
+                Globals.testLog(e.getLocalizedMessage());
+            }
+        }
+    }
+
+    public void removeChampion(RealmChampion c) {
+        if (c != null) {
+            try {
+                Realm realm = ApplicationController.getRealm();
+                realm.beginTransaction();
+                c.getStats().removeFromRealm();
+                c.getImage().removeFromRealm();
+                c.getInfo().removeFromRealm();
+                c.getPassive().getImage().removeFromRealm();
+                c.getPassive().removeFromRealm();
+                for (RealmChampionSkin skin : c.getSkins()) {
+                    skin.removeFromRealm();
+                }
+                for (RealmChampionSpell spell : c.getSpells()) {
+                    for (RealmChampionSpellVar var : spell.getVars()) {
+                        var.removeFromRealm();
+                    }
+                    spell.removeFromRealm();
+                }
+                c.removeFromRealm();
+                realm.commitTransaction();
+                realm.refresh();
             } catch (Exception e) {
                 Globals.testLog(e.getLocalizedMessage());
             }

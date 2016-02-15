@@ -22,6 +22,8 @@ public class StorageHelper {
     public static final String LOL_API_VERSION_KEY = "com.carlospinan.lolguide.lolapiversionkey";
     public static final String LOL_REGION_KEY = "com.carlospinan.lolguide.lolregionkey";
     public static final String LOL_LANGUAGES_KEY = "com.carlospinan.lolguide.lollanguageskey";
+    public static final String LOL_CHAMPION_STORAGE_KEY = "com.carlospinan.lolguide.championstoragekey";
+    public static final String LOL_CHAMPION_STATE_SAVE_KEY = "com.carlospinan.lolguide.championstatesavekey";
 
     private static StorageHelper instance;
 
@@ -50,6 +52,26 @@ public class StorageHelper {
         return getStorage().getString(key, defaultValue);
     }
 
+    public boolean isChampionSaving(int championId) {
+        return getStorage().getBoolean(LOL_CHAMPION_STATE_SAVE_KEY + "_" + championId, false);
+    }
+
+    public void championIsSaving(int championId, boolean state) {
+        getStorage().edit().putBoolean(LOL_CHAMPION_STATE_SAVE_KEY + "_" + championId, state).commit();
+    }
+
+    public void saveChampion(int championId, boolean state) {
+        getStorage().edit().putBoolean(LOL_CHAMPION_STORAGE_KEY + "_" + championId, state).commit();
+    }
+
+    public void saveChampion(int championId) {
+        saveChampion(championId, true);
+    }
+
+    public boolean getChampion(int championId) {
+        return getStorage().getBoolean(LOL_CHAMPION_STORAGE_KEY + "_" + championId, false);
+    }
+
     // Set language
     public void saveLanguages(List<String> languages) {
         saveString(LOL_LANGUAGES_KEY, ChampionHelper.getStringFromList(languages));
@@ -69,6 +91,10 @@ public class StorageHelper {
             cdn = cdn.substring(0, cdn.length() - 1);
         }
         return cdn;
+    }
+
+    public void setVersion(String version) {
+        saveString(LOL_API_VERSION_KEY, version);
     }
 
     public String getVersion() {

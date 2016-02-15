@@ -56,6 +56,7 @@ public class ChampionHelper {
         c.setPortraitUri(r.getPortraitUri());
         c.setSkinsUris(r.getSkinsUris());
         c.setAbilitiesUris(r.getAbilitiesUris());
+        c.setFavorite(r.getFavorite());
         return c;
     }
 
@@ -217,6 +218,11 @@ public class ChampionHelper {
         o.setPortraitUri(c.getPortraitUri());
         o.setAbilitiesUris(c.getAbilitiesUris());
         o.setSkinsUris(c.getSkinsUris()); // Just default
+        if (c.getFavorite() != null) {
+            o.setFavorite(c.getFavorite());
+        } else {
+            o.setFavorite(false);
+        }
         return o;
     }
 

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.NetworkOnMainThreadException;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,12 +25,9 @@ import com.carlospinan.lolguide.R;
 import com.carlospinan.lolguide.activities.ChampionDetailActivity;
 import com.carlospinan.lolguide.adapters.ChampionsAdapter;
 import com.carlospinan.lolguide.data.Globals;
-import com.carlospinan.lolguide.data.enums.ChampDataEnum;
 import com.carlospinan.lolguide.data.models.Champion;
-import com.carlospinan.lolguide.data.responses.ChampionsResponse;
 import com.carlospinan.lolguide.helpers.APIHelper;
 import com.carlospinan.lolguide.helpers.StorageHelper;
-import com.carlospinan.lolguide.listeners.APICallback;
 import com.carlospinan.lolguide.listeners.ChampionsAdapterListener;
 import com.carlospinan.lolguide.listeners.OnFragmentListener;
 
@@ -68,10 +64,14 @@ public class ChampionListFragment extends Fragment
     private ChampionsAdapter championsAdapter;
 
     private Call<List<String>> languagesCall;
-    private Call<ChampionsResponse> championsResponseCall;
 
-    public static ChampionListFragment newInstance() {
+    private Boolean inFavoriteMode;
+
+    public static ChampionListFragment newInstance(boolean inFavoriteMode) {
         ChampionListFragment mChampionListFragment = new ChampionListFragment();
+        Bundle arguments = new Bundle();
+        arguments.putBoolean(Globals.FAVORITE_KEY, inFavoriteMode);
+        mChampionListFragment.setArguments(arguments);
         return mChampionListFragment;
     }
 
@@ -86,6 +86,11 @@ public class ChampionListFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_champion, container, false);
         ButterKnife.bind(this, view);
+        presenter = new ChampionListPresenter(this);
+
+        if (getArguments() != null) {
+            inFavoriteMode = getArguments().getBoolean(Globals.FAVORITE_KEY, false);
+        }
 
         swipeRefreshView = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshView);
 
@@ -129,21 +134,9 @@ public class ChampionListFragment extends Fragment
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        presenter = new ChampionListPresenter(this);
-    }
-
-    @Override
     public void onPause() {
+        presenter.onPause();
         super.onPause();
-        if (championsResponseCall != null) {
-            try {
-                championsResponseCall.cancel();
-            } catch (NetworkOnMainThreadException e) {
-
-            }
-        }
     }
 
     @Override
@@ -168,12 +161,7 @@ public class ChampionListFragment extends Fragment
     }
 
     private void refreshChampionsAndShowLoading() {
-        swipeRefreshView.post(new Runnable() {
-            @Override
-            public void run() {
-                swipeRefreshView.setRefreshing(true);
-            }
-        });
+        setProgressIndicator(true);
         loadLanguages();
     }
 
@@ -199,45 +187,40 @@ public class ChampionListFragment extends Fragment
 
     private void refreshChampions() {
         errorTextView.setVisibility(View.GONE);
-        championsResponseCall = APIHelper.get().lolStaticAPI().getChampions(
-                new APICallback<ChampionsResponse>() {
-                    @Override
-                    public void onSuccess(ChampionsResponse response) {
-                        searchView.setQuery("", false);
-                        championsAdapter.updateChampions(response.getData());
-                        stopLoading();
-                    }
-
-                    @Override
-                    public void onFail(Throwable throwable) {
-                        if (championsAdapter == null || championsAdapter.getChampions().isEmpty()) {
-                            errorTextView.setVisibility(View.VISIBLE);
-                        }
-                        stopLoading();
-                    }
-                },
-                ChampDataEnum.image, ChampDataEnum.spells,
-                ChampDataEnum.allytips, ChampDataEnum.enemytips,
-                ChampDataEnum.info, ChampDataEnum.lore,
-                ChampDataEnum.passive, ChampDataEnum.skins,
-                ChampDataEnum.stats, ChampDataEnum.tags,
-                ChampDataEnum.blurb
+        presenter.refreshChampions(
+                getActivity(),
+                inFavoriteMode
         );
     }
 
     @Override
-    public void setProgressIndicator(boolean active) {
-
-    }
-
-    //
-    private void stopLoading() {
+    public void setProgressIndicator(final boolean active) {
         swipeRefreshView.post(new Runnable() {
             @Override
             public void run() {
-                swipeRefreshView.setRefreshing(false);
+                swipeRefreshView.setRefreshing(active);
             }
         });
+    }
+
+    @Override
+    public void onSuccess(List<Champion> championList) {
+        if (searchView != null) {
+            searchView.setQuery("", false);
+        }
+        championsAdapter.updateChampions(championList);
+        if (championList.isEmpty()) {
+            errorTextView.setVisibility(View.VISIBLE);
+        }
+        setProgressIndicator(false);
+    }
+
+    @Override
+    public void onFail() {
+        if (championsAdapter == null || championsAdapter.getChampions().isEmpty()) {
+            errorTextView.setVisibility(View.VISIBLE);
+        }
+        setProgressIndicator(false);
     }
 
     @Override
@@ -261,6 +244,7 @@ public class ChampionListFragment extends Fragment
             searchView.setIconifiedByDefault(false);
             searchView.setIconified(false);
             searchView.setQueryHint(getString(R.string.enter_champion_name));
+            searchView.clearFocus();
 
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override

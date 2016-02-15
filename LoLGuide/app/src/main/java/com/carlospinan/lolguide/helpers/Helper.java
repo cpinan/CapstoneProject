@@ -2,7 +2,10 @@ package com.carlospinan.lolguide.helpers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
+import android.os.Environment;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -16,6 +19,10 @@ import com.carlospinan.lolguide.R;
 import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.enums.ChampDataEnum;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Locale;
 
@@ -23,6 +30,8 @@ import java.util.Locale;
  * @author Carlos Piñan
  */
 public class Helper {
+
+    private static final String PATH = "/ChampionsImage/com.carlospinan.champions";
 
     private static Helper instance;
 
@@ -111,6 +120,39 @@ public class Helper {
                     Snackbar.LENGTH_LONG
             ).show();
         }
+    }
+
+    public String saveBitmap(Bitmap bitmap, String filename) {
+        String baseDirectory = Environment.getExternalStorageDirectory().getAbsolutePath() + PATH;
+        File fileDirectory = new File(baseDirectory);
+        if (!fileDirectory.exists()) {
+            fileDirectory.mkdirs();
+        }
+        File fileBitmap = new File(fileDirectory, filename);
+        if (fileBitmap.exists()) {
+            fileBitmap.delete();
+        }
+        OutputStream outStream;
+        try {
+            outStream = new FileOutputStream(fileBitmap);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+            outStream.flush();
+            outStream.close();
+        } catch (IOException e) {
+        }
+        return fileBitmap.getAbsolutePath();
+    }
+
+    public Bitmap getBitmapFromFilename(String filepath) {
+        String baseDirectory = Environment.getExternalStorageDirectory().getAbsolutePath() + PATH;
+        File fileDirectory = new File(baseDirectory);
+        if (!fileDirectory.exists()) {
+            fileDirectory.mkdirs();
+            return null;
+        }
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        Bitmap bitmap = BitmapFactory.decodeFile(filepath, bmOptions);
+        return bitmap;
     }
 
 }

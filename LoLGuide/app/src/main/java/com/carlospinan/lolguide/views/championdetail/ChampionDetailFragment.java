@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
@@ -16,12 +17,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.carlospinan.lolguide.R;
 import com.carlospinan.lolguide.activities.SkinsActivity;
 import com.carlospinan.lolguide.activities.VideoActivity;
+import com.carlospinan.lolguide.customview.WorkaroundNestedScrollView;
 import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.models.Champion;
 import com.carlospinan.lolguide.data.models.ChampionPassive;
@@ -40,7 +43,7 @@ import butterknife.ButterKnife;
 /**
  * @author Carlos Piñan
  */
-public class ChampionDetailFragment extends Fragment {
+public class ChampionDetailFragment extends Fragment implements ChampionDetailContract.View {
 
     private static final float MAX_BAR_VALUE = 10.0f;
     private static final long BAR_ANIMATION_TIME = 1500L;
@@ -79,7 +82,17 @@ public class ChampionDetailFragment extends Fragment {
     @Bind(R.id.rootLayout)
     View rootLayout;
 
+    @Bind(R.id.favoriteChampionsAction)
+    FloatingActionButton favoriteChampionsAction;
+
+    @Bind(R.id.progressBar)
+    ProgressBar progressBar;
+
+    @Bind(R.id.nestedScrollView)
+    WorkaroundNestedScrollView nestedScrollView;
+
     private Champion champion;
+    private ChampionDetailPresenter presenter;
 
     public static ChampionDetailFragment newInstance(Champion champion) {
         ChampionDetailFragment mChampionDetailFragment = new ChampionDetailFragment();
@@ -100,9 +113,28 @@ public class ChampionDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detail_champion, container, false);
         ButterKnife.bind(this, view);
+        presenter = new ChampionDetailPresenter(this);
         if (getArguments() != null) {
             champion = getArguments().getParcelable(Globals.PARCEABLE_CHAMPION_KEY);
+            updateFavoriteButton(champion.getChampionId());
         }
+        favoriteChampionsAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (champion != null) {
+                    int championId = champion.getChampionId();
+                    if (!StorageHelper.get().getChampion(championId)) {
+                        presenter.saveChampion(getActivity(), championId);
+                    } else {
+                        presenter.removeChampion(getActivity(), championId);
+                    }
+                }
+            }
+        });
+
+        progressBar.setVisibility(View.VISIBLE);
+        favoriteChampionsAction.setVisibility(View.GONE);
+        nestedScrollView.setVisibility(View.GONE);
         return view;
     }
 
@@ -114,7 +146,19 @@ public class ChampionDetailFragment extends Fragment {
         }
     }
 
+    private void updateFavoriteButton(int championId) {
+        if (!StorageHelper.get().getChampion(championId)) {
+            favoriteChampionsAction.setColorFilter(getResources().getColor(R.color.yellow));
+        } else {
+            favoriteChampionsAction.setColorFilter(getResources().getColor(R.color.black));
+        }
+    }
+
     public void prepareUi(final Champion champion) {
+        progressBar.setVisibility(View.GONE);
+        favoriteChampionsAction.setVisibility(View.VISIBLE);
+        nestedScrollView.setVisibility(View.VISIBLE);
+
         if (this.champion == null) {
             this.champion = champion;
         }
@@ -232,7 +276,7 @@ public class ChampionDetailFragment extends Fragment {
         Glide.with(imageView.getContext()).
                 load(imagePath).
                 placeholder(R.color.colorPrimaryDark).
-                error(android.R.color.holo_red_dark).
+                error(R.drawable.not_available).
                 into(imageView);
 
         view.findViewById(R.id.abilityImageContainer).setOnClickListener(new View.OnClickListener() {
@@ -296,5 +340,10 @@ public class ChampionDetailFragment extends Fragment {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onComplete() {
+        updateFavoriteButton(champion.getChampionId());
     }
 }

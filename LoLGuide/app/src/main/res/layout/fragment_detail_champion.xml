@@ -80,33 +80,10 @@
 
             </RelativeLayout>
 
-            <include
-                android:id="@+id/attackBarView"
-                layout="@layout/row_champion_bar"
+            <com.carlospinan.lolguide.customview.ChampionInformationView
+                android:id="@+id/championInformationView"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/champion_bar_height"
-                android:layout_below="@id/attributesTextView"
-                android:layout_marginBottom="@dimen/champion_name_padding" />
-
-            <include
-                android:id="@+id/defenseBarView"
-                layout="@layout/row_champion_bar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/champion_bar_height"
-                android:layout_marginBottom="@dimen/champion_name_padding" />
-
-            <include
-                android:id="@+id/magicBarView"
-                layout="@layout/row_champion_bar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/champion_bar_height"
-                android:layout_marginBottom="@dimen/champion_name_padding" />
-
-            <include
-                android:id="@+id/difficultyBarView"
-                layout="@layout/row_champion_bar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/champion_bar_height"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/champion_name_padding" />
 
             <TextView

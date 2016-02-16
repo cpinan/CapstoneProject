@@ -51,6 +51,20 @@
 
         <service android:name=".services.ChampionRemovingService" />
 
+        <service
+            android:name=".services.RemoteServiceDailyChampion"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <receiver android:name=".widgets.WidgetDailyChampion">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/xml_widget_day_champion" />
+        </receiver>
+
     </application>
 
 </manifest>

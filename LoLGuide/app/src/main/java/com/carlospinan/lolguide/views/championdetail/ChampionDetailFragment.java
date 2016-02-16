@@ -1,6 +1,5 @@
 package com.carlospinan.lolguide.views.championdetail;
 
-import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.carlospinan.lolguide.R;
 import com.carlospinan.lolguide.activities.SkinsActivity;
 import com.carlospinan.lolguide.activities.VideoActivity;
+import com.carlospinan.lolguide.customview.ChampionInformationView;
 import com.carlospinan.lolguide.customview.WorkaroundNestedScrollView;
 import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.models.Champion;
@@ -44,22 +44,6 @@ import butterknife.ButterKnife;
  * @author Carlos Piñan
  */
 public class ChampionDetailFragment extends Fragment implements ChampionDetailContract.View {
-
-    private static final float MAX_BAR_VALUE = 10.0f;
-    private static final long BAR_ANIMATION_TIME = 1500L;
-    private static final long BAR_DELAY_START_TIME = 150L;
-
-    @Bind(R.id.attackBarView)
-    View attackBarView;
-
-    @Bind(R.id.defenseBarView)
-    View defenseBarView;
-
-    @Bind(R.id.magicBarView)
-    View magicBarView;
-
-    @Bind(R.id.difficultyBarView)
-    View difficultyBarView;
 
     @Bind(R.id.abilitiesContainer)
     LinearLayout abilitiesContainer;
@@ -90,6 +74,9 @@ public class ChampionDetailFragment extends Fragment implements ChampionDetailCo
 
     @Bind(R.id.nestedScrollView)
     WorkaroundNestedScrollView nestedScrollView;
+
+    @Bind(R.id.championInformationView)
+    ChampionInformationView championInformationView;
 
     private Champion champion;
     private ChampionDetailPresenter presenter;
@@ -187,10 +174,7 @@ public class ChampionDetailFragment extends Fragment implements ChampionDetailCo
         attributes = attributes.trim();
         attributesTextView.setText(attributes);
 
-        runBarAnimation(R.drawable.drawable_bar_attack, getString(R.string.attack), attackBarView, champion.getInfo().getAttack());
-        runBarAnimation(R.drawable.drawable_bar_defense, getString(R.string.health), defenseBarView, champion.getInfo().getDefense());
-        runBarAnimation(R.drawable.drawable_bar_magic, getString(R.string.magic), magicBarView, champion.getInfo().getMagic());
-        runBarAnimation(R.drawable.drawable_bar_difficult, getString(R.string.difficulty), difficultyBarView, champion.getInfo().getDifficulty());
+        championInformationView.setInformation(champion.getInfo());
 
         // Passive and abilities.
         ChampionPassive passive = champion.getPassive();
@@ -226,20 +210,6 @@ public class ChampionDetailFragment extends Fragment implements ChampionDetailCo
         // Ally and Enemy Tips
         loadTips(allytipsContainer, champion.getAllyTips());
         loadTips(enemytipsContainer, champion.getEnemyTips());
-    }
-
-    private void runBarAnimation(int backgroundResource, String title, View view, int data) {
-        ImageView championBar = (ImageView) view.findViewById(R.id.championBar);
-        TextView descriptionTextView = (TextView) view.findViewById(R.id.descriptionTextView);
-        if (championBar != null) {
-            championBar.setBackgroundResource(backgroundResource);
-        }
-        descriptionTextView.setText(title);
-        championBar.setContentDescription(title + ": " + data + "/" + MAX_BAR_VALUE);
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(championBar, "scaleX", (float) (data / MAX_BAR_VALUE));
-        objectAnimator.setDuration(BAR_ANIMATION_TIME);
-        objectAnimator.setStartDelay(BAR_DELAY_START_TIME);
-        objectAnimator.start();
     }
 
     private void loadAbility(

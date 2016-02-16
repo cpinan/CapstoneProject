@@ -20,5 +20,10 @@
             android:id="@+id/rateThisAppAction"
             android:tint="@color/button_grey"
             android:title="@string/rate_this_app" />
+
+        <item
+            android:id="@+id/settingAction"
+            android:tint="@color/button_grey"
+            android:title="@string/setting" />
     </group>
 </menu>

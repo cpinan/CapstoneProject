@@ -43,4 +43,6 @@
     <string name="removing_champion">Removing champion</string>
     <string name="error_removing_champion">Error removing champion</string>
     <string name="champion_removed">Champion removed</string>
+    <string name="setting">Settings</string>
+    <string name="share">Share</string>
 </resources>

@@ -50,7 +50,7 @@ public class ChampionSpellDialog extends DialogFragment {
         String rangeString;
         if (range instanceof List) {
             List<String> rangeList = (List<String>) range;
-            rangeString = rangeList.get(0);
+            rangeString = String.valueOf(rangeList.get(0));
         } else {
             rangeString = String.valueOf(range);
         }

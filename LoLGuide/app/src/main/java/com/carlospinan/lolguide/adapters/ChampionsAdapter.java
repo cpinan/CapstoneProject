@@ -39,7 +39,6 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
 
     public ChampionsAdapter(Context context, List<Champion> champions, ChampionsAdapterListener listener) {
         this.champions = champions;
-        Collections.sort(this.champions, new Champion());
         this.filteredChampions = this.champions;
         this.filter = new ChampionFilter();
         this.listener = listener;

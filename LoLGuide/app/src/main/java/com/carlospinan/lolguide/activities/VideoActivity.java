@@ -4,7 +4,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
@@ -12,7 +11,9 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.carlospinan.lolguide.R;
+import com.carlospinan.lolguide.helpers.Helper;
 import com.carlospinan.lolguide.helpers.StorageHelper;
+import com.google.android.gms.ads.AdView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -20,7 +21,7 @@ import butterknife.ButterKnife;
 /**
  * @author Carlos Piñan
  */
-public class VideoActivity extends AppCompatActivity {
+public class VideoActivity extends BaseActivity {
 
     public static final String CHAMPION_ID_KEY = "championIdKey";
     public static final String CHAMPION_ABILITY_KEY = "championAbilityKey"; // 1 = passive 5 = R
@@ -31,6 +32,7 @@ public class VideoActivity extends AppCompatActivity {
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
 
+    private AdView mAdView;
     private MediaController mediaController;
 
     @Override
@@ -71,6 +73,8 @@ public class VideoActivity extends AppCompatActivity {
                 showErrorAndTerminate();
             }
         }
+        mAdView = (AdView) findViewById(R.id.adView);
+        mAdView.loadAd(Helper.get().getAdRequest());
     }
 
     private void showErrorAndTerminate() {
@@ -89,5 +93,21 @@ public class VideoActivity extends AppCompatActivity {
             videoView.stopPlayback();
         }
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
     }
 }

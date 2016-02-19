@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.carlospinan.lolguide.R;
 import com.carlospinan.lolguide.activities.ChampionDetailActivity;
+import com.carlospinan.lolguide.activities.ChampionListActivity;
 import com.carlospinan.lolguide.adapters.ChampionsAdapter;
 import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.models.Champion;
@@ -30,6 +31,8 @@ import com.carlospinan.lolguide.helpers.APIHelper;
 import com.carlospinan.lolguide.helpers.StorageHelper;
 import com.carlospinan.lolguide.listeners.ChampionsAdapterListener;
 import com.carlospinan.lolguide.listeners.OnFragmentListener;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -208,11 +211,16 @@ public class ChampionListFragment extends Fragment
         if (searchView != null) {
             searchView.setQuery("", false);
         }
-        championsAdapter.updateChampions(championList);
         if (championList.isEmpty()) {
             errorTextView.setVisibility(View.VISIBLE);
         }
         setProgressIndicator(false);
+        if (onFragmentListener.isTwoPane() &&
+                championsAdapter.getChampions().isEmpty() &&
+                championList.get(0) != null) {
+            updateChampionDetail(championList.get(0));
+        }
+        championsAdapter.updateChampions(championList);
     }
 
     @Override
@@ -225,14 +233,29 @@ public class ChampionListFragment extends Fragment
 
     @Override
     public void onClickChampion(View view, Champion champion) {
-        String transitionName = "";
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            transitionName = view.getTransitionName();
+        Tracker mTracker = onFragmentListener.getTracker();
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Champion Click")
+                .setAction(champion.getName() + " clicked")
+                .build());
+
+        if (!onFragmentListener.isTwoPane()) {
+            String transitionName = "";
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                transitionName = view.getTransitionName();
+            }
+            Intent intent = new Intent(getActivity(), ChampionDetailActivity.class);
+            intent.putExtra(Globals.PARCEABLE_CHAMPION_KEY, champion);
+            intent.putExtra(Globals.TRANSITION_IMAGE_KEY, transitionName);
+            startActivity(intent);
+        } else {
+            updateChampionDetail(champion);
         }
-        Intent intent = new Intent(getActivity(), ChampionDetailActivity.class);
-        intent.putExtra(Globals.PARCEABLE_CHAMPION_KEY, champion);
-        intent.putExtra(Globals.TRANSITION_IMAGE_KEY, transitionName);
-        startActivity(intent);
+    }
+
+    private void updateChampionDetail(Champion champion) {
+        ChampionListActivity activity = (ChampionListActivity) getActivity();
+        activity.updateChampionDetail(champion);
     }
 
     @Override

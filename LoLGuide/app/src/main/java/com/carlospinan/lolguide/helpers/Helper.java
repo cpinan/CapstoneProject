@@ -18,6 +18,7 @@ import com.bumptech.glide.request.target.Target;
 import com.carlospinan.lolguide.R;
 import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.enums.ChampDataEnum;
+import com.google.android.gms.ads.AdRequest;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,6 +32,7 @@ import java.util.Locale;
  */
 public class Helper {
 
+    private static final String ADS_DEVICE_TEST = "E55B949B3153747DAAB92A74F4CE6BED";
     private static final String PATH = "/ChampionsImage/com.carlospinan.champions";
 
     private static Helper instance;
@@ -153,6 +155,10 @@ public class Helper {
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         Bitmap bitmap = BitmapFactory.decodeFile(filepath, bmOptions);
         return bitmap;
+    }
+
+    public AdRequest getAdRequest() {
+        return new AdRequest.Builder().addTestDevice(ADS_DEVICE_TEST).build();
     }
 
 }

@@ -8,7 +8,8 @@
     <com.carlospinan.lolguide.customview.WorkaroundNestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -121,6 +122,8 @@
                 android:id="@+id/allytipsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/activity_vertical_margin" />
@@ -141,6 +144,8 @@
                 android:id="@+id/enemytipsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/activity_vertical_margin" />
@@ -159,7 +164,8 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/dimen8"
         android:src="@drawable/favorite_on"
-        android:tint="@color/white" />
+        android:tint="@color/white"
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/progressBar"

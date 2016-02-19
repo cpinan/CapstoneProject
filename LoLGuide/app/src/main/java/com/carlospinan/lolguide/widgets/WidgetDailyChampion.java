@@ -31,7 +31,7 @@ public class WidgetDailyChampion extends AppWidgetProvider {
             // When intents are compared, the extras are ignored, so we need to embed the extras
             // into the data so that the extras will not be ignored.
             intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
-            remoteViews.setRemoteAdapter(widgetId, R.id.dailyChampionsListView, intent);
+            remoteViews.setRemoteAdapter(R.id.dailyChampionsListView, intent);
             remoteViews.setEmptyView(R.id.dailyChampionsListView, android.R.id.list);
 
             appWidgetManager.updateAppWidget(widgetId, remoteViews);

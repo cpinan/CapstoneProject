@@ -20,9 +20,12 @@ import com.bumptech.glide.request.target.Target;
 import com.carlospinan.lolguide.R;
 import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.models.Champion;
+import com.carlospinan.lolguide.helpers.Helper;
 import com.carlospinan.lolguide.helpers.StorageHelper;
 import com.carlospinan.lolguide.listeners.OnFragmentListener;
 import com.carlospinan.lolguide.views.championdetail.ChampionDetailFragment;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.analytics.Tracker;
 
 import java.io.File;
 
@@ -47,6 +50,7 @@ public class ChampionDetailActivity extends BaseActivity implements OnFragmentLi
     ProgressBar progressBar;
 
     private Champion champion;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,6 +104,8 @@ public class ChampionDetailActivity extends BaseActivity implements OnFragmentLi
             // Being here means we are in animation mode
 //            supportPostponeEnterTransition();
         }
+        mAdView = (AdView) findViewById(R.id.adView);
+        mAdView.loadAd(Helper.get().getAdRequest());
     }
 
     @Override
@@ -113,6 +119,11 @@ public class ChampionDetailActivity extends BaseActivity implements OnFragmentLi
     }
 
     @Override
+    public Tracker getTracker() {
+        return mTracker;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
@@ -120,5 +131,21 @@ public class ChampionDetailActivity extends BaseActivity implements OnFragmentLi
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
     }
 }

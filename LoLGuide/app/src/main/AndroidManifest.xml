@@ -36,8 +36,6 @@
 
         <activity android:name=".activities.SkinsActivity" />
 
-        <activity android:name=".activities.ChampionAbilitiesActivity" />
-
         <activity
             android:name=".activities.VideoActivity"
             android:screenOrientation="landscape"

@@ -16,6 +16,7 @@ import com.carlospinan.lolguide.listeners.AsyncTaskCallback;
 import com.carlospinan.lolguide.services.AsyncTaskService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -61,6 +62,7 @@ public class ChampionListPresenter implements ChampionListContract.UserActionsLi
                                     for (Map.Entry<String, Champion> entry : response.getData().entrySet()) {
                                         championList.add(entry.getValue());
                                     }
+                                    Collections.sort(championList, new Champion());
 
 //                                    if (championList != null && !championList.isEmpty()) {
 //                                        Intent intent = new Intent(activity, SaveChampionsService.class);

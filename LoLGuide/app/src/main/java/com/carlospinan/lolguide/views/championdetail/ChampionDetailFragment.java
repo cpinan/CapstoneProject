@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
@@ -79,6 +80,7 @@ public class ChampionDetailFragment extends Fragment implements ChampionDetailCo
     ChampionInformationView championInformationView;
 
     private Champion champion;
+    private MenuItem galleryItem;
     private ChampionDetailPresenter presenter;
 
     public static ChampionDetailFragment newInstance(Champion champion) {
@@ -101,20 +103,23 @@ public class ChampionDetailFragment extends Fragment implements ChampionDetailCo
         View view = inflater.inflate(R.layout.fragment_detail_champion, container, false);
         ButterKnife.bind(this, view);
         presenter = new ChampionDetailPresenter(this);
-        if (getArguments() != null) {
+        if (getArguments() != null && getArguments().containsKey(Globals.PARCEABLE_CHAMPION_KEY)) {
             champion = getArguments().getParcelable(Globals.PARCEABLE_CHAMPION_KEY);
-            updateFavoriteButton(champion.getChampionId());
+        }
+        if (champion == null && savedInstanceState != null && savedInstanceState.containsKey(Globals.PARCEABLE_CHAMPION_KEY)) {
+            champion = savedInstanceState.getParcelable(Globals.PARCEABLE_CHAMPION_KEY);
         }
         favoriteChampionsAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (champion != null) {
-                    int championId = champion.getChampionId();
-                    if (!StorageHelper.get().getChampion(championId)) {
-                        presenter.saveChampion(getActivity(), championId);
-                    } else {
-                        presenter.removeChampion(getActivity(), championId);
-                    }
+                if (Helper.get().hasInternetConnection(getActivity())) {
+                    processChampion();
+                } else {
+                    Snackbar.make(
+                            v,
+                            getString(R.string.no_internet),
+                            Snackbar.LENGTH_LONG
+                    ).show();
                 }
             }
         });
@@ -122,7 +127,24 @@ public class ChampionDetailFragment extends Fragment implements ChampionDetailCo
         progressBar.setVisibility(View.VISIBLE);
         favoriteChampionsAction.setVisibility(View.GONE);
         nestedScrollView.setVisibility(View.GONE);
+
+        if (champion != null) {
+            updateFavoriteButton(champion.getChampionId());
+            prepareUi(champion);
+        }
+
         return view;
+    }
+
+    private void processChampion() {
+        if (champion != null) {
+            int championId = champion.getChampionId();
+            if (!StorageHelper.get().getChampion(championId)) {
+                presenter.saveChampion(getActivity(), championId);
+            } else {
+                presenter.removeChampion(getActivity(), championId);
+            }
+        }
     }
 
     @Override
@@ -142,12 +164,13 @@ public class ChampionDetailFragment extends Fragment implements ChampionDetailCo
     }
 
     public void prepareUi(final Champion champion) {
+        this.champion = champion;
+        nestedScrollView.scrollTo(0, 0);
         progressBar.setVisibility(View.GONE);
         favoriteChampionsAction.setVisibility(View.VISIBLE);
         nestedScrollView.setVisibility(View.VISIBLE);
-
-        if (this.champion == null) {
-            this.champion = champion;
+        if (galleryItem != null) {
+            galleryItem.setVisible(true);
         }
         abilitiesContainer.removeAllViews();
         allytipsContainer.removeAllViews();
@@ -287,6 +310,8 @@ public class ChampionDetailFragment extends Fragment implements ChampionDetailCo
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_champion, menu);
+        galleryItem = menu.findItem(R.id.skinsAction);
+        galleryItem.setVisible(champion != null);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -315,5 +340,13 @@ public class ChampionDetailFragment extends Fragment implements ChampionDetailCo
     @Override
     public void onComplete() {
         updateFavoriteButton(champion.getChampionId());
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (champion != null) {
+            outState.putParcelable(Globals.PARCEABLE_CHAMPION_KEY, champion);
+        }
+        super.onSaveInstanceState(outState);
     }
 }

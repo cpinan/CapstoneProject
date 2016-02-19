@@ -18,8 +18,14 @@ import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 
 import com.carlospinan.lolguide.R;
+import com.carlospinan.lolguide.data.models.Champion;
+import com.carlospinan.lolguide.helpers.Helper;
 import com.carlospinan.lolguide.listeners.OnFragmentListener;
+import com.carlospinan.lolguide.views.championdetail.ChampionDetailFragment;
 import com.carlospinan.lolguide.views.championlist.ChampionListFragment;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,6 +43,8 @@ public class ChampionListActivity extends BaseActivity implements OnFragmentList
 
     @Bind(R.id.navView)
     NavigationView navView;
+
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +79,8 @@ public class ChampionListActivity extends BaseActivity implements OnFragmentList
                             case R.id.rateThisAppAction:
                                 rateApp();
                                 break;
+                            case R.id.settingAction:
+                                break;
                         }
                         item.setChecked(true);
                         drawer.closeDrawers();
@@ -79,10 +89,23 @@ public class ChampionListActivity extends BaseActivity implements OnFragmentList
                 }
         );
 
+        if (findViewById(R.id.secondaryContainer) == null) {
+            isTwoPane = false;
+        } else {
+            if (savedInstanceState == null) {
+                FragmentManager supportFragmentManager = getSupportFragmentManager();
+                FragmentTransaction transaction = supportFragmentManager.beginTransaction();
+                transaction.replace(R.id.secondaryContainer, ChampionDetailFragment.newInstance(null));
+                transaction.commit();
+            }
+        }
+
         if (savedInstanceState == null) {
             setChampionListFragment(false);
-            isTwoPane = false;
         }
+
+        mAdView = (AdView) findViewById(R.id.adView);
+        mAdView.loadAd(Helper.get().getAdRequest());
     }
 
     @Override
@@ -93,6 +116,11 @@ public class ChampionListActivity extends BaseActivity implements OnFragmentList
     @Override
     public void onNotification(String message) {
         Snackbar.make(rootLayout, message, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public Tracker getTracker() {
+        return mTracker;
     }
 
     @Override
@@ -129,4 +157,29 @@ public class ChampionListActivity extends BaseActivity implements OnFragmentList
         }
     }
 
+    @Override
+    protected void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        mTracker.setScreenName("Exit Dashboard Screen - " + String.valueOf(isTwoPane));
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+        mTracker.setScreenName("Enter Dashboard Screen - " + String.valueOf(isTwoPane));
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
+    public void updateChampionDetail(Champion champion) {
+        FragmentManager supportFragmentManager = getSupportFragmentManager();
+        ChampionDetailFragment fragment = (ChampionDetailFragment) supportFragmentManager.findFragmentById(R.id.secondaryContainer);
+        fragment.prepareUi(champion);
+    }
 }

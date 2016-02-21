@@ -32,3 +32,18 @@ And more!!!
 Notes:
 
 - Sugar ORM has been removed. Now I'm using Realm.
+
+Libraries used:
+
+- Android support design, appcompat-v7, recyclerview-v7, cardview-v7 and support-v4
+- Google Analytics and Admob
+- Glide and GlidePalette
+  https://github.com/florent37/GlidePalette
+  https://github.com/bumptech/glide
+- Retrofit2.0, Converter-GSON and Logging interceptor.
+  http://square.github.io/retrofit/
+- ButterKnife
+- Realm
+- Android Espresso.
+- Crashlytics.
+

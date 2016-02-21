@@ -22,7 +22,8 @@ public interface ChampionListContract {
     }
 
     interface UserActionsListener {
-        void refreshChampions(Activity activity, boolean isFavorite);
+        void refreshChampions(Activity activity, boolean isFavorite, boolean forceRefresh);
+
         void onPause();
     }
 }

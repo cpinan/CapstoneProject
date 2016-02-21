@@ -24,8 +24,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * @author Carlos Piñan
@@ -98,14 +96,7 @@ public class Helper {
     }
 
     public String getCodeLanguage() {
-        String codeLanguage = Locale.getDefault().toString();
-        List<String> languages = StorageHelper.get().getLanguages();
-        if (languages != null) {
-            if (!languages.contains(codeLanguage)) {
-                codeLanguage = "en_US";
-            }
-        }
-        return codeLanguage == null ? "en_US" : codeLanguage;
+        return StorageHelper.get().getDefaultLanguage();
     }
 
     public void intentWithConnection(

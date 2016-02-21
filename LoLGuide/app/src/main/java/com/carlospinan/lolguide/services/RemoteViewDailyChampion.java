@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.NetworkOnMainThreadException;
-import android.os.StrictMode;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -61,13 +60,15 @@ public class RemoteViewDailyChampion implements RemoteViewsService.RemoteViewsFa
 
     @Override
     public RemoteViews getViewAt(int position) {
-        Champion champion = items.get(position);
         RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.widget_list_daily_champion);
-        String title = champion.getName() + " - " + champion.getTitle();
-        rv.setTextViewText(R.id.championTextView, title);
-        rv.setContentDescription(R.id.portraitImageView, title);
-        if (portraitBitmap != null) {
-            rv.setImageViewBitmap(R.id.portraitImageView, portraitBitmap);
+        if (!items.isEmpty()) {
+            Champion champion = items.get(position);
+            String title = champion.getName() + "\n" + champion.getTitle();
+            rv.setTextViewText(R.id.championTextView, title);
+            rv.setContentDescription(R.id.portraitImageView, title);
+            if (portraitBitmap != null) {
+                rv.setImageViewBitmap(R.id.portraitImageView, portraitBitmap);
+            }
         }
         return rv;
     }
@@ -93,9 +94,6 @@ public class RemoteViewDailyChampion implements RemoteViewsService.RemoteViewsFa
     }
 
     private void updateItems() {
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        
         LolStaticDataAPI api = APIHelper.get().lolStaticAPI().api();
         Call<ChampionsResponse> call = api.getChampions(
                 StorageHelper.get().getRegion(),

@@ -18,4 +18,6 @@
     <color name="dark_grey">#424242</color>
     <color name="medium_grey">#9E9E9E</color>
     <color name="button_grey">#757575</color>
+    <color name="AAblack">#AA000000</color>
+    <color name="AAprimary">#AA3F51B5</color>
 </resources>

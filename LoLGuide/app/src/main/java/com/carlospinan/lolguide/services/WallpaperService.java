@@ -72,6 +72,7 @@ public class WallpaperService extends IntentService {
         if (bitmap != null) {
             mBuilder.setLargeIcon(bitmap);
         }
+        mBuilder.setAutoCancel(true);
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(NOTIFICATION_ID, mBuilder.build());

@@ -278,7 +278,11 @@ public class ChampionDetailFragment extends Fragment implements ChampionDetailCo
                 Intent intent = new Intent(getActivity(), VideoActivity.class);
                 intent.putExtra(VideoActivity.CHAMPION_ID_KEY, championId);
                 intent.putExtra(VideoActivity.CHAMPION_ABILITY_KEY, abilityId);
-                startActivity(intent);
+                Helper.get().intentWithConnection(
+                        rootLayout,
+                        getActivity(),
+                        intent
+                );
             }
         });
 

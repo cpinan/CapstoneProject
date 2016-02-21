@@ -11,9 +11,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.carlospinan.lolguide.R;
-import com.carlospinan.lolguide.helpers.Helper;
 import com.carlospinan.lolguide.helpers.StorageHelper;
-import com.google.android.gms.ads.AdView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,8 +29,6 @@ public class VideoActivity extends BaseActivity {
 
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
-
-    private AdView mAdView;
     private MediaController mediaController;
 
     @Override
@@ -73,8 +69,6 @@ public class VideoActivity extends BaseActivity {
                 showErrorAndTerminate();
             }
         }
-        mAdView = (AdView) findViewById(R.id.adView);
-        mAdView.loadAd(Helper.get().getAdRequest());
     }
 
     private void showErrorAndTerminate() {
@@ -93,21 +87,5 @@ public class VideoActivity extends BaseActivity {
             videoView.stopPlayback();
         }
         super.onBackPressed();
-    }
-
-    @Override
-    protected void onPause() {
-        if (mAdView != null) {
-            mAdView.pause();
-        }
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (mAdView != null) {
-            mAdView.resume();
-        }
     }
 }

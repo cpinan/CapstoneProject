@@ -4,6 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/tapToSeeMore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="#AA000000"
+        android:gravity="center"
+        android:padding="@dimen/activity_vertical_margin"
+        android:text="@string/tap_to_see_more"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
     <ImageView
         android:id="@+id/skinImageView"
         android:layout_width="match_parent"
@@ -16,7 +30,7 @@
         android:id="@+id/skinNameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="#AA000000"
         android:gravity="center"

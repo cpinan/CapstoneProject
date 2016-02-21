@@ -12,11 +12,6 @@
             android:title="@string/fav_champions" />
 
         <item
-            android:id="@+id/aboutAction"
-            android:tint="@color/button_grey"
-            android:title="@string/about" />
-
-        <item
             android:id="@+id/rateThisAppAction"
             android:tint="@color/button_grey"
             android:title="@string/rate_this_app" />

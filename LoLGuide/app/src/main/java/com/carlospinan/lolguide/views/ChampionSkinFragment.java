@@ -50,7 +50,7 @@ public class ChampionSkinFragment extends Fragment {
             return super.onCreateView(inflater, container, savedInstanceState);
         }
         View view = inflater.inflate(R.layout.skin_layout, container, false);
-        ImageView skinImageView = (ImageView) view.findViewById(R.id.skinImageView);
+        final ImageView skinImageView = (ImageView) view.findViewById(R.id.skinImageView);
         TextView skinNameTextView = (TextView) view.findViewById(R.id.skinNameTextView);
         final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
@@ -83,15 +83,26 @@ public class ChampionSkinFragment extends Fragment {
         skinImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChampionSkinDialog dialog = ChampionSkinDialog.newInstance(
-                        champion,
-                        index
-                );
-                dialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.AppDialogTheme);
-                dialog.show(getActivity().getSupportFragmentManager(), "CHAMPION_DIALOG_SKIN");
+                openDialog();
+            }
+        });
+
+        view.findViewById(R.id.tapToSeeMore).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialog();
             }
         });
 
         return view;
+    }
+
+    private void openDialog() {
+        ChampionSkinDialog dialog = ChampionSkinDialog.newInstance(
+                champion,
+                index
+        );
+        dialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.AppDialogTheme);
+        dialog.show(getActivity().getSupportFragmentManager(), "CHAMPION_DIALOG_SKIN");
     }
 }

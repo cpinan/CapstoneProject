@@ -42,14 +42,15 @@ public class ChampionListPresenter implements ChampionListContract.UserActionsLi
     @Override
     public void refreshChampions(
             final Activity activity,
-            boolean isFavorite
+            boolean isFavorite,
+            boolean forceRefresh
     ) {
         view.setProgressIndicator(true);
         if (isFavorite) {
             searchForChampions(true);
         } else {
 
-            if (temporalChampionCache != null && !temporalChampionCache.isEmpty()) {
+            if (!forceRefresh && temporalChampionCache != null && !temporalChampionCache.isEmpty()) {
                 view.onSuccess(temporalChampionCache);
             } else {
 

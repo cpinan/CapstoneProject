@@ -32,8 +32,6 @@
 
         <activity android:name=".activities.ChampionDetailActivity" />
 
-        <activity android:name=".activities.AboutActivity" />
-
         <activity android:name=".activities.SkinsActivity" />
 
         <activity

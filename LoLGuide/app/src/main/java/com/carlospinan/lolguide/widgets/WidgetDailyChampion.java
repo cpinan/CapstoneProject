@@ -1,5 +1,6 @@
 package com.carlospinan.lolguide.widgets;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
@@ -32,7 +33,15 @@ public class WidgetDailyChampion extends AppWidgetProvider {
             // into the data so that the extras will not be ignored.
             intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
             remoteViews.setRemoteAdapter(R.id.dailyChampionsListView, intent);
-            remoteViews.setEmptyView(R.id.dailyChampionsListView, android.R.id.list);
+            remoteViews.setEmptyView(R.id.dailyChampionsListView, R.id.progressBar);
+
+            Intent i2 = new Intent(context, WidgetDailyChampion.class);
+
+            i2.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+            i2.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
+                    0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            remoteViews.setOnClickPendingIntent(R.id.rootLayout, pendingIntent);
 
             appWidgetManager.updateAppWidget(widgetId, remoteViews);
         }

@@ -16,7 +16,7 @@ public class Globals {
     public static final String PATTERN_MAX_AMMO = "{{ maxammo }}";
 
     // LOG TAG
-    public static final boolean SHOW_DEV_LOG = true;
+    public static final boolean SHOW_DEV_LOG = false;
     private static final String LOG_TAG = "DevelopmentTag";
     private static final String LOG_TEST_TAG = "TestTag";
 

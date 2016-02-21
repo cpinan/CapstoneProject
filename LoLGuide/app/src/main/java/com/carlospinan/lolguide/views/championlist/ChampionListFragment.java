@@ -1,13 +1,19 @@
 package com.carlospinan.lolguide.views.championlist;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.NetworkOnMainThreadException;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -27,6 +33,7 @@ import com.carlospinan.lolguide.activities.ChampionListActivity;
 import com.carlospinan.lolguide.adapters.ChampionsAdapter;
 import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.models.Champion;
+import com.carlospinan.lolguide.dialogs.SettingsDialog;
 import com.carlospinan.lolguide.helpers.APIHelper;
 import com.carlospinan.lolguide.helpers.StorageHelper;
 import com.carlospinan.lolguide.listeners.ChampionsAdapterListener;
@@ -69,6 +76,14 @@ public class ChampionListFragment extends Fragment
     private Call<List<String>> languagesCall;
 
     private Boolean inFavoriteMode;
+
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            refreshWithSettings();
+        }
+    };
 
     public static ChampionListFragment newInstance(boolean inFavoriteMode) {
         ChampionListFragment mChampionListFragment = new ChampionListFragment();
@@ -117,7 +132,7 @@ public class ChampionListFragment extends Fragment
             @Override
             public void onRefresh() {
                 swipeRefreshView.setRefreshing(true);
-                loadLanguages();
+                loadLanguages(true);
             }
         });
 
@@ -125,21 +140,15 @@ public class ChampionListFragment extends Fragment
             @Override
             public void onClick(View v) {
                 if (!swipeRefreshView.isRefreshing()) {
-                    refreshChampionsAndShowLoading();
+                    refreshChampionsAndShowLoading(false);
                 }
             }
         });
 
         if (savedInstanceState == null) {
-            refreshChampionsAndShowLoading();
+            refreshChampionsAndShowLoading(true);
         }
         return view;
-    }
-
-    @Override
-    public void onPause() {
-        presenter.onPause();
-        super.onPause();
     }
 
     @Override
@@ -163,36 +172,37 @@ public class ChampionListFragment extends Fragment
         }
     }
 
-    private void refreshChampionsAndShowLoading() {
+    private void refreshChampionsAndShowLoading(boolean forceToRefresh) {
         setProgressIndicator(true);
-        loadLanguages();
+        loadLanguages(forceToRefresh);
     }
 
-    private void loadLanguages() {
+    private void loadLanguages(final boolean forceRefresh) {
         if (StorageHelper.get().getLanguages() == null) {
             languagesCall = APIHelper.get().lolStaticAPI().api().getLanguages(StorageHelper.get().getRegion());
             languagesCall.enqueue(new Callback<List<String>>() {
                 @Override
                 public void onResponse(Response<List<String>> response) {
                     StorageHelper.get().saveLanguages(response.body());
-                    refreshChampions();
+                    refreshChampions(forceRefresh);
                 }
 
                 @Override
                 public void onFailure(Throwable t) {
-                    refreshChampions();
+                    refreshChampions(forceRefresh);
                 }
             });
         } else {
-            refreshChampions();
+            refreshChampions(forceRefresh);
         }
     }
 
-    private void refreshChampions() {
+    private void refreshChampions(boolean forceRefresh) {
         errorTextView.setVisibility(View.GONE);
         presenter.refreshChampions(
                 getActivity(),
-                inFavoriteMode
+                inFavoriteMode,
+                forceRefresh
         );
     }
 
@@ -247,7 +257,11 @@ public class ChampionListFragment extends Fragment
             Intent intent = new Intent(getActivity(), ChampionDetailActivity.class);
             intent.putExtra(Globals.PARCEABLE_CHAMPION_KEY, champion);
             intent.putExtra(Globals.TRANSITION_IMAGE_KEY, transitionName);
-            startActivity(intent);
+
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                    getActivity(), view, transitionName);
+            ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
+//            startActivity(intent);
         } else {
             updateChampionDetail(champion);
         }
@@ -292,4 +306,39 @@ public class ChampionListFragment extends Fragment
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
+                receiver,
+                new IntentFilter(SettingsDialog.BROADCAST_ID)
+        );
+    }
+
+    @Override
+    public void onPause() {
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(
+                receiver
+        );
+        if (languagesCall != null) {
+            try {
+                languagesCall.cancel();
+            } catch (NetworkOnMainThreadException e) {
+
+            }
+        }
+        presenter.onPause();
+        super.onPause();
+    }
+
+    private void refreshWithSettings() {
+        if (StorageHelper.get().mustUpdateUi()) {
+            if (swipeRefreshView != null && championsAdapter != null) {
+                refreshChampions(true);
+                StorageHelper.get().setMustUpdateUi(false);
+            }
+        }
+    }
+
 }

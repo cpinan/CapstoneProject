@@ -8,6 +8,7 @@ import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.enums.RegionEnum;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Carlos Piñan
@@ -24,6 +25,8 @@ public class StorageHelper {
     public static final String LOL_LANGUAGES_KEY = "com.carlospinan.lolguide.lollanguageskey";
     public static final String LOL_CHAMPION_STORAGE_KEY = "com.carlospinan.lolguide.championstoragekey";
     public static final String LOL_CHAMPION_STATE_SAVE_KEY = "com.carlospinan.lolguide.championstatesavekey";
+    public static final String LOL_DEFAULT_LANGUAGE = "com.carlospinan.lolguide.loldefaultlanguage";
+    public static final String LOL_MUST_UPDATE_UI = "com.carlospinan.lolguide.lolmostupdateui";
 
     private static StorageHelper instance;
 
@@ -72,6 +75,29 @@ public class StorageHelper {
         return getStorage().getBoolean(LOL_CHAMPION_STORAGE_KEY + "_" + championId, false);
     }
 
+    public String getDefaultLanguage() {
+        String defaultLanguage = getStorage().getString(LOL_DEFAULT_LANGUAGE, null);
+        if (defaultLanguage == null) {
+            defaultLanguage = "en_US";
+            List<String> languages = StorageHelper.get().getLanguages();
+            if (languages != null && !languages.isEmpty()) {
+                String language = Locale.getDefault().getLanguage();
+                for (String l : languages) {
+                    if (l.contains(language)) {
+                        defaultLanguage = l;
+                        break;
+                    }
+                }
+                saveDefaultLanguage(defaultLanguage);
+            }
+        }
+        return defaultLanguage;
+    }
+
+    public void saveDefaultLanguage(String language) {
+        getStorage().edit().putString(LOL_DEFAULT_LANGUAGE, language).commit();
+    }
+
     // Set language
     public void saveLanguages(List<String> languages) {
         saveString(LOL_LANGUAGES_KEY, ChampionHelper.getStringFromList(languages));
@@ -102,8 +128,20 @@ public class StorageHelper {
         return version;
     }
 
+    public boolean mustUpdateUi() {
+        return getStorage().getBoolean(LOL_MUST_UPDATE_UI, false);
+    }
+
+    public void setMustUpdateUi(boolean state) {
+        getStorage().edit().putBoolean(LOL_MUST_UPDATE_UI, state).commit();
+    }
+
+    public void saveRegion(String region) {
+        getStorage().edit().putString(LOL_REGION_KEY, region).commit();
+    }
+
     public RegionEnum getRegion() {
-        String region = getStorage().getString(LOL_REGION_KEY, RegionEnum.lan.toString());
+        String region = getStorage().getString(LOL_REGION_KEY, RegionEnum.na.toString());
         return RegionEnum.valueOf(region);
     }
 

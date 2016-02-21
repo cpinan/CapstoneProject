@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.carlospinan.lolguide.R;
 import com.carlospinan.lolguide.data.models.Champion;
+import com.carlospinan.lolguide.dialogs.SettingsDialog;
 import com.carlospinan.lolguide.helpers.Helper;
 import com.carlospinan.lolguide.listeners.OnFragmentListener;
 import com.carlospinan.lolguide.views.championdetail.ChampionDetailFragment;
@@ -74,12 +76,13 @@ public class ChampionListActivity extends BaseActivity implements OnFragmentList
                                     setChampionListFragment(true);
                                 }
                                 break;
-                            case R.id.aboutAction:
-                                break;
                             case R.id.rateThisAppAction:
                                 rateApp();
                                 break;
                             case R.id.settingAction:
+                                SettingsDialog dialog = SettingsDialog.newInstance();
+                                dialog.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.AppDialogTheme);
+                                dialog.show(getSupportFragmentManager(), "SETTINGS_DIALOG");
                                 break;
                         }
                         item.setChecked(true);

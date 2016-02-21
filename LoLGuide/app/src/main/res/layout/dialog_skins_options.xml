@@ -13,21 +13,19 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/viewpagerMargin"
-        android:background="?attr/selectableItemBackground"
         android:gravity="center"
+        android:padding="@dimen/dimen16"
         android:text="@string/set_as_wallpaper"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/textSize24" />
-    
+        android:textSize="@dimen/textSize16" />
+
     <Button
         android:id="@+id/closeButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="?attr/selectableItemBackground"
         android:gravity="center"
+        android:padding="@dimen/dimen16"
         android:text="@string/close"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/textSize24" />
+        android:textSize="@dimen/textSize16" />
 
 </LinearLayout>

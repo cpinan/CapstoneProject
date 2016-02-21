@@ -21,9 +21,7 @@ import com.carlospinan.lolguide.adapters.ChampionSkinsAdapter;
 import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.models.Champion;
 import com.carlospinan.lolguide.data.models.ChampionSkin;
-import com.carlospinan.lolguide.helpers.Helper;
 import com.carlospinan.lolguide.helpers.StorageHelper;
-import com.google.android.gms.ads.AdView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -45,7 +43,6 @@ public class SkinsActivity extends BaseActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
-    private AdView mAdView;
     private Champion champion;
     private ShareActionProvider mShareActionProvider;
 
@@ -98,9 +95,6 @@ public class SkinsActivity extends BaseActivity {
             @Override
             public void onPageScrollStateChanged(int state) { /* UNUSED */ }
         });
-
-        mAdView = (AdView) findViewById(R.id.adView);
-        mAdView.loadAd(Helper.get().getAdRequest());
     }
 
     @Override
@@ -115,9 +109,6 @@ public class SkinsActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (mAdView != null) {
-            mAdView.resume();
-        }
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 receiver,
                 new IntentFilter(BROADCAST_ID)
@@ -126,9 +117,6 @@ public class SkinsActivity extends BaseActivity {
 
     @Override
     protected void onPause() {
-        if (mAdView != null) {
-            mAdView.pause();
-        }
         LocalBroadcastManager.getInstance(this).unregisterReceiver(
                 receiver
         );

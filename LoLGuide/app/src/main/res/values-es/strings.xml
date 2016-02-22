@@ -30,7 +30,7 @@
     <string name="cool_down">CD</string>
     <string name="range">Rango</string>
     <string name="no_internet">No hay conexión a internet.</string>
-    <string name="set_as_wallpaper">Poner como fondo.</string>
+    <string name="set_as_wallpaper">Poner como fondo</string>
     <string name="close">Cerrar</string>
     <string name="setting_wallpaper">Configurando fondo.</string>
     <string name="wallpaper_ready">Fondo listo.</string>
@@ -52,4 +52,5 @@
     <string name="saved">guardado</string>
     <string name="tap_to_see_more">Tap para ver más</string>
     <string name="nav_message">Esta app no está relacionada con RIOT ni con League of Legends.</string>
+    <string name="champion_rotation">Rotación de Camp.</string>
 </resources>

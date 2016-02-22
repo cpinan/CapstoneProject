@@ -146,7 +146,7 @@ public class ChampionListFragment extends Fragment
         });
 
         if (savedInstanceState == null) {
-            refreshChampionsAndShowLoading(true);
+            refreshChampionsAndShowLoading(false);
         }
         return view;
     }

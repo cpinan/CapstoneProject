@@ -33,7 +33,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:src="@drawable/ic_keyboard_arrow_right_black_18dp" />
+                    android:src="@drawable/ic_keyboard_arrow_right_black_18dp"
+                    tools:contentDescription="" />
 
                 <TextView
                     android:id="@+id/championTitleTextView"

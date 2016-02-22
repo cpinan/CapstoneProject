@@ -11,6 +11,7 @@
         android:layout_height="@dimen/portrait_size"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
+        tools:contentDescription=""
         tools:src="@mipmap/ic_launcher" />
 
     <TextView

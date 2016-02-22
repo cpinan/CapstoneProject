@@ -48,7 +48,7 @@ public class StorageHelper {
     public void saveString(String key, String value) {
         SharedPreferences.Editor editor = getStorage().edit();
         editor.putString(key, value);
-        editor.commit();
+        editor.apply();
     }
 
     public String getString(String key, String defaultValue) {

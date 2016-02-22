@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_horizontal_margin"
+        tools:contentDescription=""
         tools:src="@mipmap/ic_launcher" />
 
     <TextView

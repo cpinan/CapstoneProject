@@ -10,7 +10,7 @@ import com.google.android.gms.analytics.Tracker;
 /**
  * @author Carlos Piñan
  */
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     protected boolean isTwoPane;
     protected Tracker mTracker;

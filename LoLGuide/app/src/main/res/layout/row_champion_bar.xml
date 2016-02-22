@@ -29,7 +29,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/champion_bar_height"
             android:background="@drawable/drawable_bar_bg"
-            android:scaleType="matrix" />
+            android:scaleType="matrix"
+            tools:contentDescription="" />
 
         <ImageView
             android:id="@+id/championBar"
@@ -38,7 +39,8 @@
             android:background="@drawable/drawable_bar_attack"
             android:scaleType="matrix"
             android:scaleX="0.0"
-            android:transformPivotX="0dp" />
+            android:transformPivotX="0dp"
+            tools:contentDescription="" />
 
     </FrameLayout>
 

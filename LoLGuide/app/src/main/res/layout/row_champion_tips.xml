@@ -10,7 +10,8 @@
         android:layout_width="@dimen/champion_bar_height"
         android:layout_height="@dimen/champion_bar_height"
         android:layout_marginTop="@dimen/dimen8"
-        android:src="@drawable/drawable_circle" />
+        android:src="@drawable/drawable_circle"
+        tools:contentDescription="" />
 
     <TextView
         android:id="@+id/tipTextView"

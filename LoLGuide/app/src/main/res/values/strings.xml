@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LoL Champions</string>
+    <string name="app_name" translatable="false">LoL Champions</string>
     <string name="enter_champion_name">Enter a champion name:</string>
     <string name="problem_refreshing_champs">There was a problem.\nTry to refresh tapping here.</string>
     <string name="champions">Champions</string>

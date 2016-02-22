@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="fabric_id">32f10c19f1afd39b505fa7a4f38ef47a7e2f04fc</string>
-    <string name="banner_ad_unit_id">ca-app-pub-8297579382369512/1838482790</string>
-    <string name="analytics_id">UA-17852693-13</string>
+    <string name="fabric_id" translatable="false">32f10c19f1afd39b505fa7a4f38ef47a7e2f04fc</string>
+    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-8297579382369512/1838482790</string>
+    <string name="analytics_id" translatable="false">UA-17852693-13</string>
 </resources>

@@ -44,6 +44,7 @@
                     android:adjustViewBounds="true"
                     android:foreground="#77000000"
                     android:scaleType="centerCrop"
+                    tools:contentDescription=""
                     tools:src="@mipmap/ic_launcher" />
 
                 <ImageView
@@ -52,7 +53,8 @@
                     android:layout_gravity="center"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
-                    android:src="@android:drawable/ic_media_play" />
+                    android:src="@android:drawable/ic_media_play"
+                    tools:contentDescription="" />
 
             </FrameLayout>
 

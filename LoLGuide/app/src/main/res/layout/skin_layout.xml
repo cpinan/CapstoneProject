@@ -24,7 +24,8 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:adjustViewBounds="true"
-        android:scaleType="fitCenter" />
+        android:scaleType="fitCenter"
+        tools:contentDescription="" />
 
     <TextView
         android:id="@+id/skinNameTextView"

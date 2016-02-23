@@ -45,6 +45,22 @@ android {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
+    signingConfigs {
+        release {
+            def Properties localProps = new Properties()
+            localProps.load(new FileInputStream(file('../local.properties')))
+            storeFile file("../debugKeystore/debugKeystore.jks")
+            storePassword localProps["storePass"]
+            keyAlias localProps["releaseKeystoreAlias"]
+            keyPassword localProps["releaseKeystorePassword"]
+        }
+        debug {
+            storeFile file("../debugKeystore/debugKeystore.jks")
+            storePassword "123456"
+            keyAlias "debugapi"
+            keyPassword "123456"
+        }
+    }
 }
 
 ext {

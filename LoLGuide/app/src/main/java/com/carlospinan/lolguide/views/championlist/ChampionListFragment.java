@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -281,32 +282,33 @@ public class ChampionListFragment extends Fragment
         inflater.inflate(R.menu.menu_fragment_list_champion, menu);
         MenuItem searchItem = menu.findItem(R.id.searchAction);
         if (searchItem != null) {
-            searchView = (SearchView) searchItem.getActionView();
-            searchView.setIconifiedByDefault(false);
-            searchView.setIconified(false);
-            searchView.setQueryHint(getString(R.string.enter_champion_name));
-            searchView.clearFocus();
+            searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+            if (searchView != null) {
+                searchView.setIconifiedByDefault(false);
+                searchView.setIconified(false);
+                searchView.setQueryHint(getString(R.string.enter_champion_name));
+                searchView.clearFocus();
 
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    return false;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    if (!swipeRefreshView.isRefreshing() && championsAdapter != null && newText != null) {
-                        championsAdapter.getFilter().filter(newText);
-                        return true;
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
                     }
-                    return false;
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        if (!swipeRefreshView.isRefreshing() && championsAdapter != null && newText != null) {
+                            championsAdapter.getFilter().filter(newText);
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+
+                if (championQuery != null && championQuery.trim().length() > 0) {
+                    searchView.setQuery(championQuery, true);
                 }
-            });
-
-            if (championQuery != null && championQuery.trim().length() > 0) {
-                searchView.setQuery(championQuery, true);
             }
-
         }
         super.onCreateOptionsMenu(menu, inflater);
     }

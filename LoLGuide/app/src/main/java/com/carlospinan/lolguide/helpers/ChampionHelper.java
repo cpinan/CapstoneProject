@@ -299,10 +299,10 @@ public class ChampionHelper {
         String response = "";
         if (list != null && !list.isEmpty()) {
             if (list.size() == 1) {
-                response = list.get(0);
+                response = String.valueOf(list.get(0));
             } else {
                 for (Object object : list) {
-                    response += object + DELIMITER;
+                    response += String.valueOf(object) + DELIMITER;
                 }
                 response = response.substring(0, response.length() - DELIMITER.length());
             }

@@ -1,5 +1,6 @@
 package com.carlospinan.lolguide.views.championdetail;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,6 +17,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -79,6 +84,9 @@ public class ChampionDetailFragment extends Fragment implements ChampionDetailCo
     @Bind(R.id.championInformationView)
     ChampionInformationView championInformationView;
 
+    @Bind(R.id.infoImageView)
+    ImageView infoImageView;
+
     private Champion champion;
     private MenuItem galleryItem;
     private ChampionDetailPresenter presenter;
@@ -128,6 +136,13 @@ public class ChampionDetailFragment extends Fragment implements ChampionDetailCo
         favoriteChampionsAction.setVisibility(View.GONE);
         nestedScrollView.setVisibility(View.GONE);
 
+        final Animation animation = new AlphaAnimation(1, 0);
+        animation.setDuration(1000);
+        animation.setInterpolator(new LinearInterpolator());
+        animation.setRepeatCount(Animation.INFINITE);
+        animation.setRepeatMode(Animation.REVERSE);
+        infoImageView.startAnimation(animation);
+
         if (champion != null) {
             updateFavoriteButton(champion.getChampionId());
             prepareUi(champion);
@@ -138,11 +153,37 @@ public class ChampionDetailFragment extends Fragment implements ChampionDetailCo
 
     private void processChampion() {
         if (champion != null) {
-            int championId = champion.getChampionId();
-            if (!StorageHelper.get().getChampion(championId)) {
-                presenter.saveChampion(getActivity(), championId);
+            final int championId = champion.getChampionId();
+            if (!StorageHelper.get().isChampionSaving(championId)) {
+                if (!StorageHelper.get().getChampion(championId)) {
+                    presenter.saveChampion(getActivity(), championId);
+                    Snackbar.make(
+                            rootLayout,
+                            getString(R.string.saving_champion),
+                            Snackbar.LENGTH_LONG
+                    ).show();
+                } else {
+                    new AlertDialog.Builder(getActivity())
+                            .setMessage(getString(R.string.remove_message))
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    presenter.removeChampion(getActivity(), championId);
+                                    Snackbar.make(
+                                            rootLayout,
+                                            getString(R.string.removing_champion),
+                                            Snackbar.LENGTH_LONG
+                                    ).show();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.cancel, null).show();
+                }
             } else {
-                presenter.removeChampion(getActivity(), championId);
+                Snackbar.make(
+                        rootLayout,
+                        getString(R.string.champion_running),
+                        Snackbar.LENGTH_LONG
+                ).show();
             }
         }
     }
@@ -157,9 +198,9 @@ public class ChampionDetailFragment extends Fragment implements ChampionDetailCo
 
     private void updateFavoriteButton(int championId) {
         if (!StorageHelper.get().getChampion(championId)) {
-            favoriteChampionsAction.setColorFilter(getResources().getColor(R.color.yellow));
-        } else {
             favoriteChampionsAction.setColorFilter(getResources().getColor(R.color.black));
+        } else {
+            favoriteChampionsAction.setColorFilter(getResources().getColor(R.color.yellow));
         }
     }
 

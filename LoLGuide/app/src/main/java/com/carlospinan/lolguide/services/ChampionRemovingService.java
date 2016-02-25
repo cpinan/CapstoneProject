@@ -33,7 +33,7 @@ public class ChampionRemovingService extends IntentService {
         showNotification(getString(R.string.removing_champion));
         final Realm realm = ApplicationController.getRealm();
         Integer championId = intent.getIntExtra(Globals.INDEX_KEY, -1);
-        if (championId != null && championId != -1 && StorageHelper.get().isChampionSaving(championId)) {
+        if (championId != null && championId != -1 && !StorageHelper.get().isChampionSaving(championId)) {
             StorageHelper.get().championIsSaving(championId, true);
             RealmChampion realmChampion = realm.where(RealmChampion.class).equalTo("championId", championId).findFirst();
             if (realmChampion != null) {

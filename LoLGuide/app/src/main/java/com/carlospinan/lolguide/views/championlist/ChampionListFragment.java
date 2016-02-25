@@ -226,7 +226,11 @@ public class ChampionListFragment extends Fragment
         }
         setProgressIndicator(false);
         if (onFragmentListener.isTwoPane() &&
+                championsAdapter != null &&
+                championsAdapter.getChampions() != null &&
                 championsAdapter.getChampions().isEmpty() &&
+                championList != null &&
+                !championList.isEmpty() &&
                 championList.get(0) != null) {
             updateChampionDetail(championList.get(0));
         }

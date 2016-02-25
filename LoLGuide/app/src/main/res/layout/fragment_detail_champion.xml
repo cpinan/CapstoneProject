@@ -33,13 +33,18 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/activity_horizontal_margin"
-                    android:src="@drawable/ic_keyboard_arrow_right_black_18dp"
+                    android:rotation="180"
+                    android:scaleType="matrix"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:src="@drawable/ic_priority_high_black_48dp"
                     tools:contentDescription="" />
 
                 <TextView
                     android:id="@+id/championTitleTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/champion_name_size"
                     android:layout_toRightOf="@id/infoImageView"
                     android:gravity="left"

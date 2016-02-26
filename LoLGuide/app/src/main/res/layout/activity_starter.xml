@@ -26,4 +26,16 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/white"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dimen16"
+        android:gravity="center"
+        android:text="icon designed by Freepik"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white" />
 </RelativeLayout>

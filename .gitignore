@@ -6,3 +6,5 @@ LoLGuide/app/app-release.apk
 LoLGuide/master/app-release.apk
 
 LoLGuide/gradle.properties
+
+LoLGuide/google-services.json

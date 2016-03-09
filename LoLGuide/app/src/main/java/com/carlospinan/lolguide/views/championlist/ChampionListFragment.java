@@ -73,11 +73,9 @@ public class ChampionListFragment extends Fragment
     private ChampionListPresenter presenter;
     private OnFragmentListener onFragmentListener;
     private ChampionsAdapter championsAdapter;
-
     private Call<List<String>> languagesCall;
-
     private Boolean inFavoriteMode;
-
+    private Boolean championRotation;
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -86,10 +84,11 @@ public class ChampionListFragment extends Fragment
         }
     };
 
-    public static ChampionListFragment newInstance(boolean inFavoriteMode) {
+    public static ChampionListFragment newInstance(boolean inFavoriteMode, boolean championRotation) {
         ChampionListFragment mChampionListFragment = new ChampionListFragment();
         Bundle arguments = new Bundle();
         arguments.putBoolean(Globals.FAVORITE_KEY, inFavoriteMode);
+        arguments.putBoolean(Globals.CHAMPION_ROTATION_KEY, championRotation);
         mChampionListFragment.setArguments(arguments);
         return mChampionListFragment;
     }
@@ -106,16 +105,13 @@ public class ChampionListFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_list_champion, container, false);
         ButterKnife.bind(this, view);
         presenter = new ChampionListPresenter(this);
-
         if (getArguments() != null) {
             inFavoriteMode = getArguments().getBoolean(Globals.FAVORITE_KEY, false);
+            championRotation = getArguments().getBoolean(Globals.CHAMPION_ROTATION_KEY, false);
         }
-
         swipeRefreshView = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshView);
-
         int orientation = getResources().getConfiguration().orientation;
         int columns = orientation == Configuration.ORIENTATION_LANDSCAPE ? COLS_LANDSCAPE : COLS_PORTRAIT;
-
         List<Champion> champions = new ArrayList<>();
         championQuery = "";
         if (savedInstanceState != null) {
@@ -203,6 +199,7 @@ public class ChampionListFragment extends Fragment
         presenter.refreshChampions(
                 getActivity(),
                 inFavoriteMode,
+                championRotation,
                 forceRefresh
         );
     }

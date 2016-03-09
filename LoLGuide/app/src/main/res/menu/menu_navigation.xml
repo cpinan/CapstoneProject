@@ -11,10 +11,10 @@
             android:tint="@color/button_grey"
             android:title="@string/fav_champions" />
 
-        <!--<item-->
-            <!--android:id="@+id/championRotationAction"-->
-            <!--android:tint="@color/button_grey"-->
-            <!--android:title="@string/champion_rotation" />-->
+        <item
+            android:id="@+id/championRotationAction"
+            android:tint="@color/button_grey"
+            android:title="@string/champion_rotation" />
 
         <item
             android:id="@+id/rateThisAppAction"

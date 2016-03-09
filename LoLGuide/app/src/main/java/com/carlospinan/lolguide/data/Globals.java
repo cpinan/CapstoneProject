@@ -16,7 +16,7 @@ public class Globals {
     public static final String PATTERN_MAX_AMMO = "{{ maxammo }}";
 
     // LOG TAG
-    public static final boolean SHOW_DEV_LOG = false;
+    public static final boolean SHOW_DEV_LOG = true;
     private static final String LOG_TAG = "DevelopmentTag";
     private static final String LOG_TEST_TAG = "TestTag";
 
@@ -34,6 +34,7 @@ public class Globals {
     public static final String FAVORITE_KEY = "favoriteModeKey";
     public static final String[] ABILITIES_KEYS = {"Q", "W", "E", "R"};
     public static final String INDEX_KEY = "index";
+    public static final String CHAMPION_ROTATION_KEY = "championRotationKey";
 
     // LOL Values
 

@@ -6,11 +6,15 @@ import android.os.NetworkOnMainThreadException;
 import com.carlospinan.lolguide.ApplicationController;
 import com.carlospinan.lolguide.data.enums.ChampDataEnum;
 import com.carlospinan.lolguide.data.models.Champion;
+import com.carlospinan.lolguide.data.models.api.APIChampion;
 import com.carlospinan.lolguide.data.models.realm.RealmChampion;
+import com.carlospinan.lolguide.data.responses.APIChampionsResponse;
 import com.carlospinan.lolguide.data.responses.ChampionsResponse;
 import com.carlospinan.lolguide.helpers.APIHelper;
 import com.carlospinan.lolguide.helpers.ChampionHelper;
 import com.carlospinan.lolguide.helpers.Helper;
+import com.carlospinan.lolguide.helpers.StorageHelper;
+import com.carlospinan.lolguide.helpers.lolapi.ServiceLolAPI;
 import com.carlospinan.lolguide.listeners.APICallback;
 import com.carlospinan.lolguide.listeners.AsyncTaskCallback;
 import com.carlospinan.lolguide.services.AsyncTaskService;
@@ -23,6 +27,8 @@ import java.util.Map;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
 
 /**
  * @author Carlos Piñan
@@ -43,55 +49,81 @@ public class ChampionListPresenter implements ChampionListContract.UserActionsLi
     public void refreshChampions(
             final Activity activity,
             boolean isFavorite,
+            final boolean championRotation,
             boolean forceRefresh
     ) {
         view.setProgressIndicator(true);
         if (isFavorite) {
             searchForChampions(true);
         } else {
-
-            if (!forceRefresh && temporalChampionCache != null && !temporalChampionCache.isEmpty()) {
+            if (!championRotation && !forceRefresh && temporalChampionCache != null && !temporalChampionCache.isEmpty()) {
                 view.onSuccess(temporalChampionCache);
             } else {
-
                 if (Helper.get().hasInternetConnection(activity)) {
-                    championsResponseCall = APIHelper.get().lolStaticAPI().getChampions(
-                            new APICallback<ChampionsResponse>() {
-                                @Override
-                                public void onSuccess(ChampionsResponse response) {
-                                    List<Champion> championList = new ArrayList<>();
-                                    for (Map.Entry<String, Champion> entry : response.getData().entrySet()) {
-                                        championList.add(entry.getValue());
-                                    }
-                                    Collections.sort(championList, new Champion());
+                    if (championRotation) {
+                        ServiceLolAPI lolAPI = APIHelper.get().lolAPI();
+                        Call<APIChampionsResponse> listCall = lolAPI.api().getChampions(
+                                StorageHelper.get().getRegion(),
+                                true
+                        );
+                        listCall.enqueue(new Callback<APIChampionsResponse>() {
+                            @Override
+                            public void onResponse(Response<APIChampionsResponse> response) {
+                                loadChampions(championRotation, response.body().getChampions());
+                            }
 
-//                                    if (championList != null && !championList.isEmpty()) {
-//                                        Intent intent = new Intent(activity, SaveChampionsService.class);
-//                                        SaveChampionsService.championList = championList;
-//                                        activity.startService(intent);
-//                                    }
-
-                                    temporalChampionCache = championList;
-                                    view.onSuccess(championList);
-                                }
-
-                                @Override
-                                public void onFail(Throwable throwable) {
-                                    view.onFail();
-                                }
-                            },
-                            ChampDataEnum.image, ChampDataEnum.spells,
-                            ChampDataEnum.allytips, ChampDataEnum.enemytips,
-                            ChampDataEnum.info, ChampDataEnum.lore,
-                            ChampDataEnum.passive, ChampDataEnum.skins,
-                            ChampDataEnum.stats, ChampDataEnum.tags,
-                            ChampDataEnum.blurb
-                    );
+                            @Override
+                            public void onFailure(Throwable t) {
+                                view.onFail();
+                            }
+                        });
+                    } else {
+                        loadChampions(false, null);
+                    }
                 } else {
                     searchForChampions(false);
                 }
             }
         }
+    }
+
+    private void loadChampions(final boolean championRotation, final List<APIChampion> championsResponse) {
+        championsResponseCall = APIHelper.get().lolStaticAPI().getChampions(
+                new APICallback<ChampionsResponse>() {
+                    @Override
+                    public void onSuccess(ChampionsResponse response) {
+                        List<Integer> freeChampionsId = new ArrayList<>();
+                        if (championsResponse != null && !championsResponse.isEmpty()) {
+                            for (APIChampion apiChampion : championsResponse) {
+                                freeChampionsId.add(apiChampion.getId());
+                            }
+                        }
+                        List<Champion> championList = new ArrayList<>();
+                        for (Map.Entry<String, Champion> entry : response.getData().entrySet()) {
+                            if (freeChampionsId != null && !freeChampionsId.isEmpty() && !freeChampionsId.contains(entry.getValue().getChampionId())) {
+                                continue;
+                            }
+                            championList.add(entry.getValue());
+                        }
+                        Collections.sort(championList, new Champion());
+                        if (!championRotation) {
+                            temporalChampionCache = championList;
+                        }
+                        view.onSuccess(championList);
+                    }
+
+                    @Override
+                    public void onFail(Throwable throwable) {
+                        view.onFail();
+                    }
+                },
+                ChampDataEnum.image, ChampDataEnum.spells,
+                ChampDataEnum.allytips, ChampDataEnum.enemytips,
+                ChampDataEnum.info, ChampDataEnum.lore,
+                ChampDataEnum.passive, ChampDataEnum.skins,
+                ChampDataEnum.stats, ChampDataEnum.tags,
+                ChampDataEnum.blurb
+        );
     }
 
     private void searchForChampions(final boolean favorite) {

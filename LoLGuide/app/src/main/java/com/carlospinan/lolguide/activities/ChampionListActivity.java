@@ -68,12 +68,17 @@ public class ChampionListActivity extends BaseActivity implements OnFragmentList
                         switch (id) {
                             case R.id.championsAction:
                                 if (!item.isChecked()) {
-                                    setChampionListFragment(false);
+                                    setChampionListFragment(false, false);
                                 }
                                 break;
                             case R.id.favoriteChampionsAction:
                                 if (!item.isChecked()) {
-                                    setChampionListFragment(true);
+                                    setChampionListFragment(true, false);
+                                }
+                                break;
+                            case R.id.championRotationAction:
+                                if (!item.isChecked()) {
+                                    setChampionListFragment(false, true);
                                 }
                                 break;
                             case R.id.rateThisAppAction:
@@ -104,7 +109,7 @@ public class ChampionListActivity extends BaseActivity implements OnFragmentList
         }
 
         if (savedInstanceState == null) {
-            setChampionListFragment(false);
+            setChampionListFragment(false, false);
         }
 
         mAdView = (AdView) findViewById(R.id.adView);
@@ -139,10 +144,10 @@ public class ChampionListActivity extends BaseActivity implements OnFragmentList
         return super.onOptionsItemSelected(item);
     }
 
-    private void setChampionListFragment(boolean isFavorite) {
+    private void setChampionListFragment(boolean isFavorite, boolean championRotation) {
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = supportFragmentManager.beginTransaction();
-        transaction.replace(R.id.container, ChampionListFragment.newInstance(isFavorite));
+        transaction.replace(R.id.container, ChampionListFragment.newInstance(isFavorite, championRotation));
         transaction.commit();
     }
 

@@ -1,6 +1,7 @@
 package com.carlospinan.lolguide.helpers;
 
 import com.carlospinan.lolguide.data.Globals;
+import com.carlospinan.lolguide.helpers.lolapi.ServiceLolAPI;
 import com.carlospinan.lolguide.helpers.lolapi.ServiceLolStaticAPI;
 
 import java.util.List;
@@ -14,9 +15,11 @@ public class APIHelper {
 
     // LOL Providers
     private ServiceLolStaticAPI serviceLolStaticAPI;
+    private ServiceLolAPI serviceLolApi;
 
     private APIHelper() {
         serviceLolStaticAPI = new ServiceLolStaticAPI();
+        serviceLolApi = new ServiceLolAPI();
     }
 
     public static APIHelper get() {
@@ -28,6 +31,10 @@ public class APIHelper {
 
     public ServiceLolStaticAPI lolStaticAPI() {
         return serviceLolStaticAPI;
+    }
+
+    public ServiceLolAPI lolAPI() {
+        return serviceLolApi;
     }
 
     public int getIndexFromEffectBurn(String description) {

@@ -52,6 +52,9 @@ public class ChampionListPresenter implements ChampionListContract.UserActionsLi
             final boolean championRotation,
             boolean forceRefresh
     ) {
+        if (activity == null) {
+            return;
+        }
         view.setProgressIndicator(true);
         if (isFavorite) {
             searchForChampions(true);

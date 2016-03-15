@@ -45,15 +45,24 @@ public class Helper {
     }
 
     public boolean hasInternetConnection(Context context) {
+        if (context == null) {
+            return true;
+        }
         return !isInAirplaneMode(context) && isNetworkAvailable(context);
     }
 
     public boolean isNetworkAvailable(Context context) {
+        if (context == null) {
+            return true;
+        }
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null;
     }
 
     public boolean isInAirplaneMode(Context context) {
+        if (context == null) {
+            return true;
+        }
         return Settings.System.getInt(context.getContentResolver(),
                 Settings.Global.AIRPLANE_MODE_ON, 0) != 0;
     }
@@ -149,7 +158,8 @@ public class Helper {
     }
 
     public AdRequest getAdRequest() {
-        return new AdRequest.Builder().addTestDevice(ADS_DEVICE_TEST).build();
+        // addTestDevice(ADS_DEVICE_TEST)
+        return new AdRequest.Builder().build();
     }
 
 }

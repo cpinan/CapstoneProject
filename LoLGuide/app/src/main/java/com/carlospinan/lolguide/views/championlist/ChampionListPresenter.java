@@ -72,7 +72,13 @@ public class ChampionListPresenter implements ChampionListContract.UserActionsLi
                         listCall.enqueue(new Callback<APIChampionsResponse>() {
                             @Override
                             public void onResponse(Response<APIChampionsResponse> response) {
-                                loadChampions(championRotation, response.body().getChampions());
+                                if (response != null && response.body() != null &&
+                                        response.body().getChampions() != null &&
+                                        !response.body().getChampions().isEmpty()) {
+                                    loadChampions(championRotation, response.body().getChampions());
+                                } else {
+                                    view.onFail();
+                                }
                             }
 
                             @Override

@@ -76,16 +76,6 @@ public class ChampionSavingService extends IntentService {
                 Bitmap portraitBitmap = BitmapFactory.decodeStream(portraitUrl.openStream());
                 response.setPortraitUri(Helper.get().saveBitmap(portraitBitmap, portraitImage));
 
-                // Default Skin
-                String skinImage = response.getKey() + "_0_Default.png";
-                String skinImageUrl = StorageHelper.get().getChampionSplashUrl(
-                        response.getKey(),
-                        response.getSkins().get(0).getNum()
-                );
-                URL skinUrl = new URL(skinImageUrl);
-                Bitmap skinBitmap = BitmapFactory.decodeStream(skinUrl.openStream());
-                response.setSkinsUris(Helper.get().saveBitmap(skinBitmap, skinImage));
-
                 String abilitiesUris = "";
                 for (ChampionSpell spell : response.getSpells()) {
                     String spellImage = spell.getImage().getFull();
@@ -108,7 +98,7 @@ public class ChampionSavingService extends IntentService {
                     realm.beginTransaction();
                     realmChampion.setPassiveUri(response.getPassiveUri());
                     realmChampion.setPortraitUri(response.getPortraitUri());
-                    realmChampion.setSkinsUris(response.getSkinsUris());
+//                    realmChampion.setSkinsUris(response.getSkinsUris());
                     realmChampion.setAbilitiesUris(response.getAbilitiesUris());
                     realmChampion.setFavorite(true);
                     realm.commitTransaction();

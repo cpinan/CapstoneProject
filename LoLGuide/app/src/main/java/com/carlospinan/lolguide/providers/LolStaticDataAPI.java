@@ -3,17 +3,17 @@ package com.carlospinan.lolguide.providers;
 import com.carlospinan.lolguide.BuildConfig;
 import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.data.enums.RegionEnum;
-import com.carlospinan.lolguide.data.models.LOLData;
 import com.carlospinan.lolguide.data.models.Champion;
+import com.carlospinan.lolguide.data.models.LOLData;
 import com.carlospinan.lolguide.data.responses.ChampionsResponse;
-import com.squareup.okhttp.ResponseBody;
 
 import java.util.List;
 
-import retrofit.Call;
-import retrofit.http.GET;
-import retrofit.http.Path;
-import retrofit.http.Query;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * @author Carlos Piñan

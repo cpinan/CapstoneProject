@@ -25,9 +25,9 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * @author Carlos Piñan
@@ -70,13 +70,13 @@ public class SettingsDialog extends DialogFragment {
             languagesCall = APIHelper.get().lolStaticAPI().api().getLanguages(StorageHelper.get().getRegion());
             languagesCall.enqueue(new Callback<List<String>>() {
                 @Override
-                public void onResponse(Response<List<String>> response) {
+                public void onResponse(Call<List<String>> call, Response<List<String>> response) {
                     StorageHelper.get().saveLanguages(response.body());
                     init();
                 }
 
                 @Override
-                public void onFailure(Throwable t) {
+                public void onFailure(Call<List<String>> call, Throwable t) {
                     Toast.makeText(
                             getActivity(),
                             t.getLocalizedMessage(),

@@ -25,8 +25,8 @@ import java.io.IOException;
 import java.net.URL;
 
 import io.realm.Realm;
-import retrofit.Call;
-import retrofit.Response;
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * @author Carlos Piñan

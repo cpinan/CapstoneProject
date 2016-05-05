@@ -1,13 +1,12 @@
 package com.carlospinan.lolguide.helpers.lolapi;
 
-import com.carlospinan.lolguide.data.Globals;
 import com.carlospinan.lolguide.helpers.OkHttpSingleton;
 import com.carlospinan.lolguide.providers.LolAPI;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 
 /**
  * @author Carlos Piñan
@@ -19,11 +18,6 @@ public class ServiceLolAPI {
     public LolAPI api() {
         if (lolAPI == null) {
             OkHttpClient client = OkHttpSingleton.getOkHttpClient();
-            if (Globals.SHOW_DEV_LOG) {
-                HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-                interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-                client.interceptors().add(interceptor);
-            }
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("https://las.api.pvp.net/")
                     .addConverterFactory(GsonConverterFactory.create())

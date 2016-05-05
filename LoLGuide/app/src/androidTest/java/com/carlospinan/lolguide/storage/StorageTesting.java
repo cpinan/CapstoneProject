@@ -18,8 +18,8 @@ import java.io.IOException;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
-import retrofit.Call;
-import retrofit.Response;
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * @author Carlos Piñan

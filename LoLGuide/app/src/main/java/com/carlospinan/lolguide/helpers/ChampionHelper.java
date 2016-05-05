@@ -312,8 +312,12 @@ public class ChampionHelper {
 
     public static String getStringFromDoubleList(List<Double> list) {
         List<String> newList = new ArrayList<>();
-        for (Double d : list) {
-            newList.add(String.valueOf(d));
+        if (list != null && !list.isEmpty()) {
+            for (Double d : list) {
+                if (d != null) {
+                    newList.add(String.valueOf(d));
+                }
+            }
         }
         return getStringFromList(newList);
     }

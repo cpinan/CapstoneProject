@@ -79,12 +79,15 @@ public class VideoActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         if (videoView != null) {
-            if (mediaController != null) {
-                mediaController.hide();
+            try {
+                if (mediaController != null) {
+                    mediaController.hide();
+                }
+                videoView.stopPlayback();
+                videoView.setVideoURI(null);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
-            videoView.setVideoURI(null);
-            videoView.suspend();
-            videoView.stopPlayback();
         }
         super.onBackPressed();
     }

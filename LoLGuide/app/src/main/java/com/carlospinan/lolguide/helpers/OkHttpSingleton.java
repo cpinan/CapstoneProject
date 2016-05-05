@@ -2,10 +2,10 @@ package com.carlospinan.lolguide.helpers;
 
 import android.os.Environment;
 
-import com.squareup.okhttp.Cache;
-import com.squareup.okhttp.OkHttpClient;
-
 import java.io.File;
+
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
 
 /**
  * @author Carlos Piñan
@@ -28,7 +28,7 @@ public class OkHttpSingleton {
     private static void createCacheForOkHTTP() {
         Cache cache;
         cache = new Cache(getDirectory(), 1024 * 1024 * 10);
-        okHttpClient.setCache(cache);
+//        okHttpClient.setCache(cache);
     }
 
     public static File getDirectory() {

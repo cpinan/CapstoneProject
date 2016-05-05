@@ -6,10 +6,10 @@ import com.carlospinan.lolguide.data.enums.RegionEnum;
 import com.carlospinan.lolguide.data.models.api.APIChampion;
 import com.carlospinan.lolguide.data.responses.APIChampionsResponse;
 
-import retrofit.Call;
-import retrofit.http.GET;
-import retrofit.http.Path;
-import retrofit.http.Query;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * @author Carlos Piñan

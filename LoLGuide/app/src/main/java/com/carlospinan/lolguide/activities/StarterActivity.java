@@ -11,9 +11,9 @@ import com.carlospinan.lolguide.helpers.APIHelper;
 import com.carlospinan.lolguide.helpers.StorageHelper;
 import com.carlospinan.lolguide.providers.LolStaticDataAPI;
 
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * @author Carlos Piñan
@@ -47,14 +47,14 @@ public class StarterActivity extends BaseActivity {
         apiRealm = api.getRealm(StorageHelper.get().getRegion());
         apiRealm.enqueue(new Callback<LOLData>() {
             @Override
-            public void onResponse(Response<LOLData> response) {
+            public void onResponse(Call<LOLData> call, Response<LOLData> response) {
                 LOLData body = response.body();
                 StorageHelper.get().saveVersion(body.getCurrentRealVersion());
                 runActivity();
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<LOLData> call, Throwable t) {
                 runActivity();
             }
         });

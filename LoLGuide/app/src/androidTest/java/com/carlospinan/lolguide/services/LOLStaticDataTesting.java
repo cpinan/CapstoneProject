@@ -19,8 +19,9 @@ import com.carlospinan.lolguide.helpers.lolapi.ServiceLolStaticAPI;
 import java.io.IOException;
 import java.util.List;
 
-import retrofit.Call;
-import retrofit.Response;
+import retrofit2.Call;
+import retrofit2.Response;
+
 
 /**
  * @author Carlos Piñan

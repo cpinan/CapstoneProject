@@ -26,9 +26,9 @@ import java.util.Map;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * @author Carlos Piñan
@@ -71,7 +71,7 @@ public class ChampionListPresenter implements ChampionListContract.UserActionsLi
                         );
                         listCall.enqueue(new Callback<APIChampionsResponse>() {
                             @Override
-                            public void onResponse(Response<APIChampionsResponse> response) {
+                            public void onResponse(Call<APIChampionsResponse> call, Response<APIChampionsResponse> response) {
                                 if (response != null && response.body() != null &&
                                         response.body().getChampions() != null &&
                                         !response.body().getChampions().isEmpty()) {
@@ -82,7 +82,7 @@ public class ChampionListPresenter implements ChampionListContract.UserActionsLi
                             }
 
                             @Override
-                            public void onFailure(Throwable t) {
+                            public void onFailure(Call<APIChampionsResponse> call, Throwable t) {
                                 view.onFail();
                             }
                         });

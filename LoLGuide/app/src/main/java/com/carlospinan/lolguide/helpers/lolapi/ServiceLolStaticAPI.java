@@ -8,14 +8,13 @@ import com.carlospinan.lolguide.helpers.OkHttpSingleton;
 import com.carlospinan.lolguide.helpers.StorageHelper;
 import com.carlospinan.lolguide.listeners.APICallback;
 import com.carlospinan.lolguide.providers.LolStaticDataAPI;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.GsonConverterFactory;
-import retrofit.Response;
-import retrofit.Retrofit;
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * @author Carlos Piñan
@@ -27,11 +26,6 @@ public class ServiceLolStaticAPI {
     public LolStaticDataAPI api() {
         if (lolStaticDataAPI == null) {
             OkHttpClient client = OkHttpSingleton.getOkHttpClient();
-            if (Globals.SHOW_DEV_LOG) {
-                HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-                interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-                client.interceptors().add(interceptor);
-            }
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(Globals.LOL_STATIC_DATA_ENDPOINT)
                     .addConverterFactory(GsonConverterFactory.create())
@@ -58,13 +52,13 @@ public class ServiceLolStaticAPI {
         );
         call.enqueue(new Callback<ChampionsResponse>() {
             @Override
-            public void onResponse(final Response<ChampionsResponse> response) {
+            public void onResponse(Call<ChampionsResponse> call, Response<ChampionsResponse> response) {
                 callback.onSuccess(response.body());
             }
 
             @Override
-            public void onFailure(Throwable throwable) {
-                callback.onFail(throwable);
+            public void onFailure(Call<ChampionsResponse> call, Throwable t) {
+                callback.onFail(t);
             }
         });
         return call;

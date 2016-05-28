@@ -33,6 +33,9 @@ public class WallpaperService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        if (intent == null || intent.getExtras() == null || !intent.getExtras().containsKey(IMAGE_PATH_KEY)) {
+            return;
+        }
         String settingWallpaper = getString(R.string.setting_wallpaper);
         String wallpaperReady = getString(R.string.wallpaper_ready);
         String errorWallpaper = getString(R.string.error_wallpaper);
